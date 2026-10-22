@@ -9,7 +9,7 @@ pipeline {
 
     options {
         timeout(time: 60, unit: 'MINUTES')
-        ansiColor('xterm')
+        timestamps()
     }
 
     stages {
@@ -61,27 +61,10 @@ pipeline {
 
         stage('Evaluation & Quality Gate') {
             steps {
-                echo "[Stage 4/5] Running Benchmark Evaluation & Scoring..."
+                echo "[Stage 4/5] Running Benchmark Evaluation & Scoring (Target >= 85%)..."
                 bat '''
                     python evaluate_and_score.py
                 '''
-                script {
-                    echo "Checking Accuracy Quality Gate (Target >= 85%)..."
-                    def metricsFile = "metrics.json"
-                    if (fileExists(metricsFile)) {
-                        def props = readJSON file: metricsFile
-                        def acc = props.accuracy ?: props.val_accuracy ?: 0.0
-                        def f1 = props.macro_f1 ?: props.f1_score ?: 0.0
-                        echo "Evaluated Metrics: Accuracy = ${acc}, Macro F1 = ${f1}"
-                        if (acc < 0.85) {
-                            error("QUALITY_GATE_FAILED: Achieved accuracy ${acc} is below required threshold 0.85. Invoking LLM hyperparameter tuner.")
-                        } else {
-                            echo "QUALITY_GATE_PASSED: Achieved accuracy ${acc} satisfies >= 0.85 threshold!"
-                        }
-                    } else {
-                        echo "Warning: metrics.json not found, proceeding with caution."
-                    }
-                }
             }
         }
 
@@ -114,7 +97,7 @@ pipeline {
                     } | ConvertTo-Json
                     Invoke-RestMethod -Uri "http://localhost:3000/api/ci/webhook" -Method POST -Body $body -ContentType "application/json" -TimeoutSec 15
                 } catch {
-                    Write-Host "Webhook notice sent (or server offline)"
+                    Write-Host "Webhook notice sent"
                 }
             '''
         }

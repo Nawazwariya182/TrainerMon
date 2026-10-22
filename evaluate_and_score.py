@@ -99,17 +99,33 @@ def evaluate_model_performance(checkpoint_path: str = "./checkpoints/best_model.
         "checkpoint": str(ckpt_file),
         "total_validation_samples": len(y_true),
         "overall_accuracy": round(accuracy, 4),
+        "accuracy": round(accuracy, 4),
         "macro_f1_score": round(macro_f1, 4),
         "class_breakdown": class_metrics,
+        "quality_gate_passed": bool(accuracy >= 0.85),
+        "target_threshold": 0.85,
         "evaluation_status": "VALIDATED_ON_REAL_DATA"
     }
 
     logger.info("Evaluation Complete. Accuracy: %.2f%% | Macro F1: %.4f", accuracy * 100, macro_f1)
     with open("evaluation_metrics.json", "w") as f:
         json.dump(scores, f, indent=2)
+    with open("metrics.json", "w") as f:
+        json.dump(scores, f, indent=2)
 
-    update_execution_status("evaluate_and_score", 100.0, f"Validation complete: Accuracy {accuracy * 100:.1f}%, F1 {macro_f1:.3f}", "COMPLETED")
+    status_label = "COMPLETED" if accuracy >= 0.85 else "QUALITY_GATE_FAILED"
+    update_execution_status("evaluate_and_score", 100.0, f"Validation: Accuracy {accuracy * 100:.1f}%, F1 {macro_f1:.3f} (Passed: {accuracy >= 0.85})", status_label)
     return scores
 
 if __name__ == "__main__":
-    evaluate_model_performance()
+    metrics = evaluate_model_performance()
+    acc = metrics.get("overall_accuracy", 0.0)
+    print("=" * 60)
+    if acc < 0.85:
+        print(f"[QUALITY_GATE] FAILED: Validation Accuracy {acc * 100:.2f}% is below required 85.00% threshold.")
+        print("[QUALITY_GATE] Autonomous tuning required: Tuning hyperparameters and training duration.")
+        sys.exit(2)
+    else:
+        print(f"[QUALITY_GATE] PASSED: Validation Accuracy {acc * 100:.2f}% satisfies the >= 85.00% benchmark.")
+        print("[QUALITY_GATE] Ready for deployment synthesis (Flask / Docker serving).")
+        sys.exit(0)
