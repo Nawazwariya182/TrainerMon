@@ -1,0 +1,48 @@
+{
+  "project_id": "5330b70a-8716-492c-aaf6-ea8dd6c9306b",
+  "project_name": "Machine Learning Project",
+  "generated_at": "2026-10-22T20:33:50.629Z",
+  "harmonization_standard": "Standardized Aspect-Ratio Letterboxed RGB (3, 512, 512)",
+  "datasets": [
+    {
+      "id": "sartaj-bhuvaji-mri",
+      "title": "Brain Tumor Classification MRI Benchmark (4 Classes: Glioma, Meningioma, Pituitary, Normal)",
+      "source": "Hugging Face Direct & Sartaj Bhuvaji Radiologist Cohort",
+      "platform": "huggingface",
+      "url": "https://huggingface.co/datasets/sartajbhuvaji/Brain-Tumor-Classification",
+      "download_url": "https://huggingface.co/datasets/sartajbhuvaji/Brain-Tumor-Classification/resolve/main/Training.zip",
+      "download_type": "zip",
+      "direct_download": true,
+      "github_repo": "https://github.com/SartajBhuvaji/Brain-Tumor-Classification-Using-Deep-Learning-Algorithms",
+      "authors": "Sartaj Bhuvaji, Ankita Kadam, Prajakta Bhumkar, Sameer Dedge",
+      "files_count": "3,264 files (Training & Testing splits)",
+      "format": "High-Resolution JPEG (224x224, 512x512)",
+      "modality": "Multi-View Axial & Coronal MRI Scans",
+      "license": "MIT (Open Source Permissive)",
+      "samples": "3,264 Scans across 4 histological tumor classes",
+      "size": "93.08 MB",
+      "verified": true,
+      "bias_analysis": null
+    },
+    {
+      "id": "brats-mri-detection",
+      "title": "Brain MRI Images for Brain Tumor Detection (Br35H / Navoneel Cohort)",
+      "source": "Hugging Face Open Benchmark / Navoneel Chakraborty",
+      "platform": "huggingface",
+      "url": "https://huggingface.co/datasets/miladfa7/Brain-MRI-Images-for-Brain-Tumor-Detection",
+      "download_url": "https://huggingface.co/datasets/miladfa7/Brain-MRI-Images-for-Brain-Tumor-Detection/resolve/main/Brain%20MRI%20Images%20for%20Brain%20Tumor%20Detection.zip",
+      "download_type": "zip",
+      "direct_download": true,
+      "github_repo": "https://github.com/navoneel/brain-tumor-detection",
+      "authors": "Navoneel Chakraborty, Swati Kanchan",
+      "files_count": "506 files (253 Patient Scans)",
+      "format": "High-Resolution JPEG / PNG",
+      "modality": "Axial T1/T2 Brain MRI Slices (Binary: Yes/No Tumor)",
+      "license": "CC-BY 4.0 (Open Research & Commercial)",
+      "samples": "253 Patient Scans (155 Tumor Positive + 98 Normal Controls)",
+      "size": "15.8 MB",
+      "verified": true,
+      "bias_analysis": null
+    }
+  ]
+}
