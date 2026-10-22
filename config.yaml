@@ -16,6 +16,21 @@ hardware_profile:
   tier: "HIGH_END"
   estimated_speedup: "3.8x - 4.5x faster training"
 
+# =====================================================================
+# AI HARDWARE-OPTIMIZED ACCELERATION PROFILE
+# Auto-tuned for: NVIDIA GeForce RTX 5070 (11.91 GB VRAM)
+# Strategy: Engineered specifically for NVIDIA GeForce RTX 5070 with native BF16 Tensor Cores, high-throughput batch size of 64, and 6 parallel asynchronous I/O workers.
+# =====================================================================
+hardware_profile:
+  gpu_name: "NVIDIA GeForce RTX 5070"
+  vram_gb: 11.91
+  compute_capability: "12.0"
+  bf16_supported: true
+  cpu_cores: 12
+  ram_gb: 15.1
+  tier: "HIGH_END"
+  estimated_speedup: "3.8x - 4.5x faster training"
+
 training:
   batch_size: 64
   effective_batch_size: 64
