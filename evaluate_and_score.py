@@ -35,20 +35,19 @@ def evaluate_model_performance(checkpoint_path: str = "./checkpoints/best_model.
 
     val_samples = manifest.get("val_samples", [])
     classes = manifest.get("classes", ["class_0", "class_1"])
-    target_size = tuple(manifest.get("target_size", [224, 224]))
-    mean = manifest.get("channel_mean", [0.485, 0.456, 0.406])
-    std = manifest.get("channel_std", [0.229, 0.224, 0.225])
-
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     ckpt = torch.load(ckpt_file, map_location=device)
     num_classes = ckpt.get("num_classes", len(classes))
+    target_size = tuple(ckpt.get("target_size") or manifest.get("target_size", [128, 128]))
+    mean = ckpt.get("mean") or manifest.get("channel_mean", [0.485, 0.456, 0.406])
+    std = ckpt.get("std") or manifest.get("channel_std", [0.229, 0.224, 0.225])
 
-    model = ProductionVisionNet(in_channels=3, num_classes=num_classes).to(device)
+    model = ProductionVisionNet(in_channels=3, num_classes=num_classes, base_ch=48).to(device)
     model.load_state_dict(ckpt["model_state_dict"])
     model.eval()
 
-    val_ds = RealDatasetLoader(val_samples, target_size=target_size, mean=mean, std=std)
-    val_loader = DataLoader(val_ds, batch_size=8, shuffle=False)
+    val_ds = RealDatasetLoader(val_samples, target_size=target_size, mean=mean, std=std, is_train=False)
+    val_loader = DataLoader(val_ds, batch_size=16, shuffle=False)
 
     all_preds = []
     all_targets = []

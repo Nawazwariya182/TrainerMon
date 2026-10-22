@@ -70,17 +70,33 @@ def run_exploratory_data_analysis():
     logger.info("Found %d real image scans in raw data directory.", len(all_images))
     update_execution_status("eda_and_harmonization", 20.0, f"Discovered {len(all_images)} real images", "IN_PROGRESS")
 
-    # Discover classes from parent directory names (e.g. 'yes', 'no', 'glioma', 'meningioma', etc.)
+    # Canonical multi-dataset class harmonization (unifies Sartaj Bhuvaji + Br35H into 4 clinical classes)
+    def canonicalize_class(p: Path) -> str:
+        s = str(p).lower().replace("\\", "/")
+        if "no_tumor" in s or "/no/" in s or "\\no\\" in s or "normal" in s or "healthy" in s:
+            return "notumor"
+        if "glioma" in s:
+            return "glioma"
+        if "meningioma" in s:
+            return "meningioma"
+        if "pituitary" in s:
+            return "pituitary"
+        parent_name = p.parent.name.lower()
+        if parent_name in ["raw", "data"] or parent_name.startswith("dataset") or parent_name.startswith("brain"):
+            return "sample"
+        return parent_name
+
     class_set = set()
     samples = []
     for p in all_images:
-        parent_name = p.parent.name.lower()
-        if parent_name in ["raw", "data"] or parent_name.startswith("dataset") or parent_name.startswith("brain"):
-            parent_name = "sample"
-        class_set.add(parent_name)
+        cname = canonicalize_class(p)
+        # Avoid unclassified binary 'yes' to maintain 100% clean 4-class multi-class benchmark
+        if cname == "yes":
+            continue
+        class_set.add(cname)
         samples.append({
             "path": str(p.relative_to(Path(__file__).resolve().parent)).replace("\\", "/"),
-            "class_name": parent_name
+            "class_name": cname
         })
 
     class_names = sorted(list(class_set))
@@ -135,7 +151,7 @@ def run_exploratory_data_analysis():
         "classes": class_names,
         "class_to_idx": class_to_idx,
         "class_distribution": {c: sum(1 for s in samples if s["class_name"] == c) for c in class_names},
-        "target_size": [224, 224],
+        "target_size": [128, 128],
         "channel_mean": [round(float(x), 4) for x in mean_ch],
         "channel_std": [0.229, 0.224, 0.225],
         "train_count": len(train_samples),
@@ -154,7 +170,7 @@ def run_exploratory_data_analysis():
         "classes_discovered": class_names,
         "class_distribution": harmonized_manifest["class_distribution"],
         "median_source_resolution": median_res,
-        "target_harmonized_resolution": [224, 224, 3],
+        "target_harmonized_resolution": [128, 128, 3],
         "normalized_channel_means": harmonized_manifest["channel_mean"],
         "split_integrity": f"Train: {len(train_samples)} | Validation: {len(val_samples)} (Zero Leakage)"
     }

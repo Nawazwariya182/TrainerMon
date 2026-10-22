@@ -31,7 +31,7 @@ app.config["MAX_CONTENT_LENGTH"] = 16 * 1024 * 1024  # 16 MB max
 
 # Load Harmonized Metadata
 CLASSES = ["glioma","meningioma","notumor","pituitary"]
-TARGET_SIZE = tuple([224,224])
+TARGET_SIZE = tuple([128, 128])
 MEAN = torch.tensor([0.485, 0.456, 0.406]).view(3, 1, 1)
 STD = torch.tensor([0.229, 0.224, 0.225]).view(3, 1, 1)
 
@@ -74,15 +74,21 @@ DEVICE = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 MODEL = None
 
 def load_inference_model():
-    global MODEL
+    global MODEL, TARGET_SIZE, MEAN, STD
     logger.info(f"Loading checkpoint for inference on {DEVICE}...")
-    MODEL = ProductionVisionNet(in_channels=3, num_classes=len(CLASSES)).to(DEVICE)
+    MODEL = ProductionVisionNet(in_channels=3, num_classes=len(CLASSES), base_ch=48).to(DEVICE)
     if CHECKPOINT_PATH.exists():
         try:
             ckpt = torch.load(CHECKPOINT_PATH, map_location=DEVICE)
             state_dict = ckpt.get("model_state_dict", ckpt)
             MODEL.load_state_dict(state_dict, strict=False)
-            logger.info("Successfully loaded checkpoint weights.")
+            if "target_size" in ckpt:
+                TARGET_SIZE = tuple(ckpt["target_size"])
+            if "mean" in ckpt:
+                MEAN = torch.tensor(ckpt["mean"]).view(3, 1, 1)
+            if "std" in ckpt:
+                STD = torch.tensor(ckpt["std"]).view(3, 1, 1)
+            logger.info(f"Successfully loaded checkpoint weights (Best Acc: {ckpt.get('best_accuracy', 'N/A')}).")
         except Exception as err:
             logger.error(f"Failed to load checkpoint weights: {err}")
     else:
