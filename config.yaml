@@ -5,20 +5,20 @@ training:
   batch_size: 32
   effective_batch_size: 64
   gradient_accumulation_steps: 1
-  max_epochs: 150
+  max_epochs: 200
   mixed_precision: "bf16"
 
 optimizer:
   name: "AdamW"
-  lr: 0.001
-  weight_decay: 0.01
+  lr: 0.003
+  weight_decay: 0.05
   warmup_epochs: 20
   lr_schedule: "cosine"
 
 loss:
   type: "FocalLoss"
-  gamma: 3.0
-  label_smoothing: 0.15
+  gamma: 2.5
+  label_smoothing: 0.1
 
 model:
   num_classes: 4
