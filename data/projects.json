@@ -1,0 +1,21 @@
+[
+  {
+    "id": "5330b70a-8716-492c-aaf6-ea8dd6c9306b",
+    "name": "An Brain Tumor Detection",
+    "description": "A brain tumor detection model is an automated system using machine learning or deep learning to analyze magnetic resonance imaging (MRI) scans, identify the presence of a tumor, and classify its type.",
+    "idea": "A brain tumor detection model is an automated system using machine learning or deep learning to analyze magnetic resonance imaging (MRI) scans, identify the presence of a tumor, and classify its type.",
+    "domains": [
+      "Image / CV"
+    ],
+    "learningApproaches": [
+      "Supervised Learning"
+    ],
+    "primaryGoal": "Research / learning",
+    "model": "qwen3.5-9b",
+    "taskType": "Image / CV",
+    "maxTokens": 8192,
+    "contextWindow": 16384,
+    "status": "Ready",
+    "createdAt": "2026-10-22T18:35:47.081Z"
+  }
+]

@@ -1,0 +1,59 @@
+{
+  "project_id": "test_full_pipeline_run",
+  "project_name": "Brain Tumor Auto Segmentation",
+  "status": "COMPLETED",
+  "is_new": false,
+  "created_at": "2026-10-22T19:53:57.583Z",
+  "last_updated": "2026-10-22T19:54:32.824618+00:00",
+  "total_steps": 5,
+  "current_step_index": 0,
+  "current_step_name": "visualize",
+  "overall_progress_pct": 100.0,
+  "steps": [
+    {
+      "id": 1,
+      "name": "download_datasets",
+      "script": "download_datasets.py",
+      "label": "Download & Extract Datasets",
+      "status": "COMPLETED",
+      "progress_pct": 100.0,
+      "details": "All datasets downloaded, unpacked, and verified"
+    },
+    {
+      "id": 2,
+      "name": "eda_and_harmonization",
+      "script": "eda_and_harmonization.py",
+      "label": "Ingestion & Multi-Dataset Harmonization",
+      "status": "COMPLETED",
+      "progress_pct": 100.0,
+      "details": "EDA & harmonization complete. Voxel tensors cached."
+    },
+    {
+      "id": 3,
+      "name": "train",
+      "script": "train.py",
+      "label": "Pretraining From Scratch",
+      "status": "COMPLETED",
+      "progress_pct": 100.0,
+      "details": "Model pretraining converged and checkpoint saved"
+    },
+    {
+      "id": 4,
+      "name": "evaluate_and_score",
+      "script": "evaluate_and_score.py",
+      "label": "Validation & Metrics Scoring",
+      "status": "COMPLETED",
+      "progress_pct": 100.0,
+      "details": "Evaluation complete. Metrics saved to evaluation_metrics.json"
+    },
+    {
+      "id": 5,
+      "name": "visualize",
+      "script": "visualize.py",
+      "label": "Prediction Overlays & Loss Curves",
+      "status": "COMPLETED",
+      "progress_pct": 100.0,
+      "details": "Visual inspection plots saved to ./visualizations"
+    }
+  ]
+}

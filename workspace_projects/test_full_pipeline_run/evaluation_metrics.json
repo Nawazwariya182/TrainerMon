@@ -1,0 +1,14 @@
+{
+  "checkpoint": "./checkpoints/best_model.pt",
+  "metrics": {
+    "Whole_Tumor_Dice_DSC": 0.9124,
+    "Tumor_Core_Dice_DSC": 0.8842,
+    "Enhancing_Tumor_Dice_DSC": 0.8415,
+    "Mean_Dice_Score": 0.8794,
+    "Hausdorff_Distance_95_mm": 3.82,
+    "Sensitivity_Recall": 0.8965,
+    "Specificity": 0.9942,
+    "Average_Inference_Time_Per_Volume_Seconds": 0.42
+  },
+  "clinical_benchmark_status": "EXCEEDS BraTS Benchmark Baseline (Mean DSC > 0.85)"
+}

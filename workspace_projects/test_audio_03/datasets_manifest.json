@@ -1,0 +1,16 @@
+{
+  "project_id": "test_audio_03",
+  "project_name": "Conformer Speech Recognition",
+  "generated_at": "2026-10-22T19:35:42.416Z",
+  "harmonization_standard": "16 kHz Monophonic Log-Mel Spectrogram (80 Bands, 25ms Window, 10ms Hop)",
+  "datasets": [
+    {
+      "id": "ds1",
+      "title": "audio benchmark",
+      "source": "OpenData",
+      "format": "standard",
+      "license": "MIT",
+      "samples": "10k"
+    }
+  ]
+}

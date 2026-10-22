@@ -1,0 +1,78 @@
+# =====================================================================
+# ML-TRAIN UNIFIED PRETRAINING CONFIGURATION
+# Project: Brain Tumor Live Progress
+# Datasets: BraTS Test Cohort
+# =====================================================================
+
+project:
+  id: "test_progress_live"
+  name: "Brain Tumor Live Progress"
+  task: "3D Multi-Sequence Volumetric Segmentation from Scratch"
+  seed: 42
+
+datasets:
+  root_dir: "./data"
+  harmonized_cache_dir: "./data_harmonized"
+  selected:
+    - id: "brats_test"
+      name: "BraTS Test Cohort"
+      format: "NIfTI"
+      license: "undefined"
+
+data_harmonization:
+  target_spacing: [1.0, 1.0, 1.0] # 1mm³ isotropic voxel resampling
+  patch_size: [128, 128, 128]
+  input_channels: 4 # T1, T1Gd, T2, FLAIR
+  num_classes: 4 # 0: Background, 1: Necrotic/Core, 2: Edema, 3: Enhancing
+  skull_stripping: true
+  n4_bias_field_correction: true
+  intensity_norm: "z_score_masked" # zero mean, unit variance within brain mask
+
+model:
+  architecture: "ResidualUNet3D"
+  in_channels: 4
+  out_channels: 4
+  feature_channels: [32, 64, 128, 256, 320]
+  normalization: "InstanceNorm3d"
+  activation: "LeakyReLU"
+  negative_slope: 0.01
+  dropout_prob: 0.2
+  deep_supervision: true
+
+loss:
+  type: "SoftDiceFocalLoss"
+  dice_weight: 1.0
+  focal_weight: 1.0
+  focal_gamma: 2.0
+  class_weights: [0.1, 1.0, 1.2, 2.5]
+  deep_supervision_scales: [1.0, 0.5, 0.25]
+
+training:
+  batch_size: 2
+  effective_batch_size: 8
+  gradient_accumulation_steps: 4
+  num_workers: 4
+  max_epochs: 150
+  mixed_precision: "bf16" # Automatic Mixed Precision (BF16 or FP16)
+  gradient_clip_norm: 1.0
+
+optimizer:
+  name: "AdamW"
+  lr: 0.0001
+  weight_decay: 0.01
+  betas: [0.9, 0.999]
+  warmup_epochs: 5
+  min_lr: 0.000001
+  lr_schedule: "cosine"
+
+validation:
+  val_every_n_epochs: 2
+  metrics: ["Dice_WT", "Dice_TC", "Dice_ET", "HD95_WT"]
+  sliding_window_overlap: 0.5
+  gaussian_blend: true
+
+checkpoints:
+  save_dir: "./checkpoints"
+  save_top_k: 3
+  monitor_metric: "Dice_Mean"
+  mode: "max"

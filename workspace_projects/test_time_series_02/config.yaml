@@ -1,0 +1,56 @@
+# =====================================================================
+# ML-TRAIN UNIFIED PRETRAINING CONFIGURATION
+# Project: Power Grid Energy Demand Forecasting
+# Datasets: ElectricityLoadDiagrams20112014, Hourly Energy & Weather Benchmark
+# =====================================================================
+
+project:
+  id: "test_time_series_02"
+  name: "Power Grid Energy Demand Forecasting"
+  task: "Multi-Horizon Time Series Forecasting from Scratch"
+  seed: 42
+
+datasets:
+  root_dir: "./data"
+  selected:
+    - id: "electricity_load_diagrams"
+      name: "ElectricityLoadDiagrams20112014"
+      format: "CSV / Parquet"
+    - id: "weather_energy_bench"
+      name: "Hourly Energy & Weather Benchmark"
+      format: "CSV"
+
+data_harmonization:
+  resample_frequency: "5min"
+  lookback_horizon_L: 512
+  forecast_horizon_H: 96
+  patch_length: 16
+  patch_stride: 8
+  revin_normalization: true
+  revin_affine: true
+
+model:
+  architecture: "PatchTST"
+  d_model: 128
+  n_heads: 8
+  e_layers: 4
+  d_ff: 256
+  dropout: 0.1
+  channel_independence: true
+
+loss:
+  type: "QuantileLoss"
+  quantiles: [0.10, 0.50, 0.90]
+
+training:
+  batch_size: 64
+  max_epochs: 50
+  mixed_precision: "fp16"
+  gradient_clip_norm: 1.0
+
+optimizer:
+  name: "AdamW"
+  lr: 0.0003
+  weight_decay: 0.001
+  warmup_epochs: 5
+  lr_schedule: "cosine"

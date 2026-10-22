@@ -1,0 +1,59 @@
+{
+  "project_id": "test_verification_proj_99",
+  "project_name": "Brain Tumor Multi-Modal MRI Segmentation",
+  "status": "NEW_READY_TO_EXECUTE",
+  "is_new": true,
+  "created_at": "2026-10-22T19:45:32.124Z",
+  "last_updated": "2026-10-22T19:45:32.124Z",
+  "total_steps": 5,
+  "current_step_index": 0,
+  "current_step_name": null,
+  "overall_progress_pct": 0,
+  "steps": [
+    {
+      "id": 1,
+      "name": "download_datasets",
+      "script": "download_datasets.py",
+      "label": "Download & Extract Datasets",
+      "status": "PENDING",
+      "progress_pct": 0,
+      "details": "Awaiting initial dataset download execution"
+    },
+    {
+      "id": 2,
+      "name": "eda_and_harmonization",
+      "script": "eda_and_harmonization.py",
+      "label": "Ingestion & Multi-Dataset Harmonization",
+      "status": "PENDING",
+      "progress_pct": 0,
+      "details": "Awaiting execution"
+    },
+    {
+      "id": 3,
+      "name": "train",
+      "script": "train.py",
+      "label": "Pretraining From Scratch",
+      "status": "PENDING",
+      "progress_pct": 0,
+      "details": "Awaiting execution"
+    },
+    {
+      "id": 4,
+      "name": "evaluate_and_score",
+      "script": "evaluate_and_score.py",
+      "label": "Validation & Metrics Scoring",
+      "status": "PENDING",
+      "progress_pct": 0,
+      "details": "Awaiting execution"
+    },
+    {
+      "id": 5,
+      "name": "visualize",
+      "script": "visualize.py",
+      "label": "Prediction Overlays & Loss Curves",
+      "status": "PENDING",
+      "progress_pct": 0,
+      "details": "Awaiting execution"
+    }
+  ]
+}

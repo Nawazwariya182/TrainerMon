@@ -1,0 +1,49 @@
+# =====================================================================
+# ML-TRAIN UNIFIED PRETRAINING CONFIGURATION
+# Project: Conformer Speech Recognition
+# Datasets: audio benchmark
+# =====================================================================
+
+project:
+  id: "test_audio_03"
+  name: "Conformer Speech Recognition"
+  task: "Computer Vision Pretraining from Scratch"
+  seed: 42
+
+datasets:
+  root_dir: "./data"
+  selected:
+    - id: "ds1"
+      name: "audio benchmark"
+      format: "standard"
+
+data_harmonization:
+  image_resolution: [512, 512]
+  letterbox: true
+  normalization: "standard_rgb"
+
+model:
+  architecture: "ConvNeXtV2"
+  stem_channels: 96
+  stage_blocks: [3, 3, 9, 3]
+  stage_channels: [96, 192, 384, 768]
+  num_classes: 10
+
+loss:
+  type: "FocalLoss"
+  gamma: 2.0
+  label_smoothing: 0.1
+
+training:
+  batch_size: 16
+  effective_batch_size: 32
+  gradient_accumulation_steps: 2
+  max_epochs: 100
+  mixed_precision: "bf16"
+
+optimizer:
+  name: "AdamW"
+  lr: 0.0005
+  weight_decay: 0.05
+  warmup_epochs: 10
+  lr_schedule: "cosine"

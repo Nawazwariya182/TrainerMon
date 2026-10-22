@@ -1,0 +1,16 @@
+{
+  "project_id": "test_verification_proj_99",
+  "project_name": "Brain Tumor Multi-Modal MRI Segmentation",
+  "generated_at": "2026-10-22T19:45:32.124Z",
+  "harmonization_standard": "Multi-Sequence Volumetric Tensor (C, D, H, W) @ 1.0mm³ Isotropic Resampling",
+  "datasets": [
+    {
+      "id": "brats2024",
+      "title": "BraTS 2024 Adult Glioma",
+      "source": "Synapse / TCIA",
+      "format": "NIfTI",
+      "license": "CC-BY-NC 4.0",
+      "samples": "1,251 volumes"
+    }
+  ]
+}

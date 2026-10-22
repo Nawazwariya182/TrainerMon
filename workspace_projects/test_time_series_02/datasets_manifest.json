@@ -1,0 +1,24 @@
+{
+  "project_id": "test_time_series_02",
+  "project_name": "Power Grid Energy Demand Forecasting",
+  "generated_at": "2026-10-22T19:35:33.399Z",
+  "harmonization_standard": "Synchronized Multi-Horizon Sequence (B, L, C) with RevIN Normalization",
+  "datasets": [
+    {
+      "id": "electricity_load_diagrams",
+      "title": "ElectricityLoadDiagrams20112014",
+      "source": "UCI ML Repository",
+      "format": "CSV / Parquet",
+      "license": "CC BY 4.0",
+      "samples": "370 clients, 15-min intervals"
+    },
+    {
+      "id": "weather_energy_bench",
+      "title": "Hourly Energy & Weather Benchmark",
+      "source": "Kaggle",
+      "format": "CSV",
+      "license": "Open Data",
+      "samples": "50,000 hourly timestamps"
+    }
+  ]
+}

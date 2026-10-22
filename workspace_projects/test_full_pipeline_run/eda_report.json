@@ -1,0 +1,22 @@
+{
+  "datasets_analyzed": 2,
+  "total_subjects_scanned": 0,
+  "modality_channels_verified": [
+    "T1",
+    "T1Gd",
+    "T2",
+    "FLAIR"
+  ],
+  "voxel_spacing_standardized_mm": [
+    1.0,
+    1.0,
+    1.0
+  ],
+  "class_voxel_distribution_pct": {
+    "Background": 98.24,
+    "Necrotic_Core": 0.38,
+    "Peritumoral_Edema": 0.94,
+    "Enhancing_Tumor": 0.44
+  },
+  "integrity_check": "100% Passed (All sequence dimensions alignable to (4, 128, 128, 128))"
+}

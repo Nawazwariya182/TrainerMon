@@ -1,0 +1,18 @@
+# ML-Train Generated Project .gitignore
+# Exclude raw big data, large binary checkpoints, and temporary caches
+data/raw/
+data_harmonized/
+checkpoints/
+*.pth
+*.pt
+*.bin
+*.onnx
+__pycache__/
+*.py[cod]
+*$py.class
+.venv/
+venv/
+env/
+*.log
+.DS_Store
+Thumbs.db
