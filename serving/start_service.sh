@@ -1,11 +1,4 @@
 #!/usr/bin/env bash
-# =====================================================================
-# TrainerMon Automated Dual-Mode Serving Launcher (Bash)
-# Automatically detects Docker daemon availability:
-# - If Docker is active: Builds & deploys container on port 5000
-# - If Docker is stopped/offline: Automatically falls back to native Python Flask runtime
-# =====================================================================
-
 PORT=${PORT:-5000}
 echo "=========================================================="
 echo "  TRAINERMON DIAGNOSTIC SERVING LAUNCHER (Dual-Mode)"

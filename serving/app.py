@@ -31,7 +31,7 @@ app.config["MAX_CONTENT_LENGTH"] = 16 * 1024 * 1024  # 16 MB max
 
 # Load Harmonized Metadata
 CLASSES = ["glioma","meningioma","notumor","pituitary"]
-TARGET_SIZE = tuple([128, 128])
+TARGET_SIZE = tuple([128,128])
 MEAN = torch.tensor([0.485, 0.456, 0.406]).view(3, 1, 1)
 STD = torch.tensor([0.229, 0.224, 0.225]).view(3, 1, 1)
 
@@ -88,7 +88,7 @@ def load_inference_model():
                 MEAN = torch.tensor(ckpt["mean"]).view(3, 1, 1)
             if "std" in ckpt:
                 STD = torch.tensor(ckpt["std"]).view(3, 1, 1)
-            logger.info(f"Successfully loaded checkpoint weights (Best Acc: {ckpt.get('best_accuracy', 'N/A')}).")
+            logger.info("Successfully loaded checkpoint weights.")
         except Exception as err:
             logger.error(f"Failed to load checkpoint weights: {err}")
     else:
