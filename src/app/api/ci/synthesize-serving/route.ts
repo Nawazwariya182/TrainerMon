@@ -27,7 +27,7 @@ export async function POST(req: NextRequest) {
 
     // Read project manifest to discover classes and target size
     let classes = ["glioma", "meningioma", "notumor", "pituitary"];
-    let targetSize = [224, 224];
+    let targetSize = [128, 128];
     try {
       const manifestPath = path.join(projectDir, "harmonized_manifest.json");
       const manifestRaw = await fs.readFile(manifestPath, "utf-8");
@@ -115,14 +115,20 @@ DEVICE = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 MODEL = None
 
 def load_inference_model():
-    global MODEL
+    global MODEL, TARGET_SIZE, MEAN, STD
     logger.info(f"Loading checkpoint for inference on {DEVICE}...")
-    MODEL = ProductionVisionNet(in_channels=3, num_classes=len(CLASSES)).to(DEVICE)
+    MODEL = ProductionVisionNet(in_channels=3, num_classes=len(CLASSES), base_ch=48).to(DEVICE)
     if CHECKPOINT_PATH.exists():
         try:
             ckpt = torch.load(CHECKPOINT_PATH, map_location=DEVICE)
             state_dict = ckpt.get("model_state_dict", ckpt)
             MODEL.load_state_dict(state_dict, strict=False)
+            if "target_size" in ckpt:
+                TARGET_SIZE = tuple(ckpt["target_size"])
+            if "mean" in ckpt:
+                MEAN = torch.tensor(ckpt["mean"]).view(3, 1, 1)
+            if "std" in ckpt:
+                STD = torch.tensor(ckpt["std"]).view(3, 1, 1)
             logger.info("Successfully loaded checkpoint weights.")
         except Exception as err:
             logger.error(f"Failed to load checkpoint weights: {err}")

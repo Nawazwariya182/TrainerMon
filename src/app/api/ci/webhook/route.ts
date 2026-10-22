@@ -24,8 +24,13 @@ let latestCiStatus: {
   details: "Pipeline initialized.",
 };
 
+// Loop guard to prevent runaway build loops
+let autoTuneCount = 0;
+let lastAutoTuneTimestamp = 0;
+const MAX_AUTO_TUNE_LOOPS = 1; // Prevent repeated cascading builds
+
 export async function GET() {
-  return NextResponse.json({ success: true, ...latestCiStatus });
+  return NextResponse.json({ success: true, autoTuneCount, maxLoops: MAX_AUTO_TUNE_LOOPS, ...latestCiStatus });
 }
 
 export async function POST(req: NextRequest) {
@@ -49,6 +54,28 @@ export async function POST(req: NextRequest) {
         consoleLogs.includes("exit code 2");
 
       if (isQualityGateFailure) {
+        const now = Date.now();
+        // Check if loop limit reached
+        if (autoTuneCount >= MAX_AUTO_TUNE_LOOPS || (now - lastAutoTuneTimestamp < 120000)) {
+          console.warn("[CI-Webhook] Auto-tune limit reached. Halting automated cascading trigger.");
+          latestCiStatus = {
+            lastEvent: "PIPELINE_FAILURE",
+            buildNumber,
+            jobName,
+            timestamp: new Date().toISOString(),
+            status: "FAILED",
+            details: "Quality Gate violation (<85% Accuracy). Auto-tuning halted to prevent build loops. Code needs 95%+ architecture update.",
+          };
+          return NextResponse.json({
+            success: true,
+            action: "LOOP_PREVENTED",
+            message: "Auto-tuning halted to avoid infinite build loops.",
+          });
+        }
+
+        autoTuneCount++;
+        lastAutoTuneTimestamp = now;
+
         latestCiStatus = {
           lastEvent: "PIPELINE_FAILURE",
           buildNumber,
