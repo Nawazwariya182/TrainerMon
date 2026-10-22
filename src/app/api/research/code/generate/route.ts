@@ -147,23 +147,35 @@ function generateCodeSuite({
         id: d.id,
         title: d.title,
         source: d.source,
+        platform: d.platform || "huggingface",
         url: d.url,
         download_url: d.download_url || (
           d.id === "brats-mri-detection" || d.id === "brats-2024" || d.title?.toLowerCase().includes("mri")
             ? "https://huggingface.co/datasets/miladfa7/Brain-MRI-Images-for-Brain-Tumor-Detection/resolve/main/Brain%20MRI%20Images%20for%20Brain%20Tumor%20Detection.zip"
             : d.id === "sartaj-bhuvaji-mri"
             ? "https://huggingface.co/datasets/sartajbhuvaji/Brain-Tumor-Classification/resolve/main/Training.zip"
+            : d.id === "masoud-brain-tumor"
+            ? "https://huggingface.co/datasets/masoudnick/brain-tumor-mri-dataset/resolve/main/Training.zip"
             : d.id === "msd-task01-brain"
             ? "https://msd-for-monai.s3-us-west-2.amazonaws.com/Task01_BrainTumour.tar"
+            : d.id === "figshare-brain-tumor"
+            ? "https://ndownloader.figshare.com/articles/1512427/versions/5"
+            : d.id === "oasis-1-cross-sectional"
+            ? "https://huggingface.co/datasets/oasis-brains/oasis1/resolve/main/oasis_cross-sectional_disc1.zip"
             : d.url
         ),
         download_type: d.download_type || "zip",
+        direct_download: d.direct_download ?? true,
+        github_repo: d.github_repo || null,
+        authors: d.authors || null,
+        files_count: d.files_count || null,
         format: d.format,
         modality: d.modality,
         license: d.license,
         samples: d.samples,
         size: d.size,
         verified: d.verified,
+        bias_analysis: d.bias_analysis || null,
       })),
     },
     null,

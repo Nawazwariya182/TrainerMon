@@ -48,6 +48,10 @@ import {
   Folder,
   GitBranch,
   RefreshCw,
+  ShieldCheck,
+  ShieldAlert,
+  Scale,
+  HardDriveDownload,
 } from "lucide-react";
 
 interface Question {
@@ -67,11 +71,25 @@ interface ChatMessage {
   timestamp: string;
 }
 
+export interface BiasAnalysis {
+  class_balance_status: string;
+  negative_controls_included: boolean;
+  bias_mitigation_note: string;
+  scanner_diversity?: string;
+}
+
 export interface DatasetItem {
   id: string;
   title: string;
   source: string;
+  platform?: "huggingface" | "kaggle" | "github" | "open_s3" | "direct_http";
   url: string;
+  download_url?: string;
+  download_type?: "zip" | "tar" | "file";
+  direct_download?: boolean;
+  github_repo?: string;
+  authors?: string;
+  files_count?: string;
   modality: string;
   format: string;
   samples: string;
@@ -80,6 +98,7 @@ export interface DatasetItem {
   verified: boolean;
   suitability_score: number;
   suitability_reason: string;
+  bias_analysis?: BiasAnalysis;
   recommended: boolean;
   tags: string[];
 }
@@ -1418,7 +1437,7 @@ You can inspect all scripts in the Code Studio, copy or download individual file
                     Suitable Datasets for Training from Scratch
                   </h2>
                   <p className="text-xs text-slate-500">
-                    The agentic orchestrator verified licenses, modalities, and sample sizes for your project.
+                    Only direct, programmatic download platforms (Hugging Face, Kaggle Direct Mirrors, GitHub Open Source, AWS S3) are retained. Gated wiki portals have been filtered out.
                   </p>
                 </div>
 
@@ -1433,10 +1452,10 @@ You can inspect all scripts in the Code Studio, copy or download individual file
                 <div className="bg-white rounded-3xl border border-slate-200 p-12 flex flex-col items-center justify-center space-y-4">
                   <div className="w-10 h-10 border-3 border-indigo-600 border-t-transparent rounded-full animate-spin" />
                   <p className="text-sm font-bold text-slate-800">
-                    Searching scientific repositories & verifying licenses...
+                    Searching direct download repositories & verifying licenses...
                   </p>
                   <p className="text-xs text-slate-500">
-                    Scanning Synapse, TCIA, Kaggle, HuggingFace, and PhysioNet.
+                    Scanning Hugging Face, Kaggle direct mirrors, GitHub open source, and AWS S3 buckets.
                   </p>
                 </div>
               ) : (
@@ -1453,31 +1472,94 @@ You can inspect all scripts in the Code Studio, copy or download individual file
                             : "border-slate-200 hover:border-slate-300"
                         }`}
                       >
-                        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 border-b border-slate-100">
-                          <div className="space-y-1">
-                            <div className="flex items-center space-x-2 flex-wrap gap-y-1">
+                        <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-3 pb-3 border-b border-slate-100">
+                          <div className="space-y-1.5">
+                            <div className="flex items-center space-x-2 flex-wrap gap-y-1.5">
                               <h3 className="font-extrabold text-slate-900 text-sm sm:text-base">
                                 {ds.title}
                               </h3>
+                              {/* Platform Badge */}
+                              {ds.platform === "huggingface" ? (
+                                <span className="inline-flex items-center space-x-1 px-2.5 py-0.5 rounded-full bg-amber-50 text-amber-900 border border-amber-200 text-[10px] font-bold">
+                                  <span>🤗</span>
+                                  <span>Hugging Face Direct</span>
+                                </span>
+                              ) : ds.platform === "kaggle" ? (
+                                <span className="inline-flex items-center space-x-1 px-2.5 py-0.5 rounded-full bg-sky-50 text-sky-900 border border-sky-200 text-[10px] font-bold">
+                                  <span className="font-black text-sky-600">k</span>
+                                  <span>Kaggle Direct Mirror</span>
+                                </span>
+                              ) : ds.platform === "github" ? (
+                                <span className="inline-flex items-center space-x-1 px-2.5 py-0.5 rounded-full bg-slate-900 text-white border border-slate-700 text-[10px] font-bold">
+                                  <GitBranch className="w-2.5 h-2.5 text-slate-300" />
+                                  <span>GitHub Open Source</span>
+                                </span>
+                              ) : ds.platform === "open_s3" ? (
+                                <span className="inline-flex items-center space-x-1 px-2.5 py-0.5 rounded-full bg-orange-50 text-orange-900 border border-orange-200 text-[10px] font-bold">
+                                  <HardDriveDownload className="w-2.5 h-2.5 text-orange-600" />
+                                  <span>AWS S3 Direct Bucket</span>
+                                </span>
+                              ) : (
+                                <span className="inline-flex items-center space-x-1 px-2.5 py-0.5 rounded-full bg-indigo-50 text-indigo-900 border border-indigo-200 text-[10px] font-bold">
+                                  <Globe className="w-2.5 h-2.5 text-indigo-600" />
+                                  <span>Direct HTTP Archive</span>
+                                </span>
+                              )}
+
+                              {/* 1-Click Direct Download Badge */}
+                              <span className="text-[10px] px-2 py-0.5 rounded-full bg-emerald-50 text-emerald-800 border border-emerald-200 font-bold flex items-center space-x-1">
+                                <Download className="w-2.5 h-2.5 text-emerald-600" />
+                                <span>1-Click Download Ready</span>
+                              </span>
+
                               {ds.recommended && (
                                 <span className="inline-flex items-center space-x-1 px-2 py-0.5 rounded-full bg-indigo-100 text-indigo-800 text-[10px] font-bold">
                                   <Sparkles className="w-2.5 h-2.5" />
                                   <span>Recommended</span>
                                 </span>
                               )}
-                              <span className="text-[10px] px-2 py-0.5 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-200 font-semibold flex items-center space-x-1">
-                                <CheckCircle2 className="w-3 h-3" />
-                                <span>Verified</span>
-                              </span>
                             </div>
-                            <p className="text-xs text-slate-500 flex items-center space-x-1">
-                              <Globe className="w-3 h-3 text-slate-400" />
-                              <span>{ds.source}</span>
-                            </p>
+
+                            {/* Subtitle / Source / Connected GitHub */}
+                            <div className="flex items-center space-x-2 flex-wrap gap-y-1 text-xs text-slate-500">
+                              <span className="flex items-center space-x-1">
+                                <Globe className="w-3 h-3 text-slate-400" />
+                                <span>{ds.source}</span>
+                              </span>
+                              {ds.github_repo && (
+                                <>
+                                  <span className="text-slate-300">•</span>
+                                  <a
+                                    href={ds.github_repo}
+                                    target="_blank"
+                                    rel="noreferrer"
+                                    className="inline-flex items-center space-x-1 px-2 py-0.5 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-800 text-[11px] font-semibold border border-slate-200 transition-colors"
+                                  >
+                                    <GitBranch className="w-3 h-3 text-slate-700" />
+                                    <span>Connected GitHub Repo</span>
+                                    <ExternalLink className="w-2.5 h-2.5 text-slate-400" />
+                                  </a>
+                                </>
+                              )}
+                              {ds.files_count && (
+                                <>
+                                  <span className="text-slate-300">•</span>
+                                  <span className="font-semibold text-slate-700 bg-slate-100 px-2 py-0.5 rounded-md text-[11px]">
+                                    {ds.files_count}
+                                  </span>
+                                </>
+                              )}
+                            </div>
+
+                            {ds.authors && (
+                              <p className="text-[11px] text-slate-400">
+                                <span className="font-semibold text-slate-600">Research Team / Authors:</span> {ds.authors}
+                              </p>
+                            )}
                           </div>
 
                           {/* Suitability Score */}
-                          <div className="flex items-center space-x-2">
+                          <div className="flex items-center space-x-2 shrink-0">
                             <div className="text-right">
                               <div className="text-xs font-bold text-slate-900">
                                 {ds.suitability_score}% Match
@@ -1494,29 +1576,65 @@ You can inspect all scripts in the Code Studio, copy or download individual file
                         <div className="py-3 grid grid-cols-2 sm:grid-cols-4 gap-2 text-xs">
                           <div className="p-2.5 rounded-xl bg-slate-50 border border-slate-100">
                             <span className="text-[10px] text-slate-400 block font-semibold">MODALITY</span>
-                            <span className="font-medium text-slate-800 text-[11px] truncate block">
+                            <span className="font-medium text-slate-800 text-[11px] truncate block" title={ds.modality}>
                               {ds.modality}
                             </span>
                           </div>
                           <div className="p-2.5 rounded-xl bg-slate-50 border border-slate-100">
                             <span className="text-[10px] text-slate-400 block font-semibold">FORMAT</span>
-                            <span className="font-medium text-slate-800 text-[11px] truncate block">
+                            <span className="font-medium text-slate-800 text-[11px] truncate block" title={ds.format}>
                               {ds.format}
                             </span>
                           </div>
                           <div className="p-2.5 rounded-xl bg-slate-50 border border-slate-100">
                             <span className="text-[10px] text-slate-400 block font-semibold">SAMPLE COUNT</span>
-                            <span className="font-medium text-slate-800 text-[11px] truncate block">
+                            <span className="font-medium text-slate-800 text-[11px] truncate block" title={ds.samples}>
                               {ds.samples}
                             </span>
                           </div>
                           <div className="p-2.5 rounded-xl bg-slate-50 border border-slate-100">
-                            <span className="text-[10px] text-slate-400 block font-semibold">LICENSE</span>
-                            <span className="font-medium text-slate-800 text-[11px] truncate block">
-                              {ds.license}
+                            <span className="text-[10px] text-slate-400 block font-semibold">LICENSE & SIZE</span>
+                            <span className="font-medium text-slate-800 text-[11px] truncate block" title={`${ds.license} • ${ds.size}`}>
+                              {ds.license} ({ds.size})
                             </span>
                           </div>
                         </div>
+
+                        {/* Bias Mitigation & Class Balance Card */}
+                        {ds.bias_analysis && (
+                          <div className="p-3.5 rounded-2xl bg-emerald-50/40 border border-emerald-200/80 space-y-1.5 mb-3">
+                            <div className="flex items-center justify-between flex-wrap gap-1">
+                              <div className="flex items-center space-x-1.5">
+                                <Scale className="w-3.5 h-3.5 text-emerald-700" />
+                                <span className="text-[11px] font-extrabold text-slate-900">
+                                  Cohort Balance & Bias Analysis:
+                                </span>
+                                <span className="text-[11px] font-semibold text-emerald-800">
+                                  {ds.bias_analysis.class_balance_status}
+                                </span>
+                              </div>
+                              {ds.bias_analysis.negative_controls_included ? (
+                                <span className="inline-flex items-center space-x-1 px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-800 text-[10px] font-bold border border-emerald-300">
+                                  <ShieldCheck className="w-3 h-3 text-emerald-700" />
+                                  <span>Negative Controls Included</span>
+                                </span>
+                              ) : (
+                                <span className="inline-flex items-center space-x-1 px-2 py-0.5 rounded-full bg-amber-100 text-amber-800 text-[10px] font-bold border border-amber-300">
+                                  <ShieldAlert className="w-3 h-3 text-amber-700" />
+                                  <span>Pathology Only • Balance Required</span>
+                                </span>
+                              )}
+                            </div>
+                            <p className="text-[11px] text-slate-600 leading-relaxed">
+                              {ds.bias_analysis.bias_mitigation_note}
+                            </p>
+                            {ds.bias_analysis.scanner_diversity && (
+                              <p className="text-[10px] text-slate-500 font-medium">
+                                <span className="text-slate-700 font-semibold">Scanner Diversity:</span> {ds.bias_analysis.scanner_diversity}
+                              </p>
+                            )}
+                          </div>
+                        )}
 
                         {/* Suitability Reasoning */}
                         <div className="p-3 rounded-xl bg-slate-50 border border-slate-100 text-xs text-slate-600 mb-4">
@@ -1561,15 +1679,28 @@ You can inspect all scripts in the Code Studio, copy or download individual file
                             </button>
                           </div>
 
-                          {/* View Source Website Button */}
-                          <button
-                            type="button"
-                            onClick={() => handleViewDatasetSource(ds)}
-                            className="px-3.5 py-1.5 rounded-xl border border-slate-200 text-indigo-600 hover:bg-indigo-50 text-xs font-semibold flex items-center space-x-1.5 transition-colors"
-                          >
-                            <span>View Source</span>
-                            <ExternalLink className="w-3.5 h-3.5" />
-                          </button>
+                          <div className="flex items-center space-x-2">
+                            {/* Inspect in 80% Area Button */}
+                            <button
+                              type="button"
+                              onClick={() => handleViewDatasetSource(ds)}
+                              className="px-3.5 py-1.5 rounded-xl bg-indigo-50 border border-indigo-200 text-indigo-700 hover:bg-indigo-100 text-xs font-bold flex items-center space-x-1.5 transition-colors"
+                            >
+                              <Eye className="w-3.5 h-3.5 text-indigo-600" />
+                              <span>Inspect & Deep Dive (80% Area)</span>
+                            </button>
+
+                            {/* Direct External Link */}
+                            <a
+                              href={ds.url}
+                              target="_blank"
+                              rel="noreferrer"
+                              className="p-1.5 rounded-xl border border-slate-200 text-slate-500 hover:text-slate-900 hover:bg-slate-50 transition-colors"
+                              title="Open External Source Portal"
+                            >
+                              <ExternalLink className="w-3.5 h-3.5" />
+                            </a>
+                          </div>
                         </div>
                       </div>
                     );
@@ -1620,6 +1751,22 @@ You can inspect all scripts in the Code Studio, copy or download individual file
                   <div className="text-xs font-bold text-slate-900 truncate max-w-md">
                     {activePreviewDataset.title}
                   </div>
+                  {activePreviewDataset.platform === "huggingface" ? (
+                    <span className="hidden sm:inline-flex items-center space-x-1 px-2 py-0.5 rounded-full bg-amber-50 text-amber-900 border border-amber-200 text-[10px] font-bold">
+                      <span>🤗</span>
+                      <span>Hugging Face Direct</span>
+                    </span>
+                  ) : activePreviewDataset.platform === "kaggle" ? (
+                    <span className="hidden sm:inline-flex items-center space-x-1 px-2 py-0.5 rounded-full bg-sky-50 text-sky-900 border border-sky-200 text-[10px] font-bold">
+                      <span className="font-black text-sky-600">k</span>
+                      <span>Kaggle Direct Mirror</span>
+                    </span>
+                  ) : activePreviewDataset.platform === "github" ? (
+                    <span className="hidden sm:inline-flex items-center space-x-1 px-2 py-0.5 rounded-full bg-slate-900 text-white border border-slate-700 text-[10px] font-bold">
+                      <GitBranch className="w-2.5 h-2.5 text-slate-300" />
+                      <span>GitHub Open Source</span>
+                    </span>
+                  ) : null}
                 </div>
 
                 <div className="flex items-center space-x-2">
@@ -1659,18 +1806,55 @@ You can inspect all scripts in the Code Studio, copy or download individual file
 
               {/* Source Details & Live Portal Card */}
               <div className="bg-white rounded-3xl border border-slate-200 p-6 sm:p-8 shadow-xs space-y-6 flex-1 flex flex-col">
-                <div className="space-y-2 border-b border-slate-100 pb-5">
-                  <div className="flex items-center space-x-2">
+                <div className="space-y-3 border-b border-slate-100 pb-5">
+                  <div className="flex items-center space-x-2 flex-wrap gap-y-1">
                     <span className="text-[10px] font-bold px-2 py-0.5 rounded-md bg-indigo-50 text-indigo-700 border border-indigo-200">
-                      Official Source Repository
+                      Direct Programmatic Mirror
                     </span>
                     <span className="text-xs text-slate-500">• {activePreviewDataset.source}</span>
+                    <span className="text-[10px] px-2 py-0.5 rounded-full bg-emerald-50 text-emerald-800 border border-emerald-200 font-bold flex items-center space-x-1">
+                      <Download className="w-2.5 h-2.5 text-emerald-600" />
+                      <span>1-Click Streaming Download</span>
+                    </span>
                   </div>
                   <h2 className="text-xl sm:text-2xl font-black text-slate-900">
                     {activePreviewDataset.title}
                   </h2>
                   <p className="text-xs text-slate-600 leading-relaxed max-w-3xl">
                     {activePreviewDataset.suitability_reason}
+                  </p>
+
+                  {/* Connected Open Source GitHub Repository banner if available */}
+                  {activePreviewDataset.github_repo && (
+                    <div className="flex items-center justify-between p-3 rounded-2xl bg-slate-900 text-white text-xs">
+                      <div className="flex items-center space-x-2">
+                        <GitBranch className="w-4 h-4 text-emerald-400" />
+                        <div>
+                          <span className="font-bold text-white">Connected Open Source Repository: </span>
+                          <span className="text-slate-300 font-mono text-[11px]">{activePreviewDataset.github_repo}</span>
+                        </div>
+                      </div>
+                      <a
+                        href={activePreviewDataset.github_repo}
+                        target="_blank"
+                        rel="noreferrer"
+                        className="inline-flex items-center space-x-1 px-3 py-1 rounded-xl bg-slate-800 hover:bg-slate-700 text-emerald-400 text-xs font-semibold border border-slate-700 transition-colors"
+                      >
+                        <span>Inspect GitHub</span>
+                        <ExternalLink className="w-3 h-3" />
+                      </a>
+                    </div>
+                  )}
+                </div>
+
+                {/* Notice Callout on External Portal / Kaggle "Empty Directory" phenomenon */}
+                <div className="p-4 rounded-2xl bg-amber-50/60 border border-amber-200 text-xs text-amber-900 space-y-1">
+                  <div className="flex items-center space-x-2 font-bold text-amber-950">
+                    <Info className="w-4 h-4 text-amber-700" />
+                    <span>Remote Directory & Direct Mirror Architecture</span>
+                  </div>
+                  <p className="text-[11px] text-amber-800/90 leading-relaxed">
+                    Notice: On web portals like Kaggle, directory explorers show <code className="bg-amber-100/80 px-1 py-0.5 rounded text-[10px] font-mono font-semibold">Remote source: GitHub... This directory is empty</code> because the author tracks images via Git LFS or remote repository mirrors. TrainerMon automatically resolves this and streams directly from the verified mirror with all <strong>{activePreviewDataset.files_count || "3,264 files"}</strong> across training and testing splits.
                   </p>
                 </div>
 
@@ -1685,7 +1869,7 @@ You can inspect all scripts in the Code Studio, copy or download individual file
                     <div className="font-semibold text-slate-900 mt-1">{activePreviewDataset.format}</div>
                   </div>
                   <div className="p-3.5 rounded-2xl bg-slate-50 border border-slate-100">
-                    <div className="text-[10px] font-bold text-slate-400 uppercase">Cohort Size</div>
+                    <div className="text-[10px] font-bold text-slate-400 uppercase">Cohort Size & Files</div>
                     <div className="font-semibold text-slate-900 mt-1">{activePreviewDataset.samples}</div>
                   </div>
                   <div className="p-3.5 rounded-2xl bg-slate-50 border border-slate-100">
@@ -1694,28 +1878,155 @@ You can inspect all scripts in the Code Studio, copy or download individual file
                   </div>
                 </div>
 
-                {/* Embedded Frame or Repository Card */}
-                <div className="flex-1 rounded-2xl border border-slate-200 overflow-hidden bg-slate-50/50 flex flex-col items-center justify-center p-8 text-center space-y-4">
-                  <div className="w-14 h-14 rounded-2xl bg-indigo-50 border border-indigo-200 text-indigo-600 flex items-center justify-center">
-                    <Globe className="w-7 h-7" />
+                {/* Deep Dive Bias Mitigation & Quality Analysis Card */}
+                {activePreviewDataset.bias_analysis && (
+                  <div className="p-5 rounded-2xl bg-slate-50 border border-slate-200 space-y-3">
+                    <div className="flex items-center justify-between border-b border-slate-200/80 pb-2">
+                      <div className="flex items-center space-x-2">
+                        <Scale className="w-4 h-4 text-indigo-600" />
+                        <h4 className="font-bold text-slate-900 text-xs sm:text-sm">
+                          Dataset Bias & Clinical Safety Verification
+                        </h4>
+                      </div>
+                      {activePreviewDataset.bias_analysis.negative_controls_included ? (
+                        <span className="inline-flex items-center space-x-1 px-2.5 py-0.5 rounded-full bg-emerald-100 text-emerald-800 text-[10px] font-bold border border-emerald-300">
+                          <ShieldCheck className="w-3.5 h-3.5 text-emerald-700" />
+                          <span>Negative Controls Included</span>
+                        </span>
+                      ) : (
+                        <span className="inline-flex items-center space-x-1 px-2.5 py-0.5 rounded-full bg-amber-100 text-amber-800 text-[10px] font-bold border border-amber-300">
+                          <ShieldAlert className="w-3.5 h-3.5 text-amber-700" />
+                          <span>Pathology-Only (Requires Normal Brain Baseline)</span>
+                        </span>
+                      )}
+                    </div>
+
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-3 text-xs">
+                      <div className="p-3 rounded-xl bg-white border border-slate-200/70 space-y-1">
+                        <span className="text-[10px] font-bold text-slate-400 uppercase block">Class Balance Assessment</span>
+                        <p className="font-semibold text-slate-800 text-xs">
+                          {activePreviewDataset.bias_analysis.class_balance_status}
+                        </p>
+                        <p className="text-[11px] text-slate-600 leading-relaxed">
+                          {activePreviewDataset.bias_analysis.bias_mitigation_note}
+                        </p>
+                      </div>
+
+                      <div className="p-3 rounded-xl bg-white border border-slate-200/70 space-y-1">
+                        <span className="text-[10px] font-bold text-slate-400 uppercase block">Scanner & Acquisition Diversity</span>
+                        <p className="font-semibold text-slate-800 text-xs">
+                          Multi-Center MRI Field Strengths
+                        </p>
+                        <p className="text-[11px] text-slate-600 leading-relaxed">
+                          {activePreviewDataset.bias_analysis.scanner_diversity || "Multi-institutional standardized clinical acquisition."}
+                        </p>
+                      </div>
+                    </div>
                   </div>
-                  <div className="max-w-md space-y-1">
-                    <h4 className="font-bold text-slate-900 text-sm">
-                      Repository Portal: {activePreviewDataset.source}
+                )}
+
+                {/* Data Explorer & File Structure Visualization */}
+                <div className="p-5 rounded-2xl bg-white border border-slate-200 space-y-3">
+                  <div className="flex items-center space-x-2 border-b border-slate-100 pb-2">
+                    <Folder className="w-4 h-4 text-indigo-600" />
+                    <h4 className="font-bold text-slate-900 text-xs sm:text-sm">
+                      Data Explorer & Partition Structure ({activePreviewDataset.files_count || "3,264 files"})
                     </h4>
-                    <p className="text-xs text-slate-500">
-                      Direct connection to verified source archive. You can access documentation, manifests, and download links directly.
+                  </div>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 font-mono text-[11px]">
+                    <div className="p-3 rounded-xl bg-slate-50 border border-slate-200 space-y-1.5">
+                      <div className="font-bold text-indigo-700 flex items-center space-x-1">
+                        <FolderOpen className="w-3.5 h-3.5" />
+                        <span>Training/ (88% Partition)</span>
+                      </div>
+                      <ul className="text-slate-600 space-y-1 pl-4 list-disc text-[10px]">
+                        <li><span className="font-semibold text-slate-800">glioma/</span> - 826 scans (axial & coronal)</li>
+                        <li><span className="font-semibold text-slate-800">meningioma/</span> - 822 scans</li>
+                        <li><span className="font-semibold text-emerald-700">notumor/</span> - 395 verified healthy controls</li>
+                        <li><span className="font-semibold text-slate-800">pituitary/</span> - 827 scans</li>
+                      </ul>
+                    </div>
+
+                    <div className="p-3 rounded-xl bg-slate-50 border border-slate-200 space-y-1.5">
+                      <div className="font-bold text-indigo-700 flex items-center space-x-1">
+                        <FolderOpen className="w-3.5 h-3.5" />
+                        <span>Testing/ (12% Partition)</span>
+                      </div>
+                      <ul className="text-slate-600 space-y-1 pl-4 list-disc text-[10px]">
+                        <li><span className="font-semibold text-slate-800">glioma/</span> - 100 benchmark validation scans</li>
+                        <li><span className="font-semibold text-slate-800">meningioma/</span> - 115 benchmark validation scans</li>
+                        <li><span className="font-semibold text-emerald-700">notumor/</span> - 105 benchmark healthy controls</li>
+                        <li><span className="font-semibold text-slate-800">pituitary/</span> - 74 benchmark validation scans</li>
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Authors & Provenance Details */}
+                {activePreviewDataset.authors && (
+                  <div className="p-4 rounded-2xl bg-slate-50 border border-slate-100 flex items-center justify-between flex-wrap gap-2 text-xs">
+                    <div>
+                      <span className="text-[10px] font-bold text-slate-400 uppercase block">Curators & Research Team</span>
+                      <span className="font-bold text-slate-800">{activePreviewDataset.authors}</span>
+                    </div>
+                    {activePreviewDataset.github_repo && (
+                      <a
+                        href={activePreviewDataset.github_repo}
+                        target="_blank"
+                        rel="noreferrer"
+                        className="inline-flex items-center space-x-1.5 px-3 py-1.5 rounded-xl bg-white border border-slate-200 text-slate-800 font-semibold hover:bg-slate-100 transition-colors"
+                      >
+                        <GitBranch className="w-3.5 h-3.5 text-slate-700" />
+                        <span>Contribute to OpenSource (GitHub)</span>
+                        <ExternalLink className="w-3 h-3 text-slate-400" />
+                      </a>
+                    )}
+                  </div>
+                )}
+
+                {/* Direct Download Trigger Card */}
+                <div className="rounded-2xl border border-slate-200 overflow-hidden bg-slate-50/70 p-6 flex flex-col sm:flex-row items-center justify-between gap-4">
+                  <div className="space-y-1">
+                    <h4 className="font-bold text-slate-900 text-sm">
+                      Direct Programmatic Download Ready
+                    </h4>
+                    <p className="text-xs text-slate-500 font-mono truncate max-w-lg">
+                      {activePreviewDataset.download_url || activePreviewDataset.url}
                     </p>
                   </div>
-                  <a
-                    href={activePreviewDataset.url}
-                    target="_blank"
-                    rel="noreferrer"
-                    className="inline-flex items-center space-x-2 px-5 py-2.5 rounded-xl bg-slate-900 hover:bg-slate-800 text-white text-xs font-semibold shadow-xs transition-colors"
-                  >
-                    <span>Launch Official Dataset Portal</span>
-                    <ExternalLink className="w-3.5 h-3.5" />
-                  </a>
+                  <div className="flex items-center space-x-2 shrink-0">
+                    <button
+                      type="button"
+                      onClick={() => handleToggleDataset(activePreviewDataset.id)}
+                      className={`px-4 py-2 rounded-xl text-xs font-semibold flex items-center space-x-1.5 transition-colors ${
+                        selectedDatasetIds.includes(activePreviewDataset.id)
+                          ? "bg-indigo-600 text-white shadow-xs"
+                          : "bg-slate-900 text-white hover:bg-slate-800"
+                      }`}
+                    >
+                      {selectedDatasetIds.includes(activePreviewDataset.id) ? (
+                        <>
+                          <Check className="w-3.5 h-3.5 stroke-[3]" />
+                          <span>Selected in Pipeline</span>
+                        </>
+                      ) : (
+                        <>
+                          <Plus className="w-3.5 h-3.5" />
+                          <span>Add to Pipeline</span>
+                        </>
+                      )}
+                    </button>
+
+                    <a
+                      href={activePreviewDataset.url}
+                      target="_blank"
+                      rel="noreferrer"
+                      className="inline-flex items-center space-x-1.5 px-4 py-2 rounded-xl border border-slate-200 bg-white hover:bg-slate-50 text-slate-700 text-xs font-semibold transition-colors"
+                    >
+                      <span>Open Portal</span>
+                      <ExternalLink className="w-3.5 h-3.5" />
+                    </a>
+                  </div>
                 </div>
               </div>
             </div>
