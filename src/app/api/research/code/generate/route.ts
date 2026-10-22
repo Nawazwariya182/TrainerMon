@@ -1563,20 +1563,36 @@ def evaluate_model_performance(checkpoint_path: str = "./checkpoints/best_model.
         "checkpoint": str(ckpt_file),
         "total_validation_samples": len(y_true),
         "overall_accuracy": round(accuracy, 4),
+        "accuracy": round(accuracy, 4),
         "macro_f1_score": round(macro_f1, 4),
         "class_breakdown": class_metrics,
+        "quality_gate_passed": bool(accuracy >= 0.85),
+        "target_threshold": 0.85,
         "evaluation_status": "VALIDATED_ON_REAL_DATA"
     }
 
     logger.info("Evaluation Complete. Accuracy: %.2f%% | Macro F1: %.4f", accuracy * 100, macro_f1)
     with open("evaluation_metrics.json", "w") as f:
         json.dump(scores, f, indent=2)
+    with open("metrics.json", "w") as f:
+        json.dump(scores, f, indent=2)
 
-    update_execution_status("evaluate_and_score", 100.0, f"Validation complete: Accuracy {accuracy * 100:.1f}%, F1 {macro_f1:.3f}", "COMPLETED")
+    status_label = "COMPLETED" if accuracy >= 0.85 else "QUALITY_GATE_FAILED"
+    update_execution_status("evaluate_and_score", 100.0, f"Validation: Accuracy {accuracy * 100:.1f}%, F1 {macro_f1:.3f} (Passed: {accuracy >= 0.85})", status_label)
     return scores
 
 if __name__ == "__main__":
-    evaluate_model_performance()
+    metrics = evaluate_model_performance()
+    acc = metrics.get("overall_accuracy", 0.0)
+    print("=" * 60)
+    if acc < 0.85:
+        print(f"[QUALITY_GATE] FAILED: Validation Accuracy {acc * 100:.2f}% is below required 85.00% threshold.")
+        print("[QUALITY_GATE] Autonomous tuning required: Tuning hyperparameters and training duration.")
+        sys.exit(2)
+    else:
+        print(f"[QUALITY_GATE] PASSED: Validation Accuracy {acc * 100:.2f}% satisfies the >= 85.00% benchmark.")
+        print("[QUALITY_GATE] Ready for deployment synthesis (Flask / Docker serving).")
+        sys.exit(0)
 `;
 
   // 7. Visualization Code (visualize.py - Real Sample Overlays & Training Curves)
@@ -1794,5 +1810,121 @@ echo "=========================================================="
     "push_to_github.sh": pushToGithubSh,
     "run_pipeline.ps1": runPipelinePs1,
     "run_pipeline.sh": runPipelineSh,
+    "Jenkinsfile": `pipeline {
+    agent any
+
+    environment {
+        PYTHONUNBUFFERED = '1'
+        TRAINERMON_API = 'http://localhost:3000'
+        ACCURACY_THRESHOLD = '0.85'
+    }
+
+    options {
+        timeout(time: 60, unit: 'MINUTES')
+        ansiColor('xterm')
+    }
+
+    stages {
+        stage('Checkout SCM') {
+            steps {
+                echo "=========================================================="
+                echo "  TRAINERMON CI/CD: Automated Pipeline Execution"
+                echo "=========================================================="
+                echo "Workspace: \${WORKSPACE}"
+            }
+        }
+
+        stage('Verify Environment') {
+            steps {
+                echo "[Stage 0/5] Verifying Python Environment & Dependencies..."
+                bat '''
+                    python --version
+                    pip install -r requirements.txt
+                '''
+            }
+        }
+
+        stage('Download Datasets') {
+            steps {
+                echo "[Stage 1/5] Ingesting Multi-Dataset Sources..."
+                bat '''
+                    python download_datasets.py
+                '''
+            }
+        }
+
+        stage('EDA & Tensor Harmonization') {
+            steps {
+                echo "[Stage 2/5] Running Exploratory Data Analysis & Tensor Harmonization..."
+                bat '''
+                    python eda_and_harmonization.py
+                '''
+            }
+        }
+
+        stage('Pretraining Loop') {
+            steps {
+                echo "[Stage 3/5] Executing Neural Pretraining Loop from Scratch..."
+                bat '''
+                    python train.py
+                '''
+            }
+        }
+
+        stage('Evaluation & Quality Gate') {
+            steps {
+                echo "[Stage 4/5] Running Benchmark Evaluation & Scoring..."
+                bat '''
+                    python evaluate_and_score.py
+                '''
+                script {
+                    echo "Checking Accuracy Quality Gate (Target >= 85%)..."
+                    def metricsFile = "metrics.json"
+                    if (fileExists(metricsFile)) {
+                        def props = readJSON file: metricsFile
+                        def acc = props.accuracy ?: props.val_accuracy ?: 0.0
+                        echo "Evaluated Accuracy: \${acc}"
+                        if (acc < 0.85) {
+                            error("QUALITY_GATE_FAILED: Achieved accuracy \${acc} is below required threshold 0.85.")
+                        } else {
+                            echo "QUALITY_GATE_PASSED: Achieved accuracy \${acc} satisfies >= 0.85 threshold!"
+                        }
+                    }
+                }
+            }
+        }
+
+        stage('Generate Visualizations') {
+            steps {
+                echo "[Stage 5/5] Rendering Overlays & Loss Curves..."
+                bat '''
+                    python visualize.py
+                '''
+            }
+        }
+    }
+
+    post {
+        always {
+            archiveArtifacts artifacts: 'metrics.json, EXECUTION_STATUS.json, config.yaml, visualizations/*.png', allowEmptyArchive: true
+        }
+        success {
+            powershell '''
+                try {
+                    $body = @{ event = "PIPELINE_SUCCESS"; buildNumber = $env:BUILD_NUMBER; jobName = $env:JOB_NAME } | ConvertTo-Json
+                    Invoke-RestMethod -Uri "http://localhost:3000/api/ci/webhook" -Method POST -Body $body -ContentType "application/json" -TimeoutSec 15
+                } catch {}
+            '''
+        }
+        failure {
+            powershell '''
+                try {
+                    $body = @{ event = "PIPELINE_FAILURE"; buildNumber = $env:BUILD_NUMBER; jobName = $env:JOB_NAME } | ConvertTo-Json
+                    Invoke-RestMethod -Uri "http://localhost:3000/api/ci/webhook" -Method POST -Body $body -ContentType "application/json" -TimeoutSec 15
+                } catch {}
+            '''
+        }
+    }
+}`,
   };
 }

@@ -140,11 +140,28 @@ export async function POST(req: NextRequest) {
       }, { status: 400 });
     }
 
+    // 7. Provision & Trigger Jenkins Pipeline
+    let jenkinsResult: any = null;
+    if (body.triggerJenkins !== false) {
+      try {
+        const { JenkinsClient } = await import("@/lib/jenkins");
+        const jenkins = new JenkinsClient("http://localhost:8089", "root", "root");
+        const jobName = body.jobName || "TrainerMon-Pipeline";
+        await jenkins.ensurePipelineJob(jobName, repoUrl.trim(), branch);
+        const triggered = await jenkins.triggerBuild(jobName);
+        jenkinsResult = { jobName, triggered, jenkinsUrl: `http://localhost:8089/job/${encodeURIComponent(jobName)}` };
+        sanitizedLogs.push(`[Jenkins CI/CD] Job '${jobName}' synchronized and build triggered on http://localhost:8089.`);
+      } catch (jErr: any) {
+        sanitizedLogs.push(`[Jenkins CI/CD] Notice: ${jErr.message}`);
+      }
+    }
+
     return NextResponse.json({
       success: true,
       message: `Successfully pushed workspace to GitHub repository (${branch} branch)`,
       repoUrl: repoUrl.trim(),
       branch,
+      jenkins: jenkinsResult,
       logs: sanitizedLogs,
     });
   } catch (err: any) {
