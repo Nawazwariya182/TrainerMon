@@ -252,70 +252,85 @@ function TrainerStudioContent() {
     fetchProjectData();
   }, [projectId]);
 
-  // 2. Generate questionnaire when project or model is ready
-  useEffect(() => {
-    async function generateQuestionnaire() {
-      setLoadingQuestions(true);
-      try {
-        const res = await fetch("/api/questionnaire/generate", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            name: project?.name || "Machine Learning Project",
-            idea: project?.idea || project?.description || "Train an optimized domain-specific model.",
-            domains: project?.domains || ["Image / CV"],
-            learningApproaches: project?.learningApproaches || ["Supervised Learning", "Deep Learning"],
-            primaryGoal: project?.primaryGoal || "Production application",
-            model: selectedModel,
-          }),
-        });
+  // Track which project questions were generated for so model switching never restarts progress
+  const generatedProjectIdRef = useRef<string | null>(null);
 
-        const data = await res.json();
+  // 2. Generate questionnaire when project is ready
+  const generateQuestionnaire = async (force: boolean = false) => {
+    const currentPid = projectId || "new_project";
+    if (!force && generatedProjectIdRef.current === currentPid && questions.length > 0) {
+      return;
+    }
 
-        // Handle Infeasible / Impossible Request
-        if (data.success && data.is_feasible === false) {
-          setIsFeasible(false);
-          setSorryMessage(
-            data.sorry_message ||
-              "Sorry, your project request cannot be trained from scratch as specified. Please review architectural limits, scaling laws, or dataset constraints."
-          );
-          setQuestions([]);
-          setInitialThinkingTrace(data.thinking_trace || "");
-          setChatMessages([
-            {
-              id: "infeasible-init",
-              role: "assistant",
-              content:
-                data.sorry_message ||
-                "Sorry, your project request cannot be trained from scratch as specified. I am here to help you reframe the architecture and compute parameters into an achievable pretraining plan.",
-              thinking: data.thinking_trace || undefined,
-              timestamp: new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }),
-            },
-          ]);
-          return;
-        }
+    setLoadingQuestions(true);
+    if (force) {
+      setCurrentQuestionIndex(0);
+      setAnswers({});
+    }
 
-        if (data.success && Array.isArray(data.questions) && data.questions.length > 0) {
-          setIsFeasible(true);
-          setSorryMessage(null);
-          setQuestions(data.questions);
-          setComplexity(data.complexity || "Moderate");
-          setInitialThinkingTrace(data.thinking_trace || "");
+    try {
+      const res = await fetch("/api/questionnaire/generate", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          name: project?.name || "Machine Learning Project",
+          idea: project?.idea || project?.description || "Train an optimized domain-specific model.",
+          domains: project?.domains || ["Image / CV"],
+          learningApproaches: project?.learningApproaches || ["Supervised Learning", "Deep Learning"],
+          primaryGoal: project?.primaryGoal || "Production application",
+          model: selectedModel,
+        }),
+      });
 
-          const domainTitle = data.detected_domain === "cv_medical"
-            ? "Computer Vision (Medical Scans & Volumetric Tensors)"
-            : data.detected_domain === "cv_general"
-            ? "Computer Vision (2D/3D Image & Video)"
-            : data.detected_domain === "audio"
-            ? "Audio & Speech Processing"
-            : data.detected_domain === "time_series"
-            ? "Time Series & Sensor Telemetry"
-            : data.detected_domain === "tabular"
-            ? "Tabular & Structured Learning"
-            : "Foundation Machine Learning";
+      const data = await res.json();
+      generatedProjectIdRef.current = currentPid;
 
-          // Initial assistant message in chat
-          setChatMessages([
+      // Handle Infeasible / Impossible Request
+      if (data.success && data.is_feasible === false) {
+        setIsFeasible(false);
+        setSorryMessage(
+          data.sorry_message ||
+            "Sorry, your project request cannot be trained from scratch as specified. Please review architectural limits, scaling laws, or dataset constraints."
+        );
+        setQuestions([]);
+        setInitialThinkingTrace(data.thinking_trace || "");
+        setChatMessages([
+          {
+            id: "infeasible-init",
+            role: "assistant",
+            content:
+              data.sorry_message ||
+              "Sorry, your project request cannot be trained from scratch as specified. I am here to help you reframe the architecture and compute parameters into an achievable pretraining plan.",
+            thinking: data.thinking_trace || undefined,
+            timestamp: new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }),
+          },
+        ]);
+        return;
+      }
+
+      if (data.success && Array.isArray(data.questions) && data.questions.length > 0) {
+        setIsFeasible(true);
+        setSorryMessage(null);
+        setQuestions(data.questions);
+        setComplexity(data.complexity || "Moderate");
+        setInitialThinkingTrace(data.thinking_trace || "");
+
+        const domainTitle = data.detected_domain === "cv_medical"
+          ? "Computer Vision (Medical Scans & Volumetric Tensors)"
+          : data.detected_domain === "cv_general"
+          ? "Computer Vision (2D/3D Image & Video)"
+          : data.detected_domain === "audio"
+          ? "Audio & Speech Processing"
+          : data.detected_domain === "time_series"
+          ? "Time Series & Sensor Telemetry"
+          : data.detected_domain === "tabular"
+          ? "Tabular & Structured Learning"
+          : "Foundation Machine Learning";
+
+        // Initial assistant message in chat if chat is empty or forced
+        setChatMessages((prev) => {
+          if (prev.length > 0 && !force) return prev;
+          return [
             {
               id: "init-1",
               role: "assistant",
@@ -327,19 +342,95 @@ You can answer each question in the main panel, and ask me anytime here in chat 
               thinking: data.thinking_trace || undefined,
               timestamp: new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }),
             },
-          ]);
-        }
-      } catch (err) {
-        console.error("Failed to generate questionnaire:", err);
-      } finally {
-        setLoadingQuestions(false);
+          ];
+        });
       }
+    } catch (err) {
+      console.error("Failed to generate questionnaire:", err);
+    } finally {
+      setLoadingQuestions(false);
     }
+  };
 
-    if (!loadingProject) {
-      generateQuestionnaire();
+  // Restore session cache if available on mount
+  useEffect(() => {
+    if (!projectId) return;
+    try {
+      const cachedRaw = sessionStorage.getItem(`trainermon_session_${projectId}`);
+      if (cachedRaw) {
+        const cached = JSON.parse(cachedRaw);
+        if (Array.isArray(cached.questions) && cached.questions.length > 0) {
+          setQuestions(cached.questions);
+          if (cached.answers) setAnswers(cached.answers);
+          if (typeof cached.currentQuestionIndex === "number") setCurrentQuestionIndex(cached.currentQuestionIndex);
+          if (cached.studioStage) setStudioStage(cached.studioStage);
+          if (cached.selectedDatasetIds) setSelectedDatasetIds(cached.selectedDatasetIds);
+          if (cached.datasets) setDatasets(cached.datasets);
+          if (cached.techResearch) setTechResearch(cached.techResearch);
+          if (cached.codeFiles) setCodeFiles(cached.codeFiles);
+          if (cached.workspacePath) setWorkspacePath(cached.workspacePath);
+          if (cached.relativeWorkspacePath) setRelativeWorkspacePath(cached.relativeWorkspacePath);
+          if (cached.complexity) setComplexity(cached.complexity);
+          if (cached.selectedModel) setSelectedModel(cached.selectedModel);
+          if (Array.isArray(cached.chatMessages) && cached.chatMessages.length > 0) setChatMessages(cached.chatMessages);
+          generatedProjectIdRef.current = projectId;
+          setLoadingQuestions(false);
+        }
+      }
+    } catch (e) {
+      console.warn("Could not read cached session:", e);
     }
-  }, [loadingProject, project, selectedModel]);
+  }, [projectId]);
+
+  // Persist session state to sessionStorage
+  useEffect(() => {
+    if (!projectId || questions.length === 0) return;
+    try {
+      const payload = {
+        questions,
+        answers,
+        currentQuestionIndex,
+        studioStage,
+        selectedDatasetIds,
+        datasets,
+        techResearch,
+        codeFiles,
+        workspacePath,
+        relativeWorkspacePath,
+        complexity,
+        selectedModel,
+        chatMessages,
+      };
+      sessionStorage.setItem(`trainermon_session_${projectId}`, JSON.stringify(payload));
+    } catch (e) {
+      // ignore quota limits
+    }
+  }, [
+    projectId,
+    questions,
+    answers,
+    currentQuestionIndex,
+    studioStage,
+    selectedDatasetIds,
+    datasets,
+    techResearch,
+    codeFiles,
+    workspacePath,
+    relativeWorkspacePath,
+    complexity,
+    selectedModel,
+    chatMessages,
+  ]);
+
+  // Initial trigger for questionnaire: only runs on project load, NOT when selectedModel changes!
+  useEffect(() => {
+    if (loadingProject) return;
+    const currentPid = projectId || "new_project";
+    if (generatedProjectIdRef.current === currentPid && questions.length > 0) {
+      return;
+    }
+    generateQuestionnaire(false);
+  }, [loadingProject, projectId]);
 
   // Scroll chat to bottom on new messages
   useEffect(() => {
@@ -1108,7 +1199,18 @@ You can inspect all scripts in the Code Studio, copy or download individual file
                             key={m.id}
                             type="button"
                             onClick={() => {
-                              setSelectedModel(m.id);
+                              if (selectedModel !== m.id) {
+                                setSelectedModel(m.id);
+                                setChatMessages((prev) => [
+                                  ...prev,
+                                  {
+                                    id: `model-switch-${Date.now()}`,
+                                    role: "assistant",
+                                    content: `Switched active AI engine to **${m.name}**. Future generations, chat reasoning, and research blueprints will use this model. Your existing questionnaire progress, answers, and discovered datasets are safely preserved.`,
+                                    timestamp: new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }),
+                                  },
+                                ]);
+                              }
                               setIsModelDropdownOpen(false);
                             }}
                             className={`w-full text-left px-2 py-1.5 rounded-lg text-[11px] flex items-center justify-between transition-colors ${
@@ -1278,20 +1380,36 @@ You can inspect all scripts in the Code Studio, copy or download individual file
                       </h2>
                     </div>
 
-                    <div className="w-32 hidden sm:block">
-                      <div className="flex items-center justify-between text-[11px] text-slate-500 mb-1">
-                        <span>Progress</span>
-                        <span className="font-bold text-slate-700">
-                          {Math.round(((currentQuestionIndex + 1) / questions.length) * 100)}%
-                        </span>
-                      </div>
-                      <div className="w-full h-2 bg-slate-100 rounded-full overflow-hidden">
-                        <div
-                          className="h-full bg-indigo-600 transition-all duration-300 rounded-full"
-                          style={{
-                            width: `${((currentQuestionIndex + 1) / questions.length) * 100}%`,
-                          }}
-                        />
+                    <div className="flex items-center space-x-3">
+                      <button
+                        type="button"
+                        onClick={() => {
+                          if (window.confirm(`Regenerate questionnaire using active model (${AVAILABLE_MODELS.find((m) => m.id === selectedModel)?.name})? This will replace questions and reset current answers.`)) {
+                            generateQuestionnaire(true);
+                          }
+                        }}
+                        className="inline-flex items-center space-x-1.5 px-3 py-1.5 rounded-xl border border-slate-200 text-slate-600 hover:text-slate-900 hover:bg-slate-50 text-[11px] font-semibold transition-colors shadow-2xs"
+                        title="Regenerate questions using the active model"
+                      >
+                        <RotateCcw className="w-3 h-3 text-slate-500" />
+                        <span className="hidden md:inline">Regenerate Questions</span>
+                      </button>
+
+                      <div className="w-32 hidden sm:block">
+                        <div className="flex items-center justify-between text-[11px] text-slate-500 mb-1">
+                          <span>Progress</span>
+                          <span className="font-bold text-slate-700">
+                            {Math.round(((currentQuestionIndex + 1) / questions.length) * 100)}%
+                          </span>
+                        </div>
+                        <div className="w-full h-2 bg-slate-100 rounded-full overflow-hidden">
+                          <div
+                            className="h-full bg-indigo-600 transition-all duration-300 rounded-full"
+                            style={{
+                              width: `${((currentQuestionIndex + 1) / questions.length) * 100}%`,
+                            }}
+                          />
+                        </div>
                       </div>
                     </div>
                   </div>
