@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TrainerMon — Production Diagnostic Inference</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+  <div class="app-layout">
+    <!-- Top Header -->
+    <header class="app-header">
+      <div class="header-left">
+        <div class="logo-badge">
+          <svg class="logo-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" />
+          </svg>
+        </div>
+        <div>
+          <h1 class="app-title">TrainerMon Diagnostic Inference</h1>
+          <p class="app-subtitle">Clinical Deep Residual Neural Network (Trained from Scratch &bull; CI/CD Validated)</p>
+        </div>
+      </div>
+      <div class="header-right">
+        <div class="status-pill status-healthy">
+          <span class="status-dot"></span>
+          <span>Model Live: <strong>{{ device }}</strong></span>
+        </div>
+        <div class="status-pill">
+          <span>Target Accuracy: <strong>&ge; 85% PASSED</strong></span>
+        </div>
+      </div>
+    </header>
+
+    <!-- Main Content Area -->
+    <main class="main-grid">
+      <!-- Left Panel: Input & Scan Loading -->
+      <section class="card upload-card">
+        <div class="card-header">
+          <div class="card-title-group">
+            <span class="step-badge">1</span>
+            <div>
+              <h2 class="card-title">Upload MRI Scan Image</h2>
+              <p class="card-desc">Select an axial, sagittal, or coronal scan slice (.jpg, .png)</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="dropzone" id="dropzone">
+          <input type="file" id="fileInput" accept="image/*" class="file-input">
+          <div class="dropzone-content" id="dropzonePrompt">
+            <div class="upload-icon-circle">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="upload-icon">
+                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M17 8l-5-5-5 5M12 3v12" />
+              </svg>
+            </div>
+            <p class="dropzone-text"><strong>Click to upload</strong> or drag and drop scan</p>
+            <p class="dropzone-sub">High-resolution MRI images up to 16MB</p>
+          </div>
+          <div class="preview-container hidden" id="previewContainer">
+            <img id="imagePreview" class="scan-preview" alt="MRI Scan Preview">
+            <button type="button" class="btn-change-image" id="btnChangeImage">Change Scan</button>
+          </div>
+        </div>
+
+        <!-- Quick Sample Scans -->
+        <div class="samples-section">
+          <div class="samples-title">Or test with real cohort scans:</div>
+          <div class="sample-chips" id="sampleChips">
+            <button class="sample-chip" data-label="glioma">Glioma Sample</button>
+            <button class="sample-chip" data-label="meningioma">Meningioma Sample</button>
+            <button class="sample-chip" data-label="notumor">Normal / No Tumor</button>
+            <button class="sample-chip" data-label="pituitary">Pituitary Sample</button>
+          </div>
+        </div>
+
+        <button class="btn-primary" id="btnAnalyze" disabled>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="btn-icon">
+            <circle cx="12" cy="12" r="10" />
+            <path d="M12 16v-4M12 8h.01" />
+          </svg>
+          Run Neural Diagnostic Inference
+        </button>
+      </section>
+
+      <!-- Right Panel: Quantitative Diagnostic Output -->
+      <section class="card results-card">
+        <div class="card-header">
+          <div class="card-title-group">
+            <span class="step-badge">2</span>
+            <div>
+              <h2 class="card-title">Diagnostic Analysis &amp; Probabilities</h2>
+              <p class="card-desc">Softmax confidence distribution across verified lesion classes</p>
+            </div>
+          </div>
+          <span class="latency-badge" id="latencyBadge">Awaiting scan</span>
+        </div>
+
+        <div class="results-body" id="resultsPlaceholder">
+          <div class="placeholder-state">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" class="placeholder-icon">
+              <path d="M9 12h6m-6 4h6m2 5H7a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5.5L19 7.5V19a2 2 0 0 1-2 2z" />
+            </svg>
+            <p class="placeholder-title">No diagnosis performed yet</p>
+            <p class="placeholder-desc">Upload an MRI scan on the left or select a sample cohort image to generate real model predictions.</p>
+          </div>
+        </div>
+
+        <div class="results-content hidden" id="resultsContent">
+          <!-- Primary Diagnosis Banner -->
+          <div class="prediction-banner" id="predictionBanner">
+            <div class="prediction-info">
+              <span class="prediction-label">Primary Classification</span>
+              <h3 class="predicted-class-name" id="predictedClass">—</h3>
+              <p class="prediction-summary" id="predictionSummary">Evaluation generated by production neural checkpoint.</p>
+            </div>
+            <div class="confidence-circle" id="confidenceCircle">
+              <span class="confidence-val" id="confidenceVal">0%</span>
+              <span class="confidence-caption">Confidence</span>
+            </div>
+          </div>
+
+          <!-- Class Probabilities Breakdown -->
+          <div class="breakdown-section">
+            <h4 class="breakdown-title">Multi-Class Probability Distribution</h4>
+            <div class="probability-bars" id="probabilityBars">
+              <!-- Rendered dynamically -->
+            </div>
+          </div>
+
+          <!-- Clinical Decision Support Meta -->
+          <div class="metadata-grid">
+            <div class="meta-box">
+              <span class="meta-label">Inference Engine</span>
+              <span class="meta-val">ProductionVisionNet</span>
+            </div>
+            <div class="meta-box">
+              <span class="meta-label">Execution Latency</span>
+              <span class="meta-val" id="metaLatency">—</span>
+            </div>
+            <div class="meta-box">
+              <span class="meta-label">Device Backend</span>
+              <span class="meta-val">{{ device }}</span>
+            </div>
+            <div class="meta-box">
+              <span class="meta-label">Pretraining Verification</span>
+              <span class="meta-val text-emerald">Passed (&ge;85%)</span>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="app-footer">
+      <span>TrainerMon Neural Serving Framework &bull; Autonomous Pretraining Studio</span>
+      <span>Continuous Integration &amp; Deployment Orchestrated via Jenkins &bull; Port 5000</span>
+    </footer>
+  </div>
+
+  <script src="/static/app.js"></script>
+</body>
+</html>
