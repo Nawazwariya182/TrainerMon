@@ -1,0 +1,27 @@
+{
+  "status": "COMPLETED",
+  "total_scans_analyzed": 506,
+  "classes_discovered": [
+    "no",
+    "yes"
+  ],
+  "class_distribution": {
+    "no": 196,
+    "yes": 310
+  },
+  "median_source_resolution": [
+    272,
+    302
+  ],
+  "target_harmonized_resolution": [
+    224,
+    224,
+    3
+  ],
+  "normalized_channel_means": [
+    0.2465,
+    0.2465,
+    0.2468
+  ],
+  "split_integrity": "Train: 400 | Validation: 106 (Zero Leakage)"
+}

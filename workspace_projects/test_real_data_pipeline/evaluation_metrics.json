@@ -1,0 +1,21 @@
+{
+  "checkpoint": "C:\\Users\\Shahnawaz Wariya\\Downloads\\ML TRAIN\\workspace_projects\\test_real_data_pipeline\\checkpoints\\best_model.pt",
+  "total_validation_samples": 106,
+  "overall_accuracy": 0.9528,
+  "macro_f1_score": 0.9501,
+  "class_breakdown": {
+    "no": {
+      "precision": 0.95,
+      "recall": 0.9268,
+      "f1_score": 0.9383,
+      "support": 41
+    },
+    "yes": {
+      "precision": 0.9545,
+      "recall": 0.9692,
+      "f1_score": 0.9618,
+      "support": 65
+    }
+  },
+  "evaluation_status": "VALIDATED_ON_REAL_DATA"
+}

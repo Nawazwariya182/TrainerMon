@@ -1,0 +1,2566 @@
+{
+  "domain": "general_cv",
+  "total_images": 506,
+  "classes": [
+    "no",
+    "yes"
+  ],
+  "class_to_idx": {
+    "no": 0,
+    "yes": 1
+  },
+  "class_distribution": {
+    "no": 196,
+    "yes": 310
+  },
+  "target_size": [
+    224,
+    224
+  ],
+  "channel_mean": [
+    0.2465,
+    0.2465,
+    0.2468
+  ],
+  "channel_std": [
+    0.229,
+    0.224,
+    0.225
+  ],
+  "train_count": 400,
+  "val_count": 106,
+  "train_samples": [
+    {
+      "path": "data/raw/brats-mri-detection/brain_tumor_dataset/no/10 no.jpg",
+      "class_name": "no",
+      "label": 0
+    },
+    {
+      "path": "data/raw/brats-mri-detection/brain_tumor_dataset/no/11 no.jpg",
+      "class_name": "no",
+      "label": 0
+    },
+    {
+      "path": "data/raw/brats-mri-detection/brain_tumor_dataset/no/12 no.jpg",
+      "class_name": "no",
+      "label": 0
+    },
+    {
+      "path": "data/raw/brats-mri-detection/brain_tumor_dataset/no/14 no.jpg",
+      "class_name": "no",
+      "label": 0
+    },
+    {
+      "path": "data/raw/brats-mri-detection/brain_tumor_dataset/no/17 no.jpg",
+      "class_name": "no",
+      "label": 0
+    },
+    {
+      "path": "data/raw/brats-mri-detection/brain_tumor_dataset/no/18 no.jpg",
+      "class_name": "no",
+      "label": 0
+    },
+    {
+      "path": "data/raw/brats-mri-detection/brain_tumor_dataset/no/19 no.jpg",
+      "class_name": "no",
+      "label": 0
+    },
+    {
+      "path": "data/raw/brats-mri-detection/brain_tumor_dataset/no/2 no.jpeg",
+      "class_name": "no",
+      "label": 0
+    },
+    {
+      "path": "data/raw/brats-mri-detection/brain_tumor_dataset/no/20 no.jpg",
+      "class_name": "no",
+      "label": 0
+    },
+    {
+      "path": "data/raw/brats-mri-detection/brain_tumor_dataset/no/21 no.jpg",
+      "class_name": "no",
+      "label": 0
+    },
+    {
+      "path": "data/raw/brats-mri-detection/brain_tumor_dataset/no/22 no.jpg",
+      "class_name": "no",
+      "label": 0
+    },
+    {
+      "path": "data/raw/brats-mri-detection/brain_tumor_dataset/no/23 no.jpg",
+      "class_name": "no",
+      "label": 0
+    },
+    {
+      "path": "data/raw/brats-mri-detection/brain_tumor_dataset/no/24 no.jpg",
+      "class_name": "no",
+      "label": 0
+    },
+    {
+      "path": "data/raw/brats-mri-detection/brain_tumor_dataset/no/25 no.jpg",
+      "class_name": "no",
+      "label": 0
+    },
+    {
+      "path": "data/raw/brats-mri-detection/brain_tumor_dataset/no/26 no.jpg",
+      "class_name": "no",
+      "label": 0
+    },
+    {
+      "path": "data/raw/brats-mri-detection/brain_tumor_dataset/no/27 no.jpg",
+      "class_name": "no",
+      "label": 0
+    },
+    {
+      "path": "data/raw/brats-mri-detection/brain_tumor_dataset/no/29 no.jpg",
+      "class_name": "no",
+      "label": 0
+    },
+    {
+      "path": "data/raw/brats-mri-detection/brain_tumor_dataset/no/3 no.jpg",
+      "class_name": "no",
+      "label": 0
+    },
+    {
+      "path": "data/raw/brats-mri-detection/brain_tumor_dataset/no/30 no.jpg",
+      "class_name": "no",
+      "label": 0
+    },
+    {
+      "path": "data/raw/brats-mri-detection/brain_tumor_dataset/no/31 no.jpg",
+      "class_name": "no",
+      "label": 0
+    },
+    {
+      "path": "data/raw/brats-mri-detection/brain_tumor_dataset/no/32 no.jpg",
+      "class_name": "no",
+      "label": 0
+    },
+    {
+      "path": "data/raw/brats-mri-detection/brain_tumor_dataset/no/33 no.jpg",
+      "class_name": "no",
+      "label": 0
+    },
+    {
+      "path": "data/raw/brats-mri-detection/brain_tumor_dataset/no/34 no.jpg",
+      "class_name": "no",
+      "label": 0
+    },
+    {
+      "path": "data/raw/brats-mri-detection/brain_tumor_dataset/no/35 no.jpg",
+      "class_name": "no",
+      "label": 0
+    },
+    {
+      "path": "data/raw/brats-mri-detection/brain_tumor_dataset/no/36 no.jpg",
+      "class_name": "no",
+      "label": 0
+    },
+    {
+      "path": "data/raw/brats-mri-detection/brain_tumor_dataset/no/39 no.jpg",
+      "class_name": "no",
+      "label": 0
+    },
+    {
+      "path": "data/raw/brats-mri-detection/brain_tumor_dataset/no/4 no.jpg",
+      "class_name": "no",
+      "label": 0
+    },
+    {
+      "path": "data/raw/brats-mri-detection/brain_tumor_dataset/no/40 no.jpg",
+      "class_name": "no",
+      "label": 0
+    },
+    {
+      "path": "data/raw/brats-mri-detection/brain_tumor_dataset/no/42 no.jpg",
+      "class_name": "no",
+      "label": 0
+    },
+    {
+      "path": "data/raw/brats-mri-detection/brain_tumor_dataset/no/43 no.jpg",
+      "class_name": "no",
+      "label": 0
+    },
+    {
+      "path": "data/raw/brats-mri-detection/brain_tumor_dataset/no/45 no.jpg",
+      "class_name": "no",
+      "label": 0
+    },
+    {
+      "path": "data/raw/brats-mri-detection/brain_tumor_dataset/no/46 no.jpg",
+      "class_name": "no",
+      "label": 0
+    },
+    {
+      "path": "data/raw/brats-mri-detection/brain_tumor_dataset/no/47 no.jpg",
+      "class_name": "no",
+      "label": 0
+    },
+    {
+      "path": "data/raw/brats-mri-detection/brain_tumor_dataset/no/49 no.jpg",
+      "class_name": "no",
+      "label": 0
+    },
+    {
+      "path": "data/raw/brats-mri-detection/brain_tumor_dataset/no/5 no.jpg",
+      "class_name": "no",
+      "label": 0
+    },
+    {
+      "path": "data/raw/brats-mri-detection/brain_tumor_dataset/no/6 no.jpg",
+      "class_name": "no",
+      "label": 0
+    },
+    {
+      "path": "data/raw/brats-mri-detection/brain_tumor_dataset/no/7 no.jpg",
+      "class_name": "no",
+      "label": 0
+    },
+    {
+      "path": "data/raw/brats-mri-detection/brain_tumor_dataset/no/8 no.jpg",
+      "class_name": "no",
+      "label": 0
+    },
+    {
+      "path": "data/raw/brats-mri-detection/brain_tumor_dataset/no/9 no.jpg",
+      "class_name": "no",
+      "label": 0
+    },
+    {
+      "path": "data/raw/brats-mri-detection/brain_tumor_dataset/no/N1.JPG",
+      "class_name": "no",
+      "label": 0
+    },
+    {
+      "path": "data/raw/brats-mri-detection/brain_tumor_dataset/no/N11.jpg",
+      "class_name": "no",
+      "label": 0
+    },
+    {
+      "path": "data/raw/brats-mri-detection/brain_tumor_dataset/no/N15.jpg",
+      "class_name": "no",
+      "label": 0
+    },
+    {
+      "path": "data/raw/brats-mri-detection/brain_tumor_dataset/no/N16.jpg",
+      "class_name": "no",
+      "label": 0
+    },
+    {
+      "path": "data/raw/brats-mri-detection/brain_tumor_dataset/no/N17.jpg",
+      "class_name": "no",
+      "label": 0
+    },
+    {
+      "path": "data/raw/brats-mri-detection/brain_tumor_dataset/no/N2.JPG",
+      "class_name": "no",
+      "label": 0
+    },
+    {
+      "path": "data/raw/brats-mri-detection/brain_tumor_dataset/no/N22.JPG",
+      "class_name": "no",
+      "label": 0
+    },
+    {
+      "path": "data/raw/brats-mri-detection/brain_tumor_dataset/no/N26.JPG",
+      "class_name": "no",
+      "label": 0
+    },
+    {
+      "path": "data/raw/brats-mri-detection/brain_tumor_dataset/no/N3.jpg",
+      "class_name": "no",
+      "label": 0
+    },
+    {
+      "path": "data/raw/brats-mri-detection/brain_tumor_dataset/no/N5.jpg",
+      "class_name": "no",
+      "label": 0
+    },
+    {
+      "path": "data/raw/brats-mri-detection/brain_tumor_dataset/no/N6.jpg",
+      "class_name": "no",
+      "label": 0
+    },
+    {
+      "path": "data/raw/brats-mri-detection/brain_tumor_dataset/no/no 1.jpg",
+      "class_name": "no",
+      "label": 0
+    },
+    {
+      "path": "data/raw/brats-mri-detection/brain_tumor_dataset/no/no 10.jpg",
+      "class_name": "no",
+      "label": 0
+    },
+    {
+      "path": "data/raw/brats-mri-detection/brain_tumor_dataset/no/no 100.jpg",
+      "class_name": "no",
+      "label": 0
+    },
+    {
+      "path": "data/raw/brats-mri-detection/brain_tumor_dataset/no/no 2.jpg",
+      "class_name": "no",
+      "label": 0
+    },
+    {
+      "path": "data/raw/brats-mri-detection/brain_tumor_dataset/no/no 3.jpg",
+      "class_name": "no",
+      "label": 0
+    },
+    {
+      "path": "data/raw/brats-mri-detection/brain_tumor_dataset/no/no 4.jpg",
+      "class_name": "no",
+      "label": 0
+    },
+    {
+      "path": "data/raw/brats-mri-detection/brain_tumor_dataset/no/no 5.jpeg",
+      "class_name": "no",
+      "label": 0
+    },
+    {
+      "path": "data/raw/brats-mri-detection/brain_tumor_dataset/no/no 6.jpg",
+      "class_name": "no",
+      "label": 0
+    },
+    {
+      "path": "data/raw/brats-mri-detection/brain_tumor_dataset/no/no 7.jpeg",
+      "class_name": "no",
+      "label": 0
+    },
+    {
+      "path": "data/raw/brats-mri-detection/brain_tumor_dataset/no/no 8.jpg",
+      "class_name": "no",
+      "label": 0
+    },
+    {
+      "path": "data/raw/brats-mri-detection/brain_tumor_dataset/no/no 9.png",
+      "class_name": "no",
+      "label": 0
+    },
+    {
+      "path": "data/raw/brats-mri-detection/brain_tumor_dataset/no/no 90.jpg",
+      "class_name": "no",
+      "label": 0
+    },
+    {
+      "path": "data/raw/brats-mri-detection/brain_tumor_dataset/no/no 923.jpg",
+      "class_name": "no",
+      "label": 0
+    },
+    {
+      "path": "data/raw/brats-mri-detection/brain_tumor_dataset/no/no 94.jpg",
+      "class_name": "no",
+      "label": 0
+    },
+    {
+      "path": "data/raw/brats-mri-detection/brain_tumor_dataset/no/no 96.jpg",
+      "class_name": "no",
+      "label": 0
+    },
+    {
+      "path": "data/raw/brats-mri-detection/brain_tumor_dataset/no/no 97.jpg",
+      "class_name": "no",
+      "label": 0
+    },
+    {
+      "path": "data/raw/brats-mri-detection/brain_tumor_dataset/no/no 98.jpg",
+      "class_name": "no",
+      "label": 0
+    },
+    {
+      "path": "data/raw/brats-mri-detection/brain_tumor_dataset/no/no 99.jpg",
+      "class_name": "no",
+      "label": 0
+    },
+    {
+      "path": "data/raw/brats-mri-detection/brain_tumor_dataset/no/no.jpg",
+      "class_name": "no",
+      "label": 0
+    },
+    {
+      "path": "data/raw/brats-mri-detection/brain_tumor_dataset/no/No11.jpg",
+      "class_name": "no",
+      "label": 0
+    },
+    {
+      "path": "data/raw/brats-mri-detection/brain_tumor_dataset/no/No12.jpg",
+      "class_name": "no",
+      "label": 0
+    },
+    {
+      "path": "data/raw/brats-mri-detection/brain_tumor_dataset/no/No13.jpg",
+      "class_name": "no",
+      "label": 0
+    },
+    {
+      "path": "data/raw/brats-mri-detection/brain_tumor_dataset/no/No14.jpg",
+      "class_name": "no",
+      "label": 0
+    },
+    {
+      "path": "data/raw/brats-mri-detection/brain_tumor_dataset/no/No15.jpg",
+      "class_name": "no",
+      "label": 0
+    },
+    {
+      "path": "data/raw/brats-mri-detection/brain_tumor_dataset/no/No16.jpg",
+      "class_name": "no",
+      "label": 0
+    },
+    {
+      "path": "data/raw/brats-mri-detection/brain_tumor_dataset/no/No17.jpg",
+      "class_name": "no",
+      "label": 0
+    },
+    {
+      "path": "data/raw/brats-mri-detection/brain_tumor_dataset/no/No18.jpg",
+      "class_name": "no",
+      "label": 0
+    },
+    {
+      "path": "data/raw/brats-mri-detection/brain_tumor_dataset/no/No19.jpg",
+      "class_name": "no",
+      "label": 0
+    },
+    {
+      "path": "data/raw/brats-mri-detection/brain_tumor_dataset/no/No20.jpg",
+      "class_name": "no",
+      "label": 0
+    },
+    {
+      "path": "data/raw/brats-mri-detection/brain_tumor_dataset/no/No21.jpg",
+      "class_name": "no",
+      "label": 0
+    },
+    {
+      "path": "data/raw/brats-mri-detection/brain_tumor_dataset/no/No22.jpg",
+      "class_name": "no",
+      "label": 0
+    },
+    {
+      "path": "data/raw/brats-mri-detection/brain_tumor_dataset/yes/Y1.jpg",
+      "class_name": "yes",
+      "label": 1
+    },
+    {
+      "path": "data/raw/brats-mri-detection/brain_tumor_dataset/yes/Y10.jpg",
+      "class_name": "yes",
+      "label": 1
+    },
+    {
+      "path": "data/raw/brats-mri-detection/brain_tumor_dataset/yes/Y100.JPG",
+      "class_name": "yes",
+      "label": 1
+    },
+    {
+      "path": "data/raw/brats-mri-detection/brain_tumor_dataset/yes/Y101.jpg",
+      "class_name": "yes",
+      "label": 1
+    },
+    {
+      "path": "data/raw/brats-mri-detection/brain_tumor_dataset/yes/Y102.jpg",
+      "class_name": "yes",
+      "label": 1
+    },
+    {
+      "path": "data/raw/brats-mri-detection/brain_tumor_dataset/yes/Y103.jpg",
+      "class_name": "yes",
+      "label": 1
+    },
+    {
+      "path": "data/raw/brats-mri-detection/brain_tumor_dataset/yes/Y105.jpg",
+      "class_name": "yes",
+      "label": 1
+    },
+    {
+      "path": "data/raw/brats-mri-detection/brain_tumor_dataset/yes/Y106.jpg",
+      "class_name": "yes",
+      "label": 1
+    },
+    {
+      "path": "data/raw/brats-mri-detection/brain_tumor_dataset/yes/Y108.jpg",
+      "class_name": "yes",
+      "label": 1
+    },
+    {
+      "path": "data/raw/brats-mri-detection/brain_tumor_dataset/yes/Y11.jpg",
+      "class_name": "yes",
+      "label": 1
+    },
+    {
+      "path": "data/raw/brats-mri-detection/brain_tumor_dataset/yes/Y111.JPG",
+      "class_name": "yes",
+      "label": 1
+    },
+    {
+      "path": "data/raw/brats-mri-detection/brain_tumor_dataset/yes/Y112.JPG",
+      "class_name": "yes",
+      "label": 1
+    },
+    {
+      "path": "data/raw/brats-mri-detection/brain_tumor_dataset/yes/Y114.JPG",
+      "class_name": "yes",
+      "label": 1
+    },
+    {
+      "path": "data/raw/brats-mri-detection/brain_tumor_dataset/yes/Y115.JPG",
+      "class_name": "yes",
+      "label": 1
+    },
+    {
+      "path": "data/raw/brats-mri-detection/brain_tumor_dataset/yes/Y116.JPG",
+      "class_name": "yes",
+      "label": 1
+    },
+    {
+      "path": "data/raw/brats-mri-detection/brain_tumor_dataset/yes/Y12.jpg",
+      "class_name": "yes",
+      "label": 1
+    },
+    {
+      "path": "data/raw/brats-mri-detection/brain_tumor_dataset/yes/Y14.jpg",
+      "class_name": "yes",
+      "label": 1
+    },
+    {
+      "path": "data/raw/brats-mri-detection/brain_tumor_dataset/yes/Y146.JPG",
+      "class_name": "yes",
+      "label": 1
+    },
+    {
+      "path": "data/raw/brats-mri-detection/brain_tumor_dataset/yes/Y147.JPG",
+      "class_name": "yes",
+      "label": 1
+    },
+    {
+      "path": "data/raw/brats-mri-detection/brain_tumor_dataset/yes/Y15.jpg",
+      "class_name": "yes",
+      "label": 1
+    },
+    {
+      "path": "data/raw/brats-mri-detection/brain_tumor_dataset/yes/Y153.jpg",
+      "class_name": "yes",
+      "label": 1
+    },
+    {
+      "path": "data/raw/brats-mri-detection/brain_tumor_dataset/yes/Y154.jpg",
+      "class_name": "yes",
+      "label": 1
+    },
+    {
+      "path": "data/raw/brats-mri-detection/brain_tumor_dataset/yes/Y155.JPG",
+      "class_name": "yes",
+      "label": 1
+    },
+    {
+      "path": "data/raw/brats-mri-detection/brain_tumor_dataset/yes/Y156.JPG",
+      "class_name": "yes",
+      "label": 1
+    },
+    {
+      "path": "data/raw/brats-mri-detection/brain_tumor_dataset/yes/Y157.JPG",
+      "class_name": "yes",
+      "label": 1
+    },
+    {
+      "path": "data/raw/brats-mri-detection/brain_tumor_dataset/yes/Y158.JPG",
+      "class_name": "yes",
+      "label": 1
+    },
+    {
+      "path": "data/raw/brats-mri-detection/brain_tumor_dataset/yes/Y159.JPG",
+      "class_name": "yes",
+      "label": 1
+    },
+    {
+      "path": "data/raw/brats-mri-detection/brain_tumor_dataset/yes/Y16.JPG",
+      "class_name": "yes",
+      "label": 1
+    },
+    {
+      "path": "data/raw/brats-mri-detection/brain_tumor_dataset/yes/Y160.JPG",
+      "class_name": "yes",
+      "label": 1
+    },
+    {
+      "path": "data/raw/brats-mri-detection/brain_tumor_dataset/yes/Y161.JPG",
+      "class_name": "yes",
+      "label": 1
+    },
+    {
+      "path": "data/raw/brats-mri-detection/brain_tumor_dataset/yes/Y162.jpg",
+      "class_name": "yes",
+      "label": 1
+    },
+    {
+      "path": "data/raw/brats-mri-detection/brain_tumor_dataset/yes/Y163.JPG",
+      "class_name": "yes",
+      "label": 1
+    },
+    {
+      "path": "data/raw/brats-mri-detection/brain_tumor_dataset/yes/Y164.JPG",
+      "class_name": "yes",
+      "label": 1
+    },
+    {
+      "path": "data/raw/brats-mri-detection/brain_tumor_dataset/yes/Y165.JPG",
+      "class_name": "yes",
+      "label": 1
+    },
+    {
+      "path": "data/raw/brats-mri-detection/brain_tumor_dataset/yes/Y166.JPG",
+      "class_name": "yes",
+      "label": 1
+    },
+    {
+      "path": "data/raw/brats-mri-detection/brain_tumor_dataset/yes/Y167.JPG",
+      "class_name": "yes",
+      "label": 1
+    },
+    {
+      "path": "data/raw/brats-mri-detection/brain_tumor_dataset/yes/Y168.jpg",
+      "class_name": "yes",
+      "label": 1
+    },
+    {
+      "path": "data/raw/brats-mri-detection/brain_tumor_dataset/yes/Y169.jpg",
+      "class_name": "yes",
+      "label": 1
+    },
+    {
+      "path": "data/raw/brats-mri-detection/brain_tumor_dataset/yes/Y17.jpg",
+      "class_name": "yes",
+      "label": 1
+    },
+    {
+      "path": "data/raw/brats-mri-detection/brain_tumor_dataset/yes/Y180.jpg",
+      "class_name": "yes",
+      "label": 1
+    },
+    {
+      "path": "data/raw/brats-mri-detection/brain_tumor_dataset/yes/Y181.jpg",
+      "class_name": "yes",
+      "label": 1
+    },
+    {
+      "path": "data/raw/brats-mri-detection/brain_tumor_dataset/yes/Y182.JPG",
+      "class_name": "yes",
+      "label": 1
+    },
+    {
+      "path": "data/raw/brats-mri-detection/brain_tumor_dataset/yes/Y183.jpg",
+      "class_name": "yes",
+      "label": 1
+    },
+    {
+      "path": "data/raw/brats-mri-detection/brain_tumor_dataset/yes/Y184.JPG",
+      "class_name": "yes",
+      "label": 1
+    },
+    {
+      "path": "data/raw/brats-mri-detection/brain_tumor_dataset/yes/Y186.jpg",
+      "class_name": "yes",
+      "label": 1
+    },
+    {
+      "path": "data/raw/brats-mri-detection/brain_tumor_dataset/yes/Y187.jpg",
+      "class_name": "yes",
+      "label": 1
+    },
+    {
+      "path": "data/raw/brats-mri-detection/brain_tumor_dataset/yes/Y19.JPG",
+      "class_name": "yes",
+      "label": 1
+    },
+    {
+      "path": "data/raw/brats-mri-detection/brain_tumor_dataset/yes/Y193.JPG",
+      "class_name": "yes",
+      "label": 1
+    },
+    {
+      "path": "data/raw/brats-mri-detection/brain_tumor_dataset/yes/Y195.JPG",
+      "class_name": "yes",
+      "label": 1
+    },
+    {
+      "path": "data/raw/brats-mri-detection/brain_tumor_dataset/yes/Y2.jpg",
+      "class_name": "yes",
+      "label": 1
+    },
+    {
+      "path": "data/raw/brats-mri-detection/brain_tumor_dataset/yes/Y20.jpg",
+      "class_name": "yes",
+      "label": 1
+    },
+    {
+      "path": "data/raw/brats-mri-detection/brain_tumor_dataset/yes/Y21.jpg",
+      "class_name": "yes",
+      "label": 1
+    },
+    {
+      "path": "data/raw/brats-mri-detection/brain_tumor_dataset/yes/Y22.jpg",
+      "class_name": "yes",
+      "label": 1
+    },
+    {
+      "path": "data/raw/brats-mri-detection/brain_tumor_dataset/yes/Y24.jpg",
+      "class_name": "yes",
+      "label": 1
+    },
+    {
+      "path": "data/raw/brats-mri-detection/brain_tumor_dataset/yes/Y242.JPG",
+      "class_name": "yes",
+      "label": 1
+    },
+    {
+      "path": "data/raw/brats-mri-detection/brain_tumor_dataset/yes/Y243.JPG",
+      "class_name": "yes",
+      "label": 1
+    },
+    {
+      "path": "data/raw/brats-mri-detection/brain_tumor_dataset/yes/Y244.JPG",
+      "class_name": "yes",
+      "label": 1
+    },
+    {
+      "path": "data/raw/brats-mri-detection/brain_tumor_dataset/yes/Y245.jpg",
+      "class_name": "yes",
+      "label": 1
+    },
+    {
+      "path": "data/raw/brats-mri-detection/brain_tumor_dataset/yes/Y247.JPG",
+      "class_name": "yes",
+      "label": 1
+    },
+    {
+      "path": "data/raw/brats-mri-detection/brain_tumor_dataset/yes/Y248.JPG",
+      "class_name": "yes",
+      "label": 1
+    },
+    {
+      "path": "data/raw/brats-mri-detection/brain_tumor_dataset/yes/Y249.JPG",
+      "class_name": "yes",
+      "label": 1
+    },
+    {
+      "path": "data/raw/brats-mri-detection/brain_tumor_dataset/yes/Y25.jpg",
+      "class_name": "yes",
+      "label": 1
+    },
+    {
+      "path": "data/raw/brats-mri-detection/brain_tumor_dataset/yes/Y250.jpg",
+      "class_name": "yes",
+      "label": 1
+    },
+    {
+      "path": "data/raw/brats-mri-detection/brain_tumor_dataset/yes/Y251.JPG",
+      "class_name": "yes",
+      "label": 1
+    },
+    {
+      "path": "data/raw/brats-mri-detection/brain_tumor_dataset/yes/Y252.jpg",
+      "class_name": "yes",
+      "label": 1
+    },
+    {
+      "path": "data/raw/brats-mri-detection/brain_tumor_dataset/yes/Y254.jpg",
+      "class_name": "yes",
+      "label": 1
+    },
+    {
+      "path": "data/raw/brats-mri-detection/brain_tumor_dataset/yes/Y255.JPG",
+      "class_name": "yes",
+      "label": 1
+    },
+    {
+      "path": "data/raw/brats-mri-detection/brain_tumor_dataset/yes/Y256.JPG",
+      "class_name": "yes",
+      "label": 1
+    },
+    {
+      "path": "data/raw/brats-mri-detection/brain_tumor_dataset/yes/Y257.jpg",
+      "class_name": "yes",
+      "label": 1
+    },
+    {
+      "path": "data/raw/brats-mri-detection/brain_tumor_dataset/yes/Y259.JPG",
+      "class_name": "yes",
+      "label": 1
+    },
+    {
+      "path": "data/raw/brats-mri-detection/brain_tumor_dataset/yes/Y26.jpg",
+      "class_name": "yes",
+      "label": 1
+    },
+    {
+      "path": "data/raw/brats-mri-detection/brain_tumor_dataset/yes/Y28.jpg",
+      "class_name": "yes",
+      "label": 1
+    },
+    {
+      "path": "data/raw/brats-mri-detection/brain_tumor_dataset/yes/Y3.jpg",
+      "class_name": "yes",
+      "label": 1
+    },
+    {
+      "path": "data/raw/brats-mri-detection/brain_tumor_dataset/yes/Y30.jpg",
+      "class_name": "yes",
+      "label": 1
+    },
+    {
+      "path": "data/raw/brats-mri-detection/brain_tumor_dataset/yes/Y31.jpg",
+      "class_name": "yes",
+      "label": 1
+    },
+    {
+      "path": "data/raw/brats-mri-detection/brain_tumor_dataset/yes/Y32.jpg",
+      "class_name": "yes",
+      "label": 1
+    },
+    {
+      "path": "data/raw/brats-mri-detection/brain_tumor_dataset/yes/Y34.jpg",
+      "class_name": "yes",
+      "label": 1
+    },
+    {
+      "path": "data/raw/brats-mri-detection/brain_tumor_dataset/yes/Y35.jpg",
+      "class_name": "yes",
+      "label": 1
+    },
+    {
+      "path": "data/raw/brats-mri-detection/brain_tumor_dataset/yes/Y36.JPG",
+      "class_name": "yes",
+      "label": 1
+    },
+    {
+      "path": "data/raw/brats-mri-detection/brain_tumor_dataset/yes/Y37.jpg",
+      "class_name": "yes",
+      "label": 1
+    },
+    {
+      "path": "data/raw/brats-mri-detection/brain_tumor_dataset/yes/Y38.jpg",
+      "class_name": "yes",
+      "label": 1
+    },
+    {
+      "path": "data/raw/brats-mri-detection/brain_tumor_dataset/yes/Y39.jpg",
+      "class_name": "yes",
+      "label": 1
+    },
+    {
+      "path": "data/raw/brats-mri-detection/brain_tumor_dataset/yes/Y4.jpg",
+      "class_name": "yes",
+      "label": 1
+    },
+    {
+      "path": "data/raw/brats-mri-detection/brain_tumor_dataset/yes/Y40.JPG",
+      "class_name": "yes",
+      "label": 1
+    },
+    {
+      "path": "data/raw/brats-mri-detection/brain_tumor_dataset/yes/Y44.JPG",
+      "class_name": "yes",
+      "label": 1
+    },
+    {
+      "path": "data/raw/brats-mri-detection/brain_tumor_dataset/yes/Y46.jpg",
+      "class_name": "yes",
+      "label": 1
+    },
+    {
+      "path": "data/raw/brats-mri-detection/brain_tumor_dataset/yes/Y49.JPG",
+      "class_name": "yes",
+      "label": 1
+    },
+    {
+      "path": "data/raw/brats-mri-detection/brain_tumor_dataset/yes/Y50.JPG",
+      "class_name": "yes",
+      "label": 1
+    },
+    {
+      "path": "data/raw/brats-mri-detection/brain_tumor_dataset/yes/Y51.jpg",
+      "class_name": "yes",
+      "label": 1
+    },
+    {
+      "path": "data/raw/brats-mri-detection/brain_tumor_dataset/yes/Y52.jpg",
+      "class_name": "yes",
+      "label": 1
+    },
+    {
+      "path": "data/raw/brats-mri-detection/brain_tumor_dataset/yes/Y53.jpg",
+      "class_name": "yes",
+      "label": 1
+    },
+    {
+      "path": "data/raw/brats-mri-detection/brain_tumor_dataset/yes/Y54.jpg",
+      "class_name": "yes",
+      "label": 1
+    },
+    {
+      "path": "data/raw/brats-mri-detection/brain_tumor_dataset/yes/Y55.jpg",
+      "class_name": "yes",
+      "label": 1
+    },
+    {
+      "path": "data/raw/brats-mri-detection/brain_tumor_dataset/yes/Y56.jpg",
+      "class_name": "yes",
+      "label": 1
+    },
+    {
+      "path": "data/raw/brats-mri-detection/brain_tumor_dataset/yes/Y58.JPG",
+      "class_name": "yes",
+      "label": 1
+    },
+    {
+      "path": "data/raw/brats-mri-detection/brain_tumor_dataset/yes/Y59.JPG",
+      "class_name": "yes",
+      "label": 1
+    },
+    {
+      "path": "data/raw/brats-mri-detection/brain_tumor_dataset/yes/Y60.jpg",
+      "class_name": "yes",
+      "label": 1
+    },
+    {
+      "path": "data/raw/brats-mri-detection/brain_tumor_dataset/yes/Y61.jpg",
+      "class_name": "yes",
+      "label": 1
+    },
+    {
+      "path": "data/raw/brats-mri-detection/brain_tumor_dataset/yes/Y62.jpg",
+      "class_name": "yes",
+      "label": 1
+    },
+    {
+      "path": "data/raw/brats-mri-detection/brain_tumor_dataset/yes/Y65.JPG",
+      "class_name": "yes",
+      "label": 1
+    },
+    {
+      "path": "data/raw/brats-mri-detection/brain_tumor_dataset/yes/Y66.JPG",
+      "class_name": "yes",
+      "label": 1
+    },
+    {
+      "path": "data/raw/brats-mri-detection/brain_tumor_dataset/yes/Y67.JPG",
+      "class_name": "yes",
+      "label": 1
+    },
+    {
+      "path": "data/raw/brats-mri-detection/brain_tumor_dataset/yes/Y69.jpg",
+      "class_name": "yes",
+      "label": 1
+    },
+    {
+      "path": "data/raw/brats-mri-detection/brain_tumor_dataset/yes/Y7.jpg",
+      "class_name": "yes",
+      "label": 1
+    },
+    {
+      "path": "data/raw/brats-mri-detection/brain_tumor_dataset/yes/Y70.jpg",
+      "class_name": "yes",
+      "label": 1
+    },
+    {
+      "path": "data/raw/brats-mri-detection/brain_tumor_dataset/yes/Y71.JPG",
+      "class_name": "yes",
+      "label": 1
+    },
+    {
+      "path": "data/raw/brats-mri-detection/brain_tumor_dataset/yes/Y73.jpg",
+      "class_name": "yes",
+      "label": 1
+    },
+    {
+      "path": "data/raw/brats-mri-detection/brain_tumor_dataset/yes/Y74.jpg",
+      "class_name": "yes",
+      "label": 1
+    },
+    {
+      "path": "data/raw/brats-mri-detection/brain_tumor_dataset/yes/Y75.JPG",
+      "class_name": "yes",
+      "label": 1
+    },
+    {
+      "path": "data/raw/brats-mri-detection/brain_tumor_dataset/yes/Y76.jpg",
+      "class_name": "yes",
+      "label": 1
+    },
+    {
+      "path": "data/raw/brats-mri-detection/brain_tumor_dataset/yes/Y77.jpg",
+      "class_name": "yes",
+      "label": 1
+    },
+    {
+      "path": "data/raw/brats-mri-detection/brain_tumor_dataset/yes/Y78.jpg",
+      "class_name": "yes",
+      "label": 1
+    },
+    {
+      "path": "data/raw/brats-mri-detection/brain_tumor_dataset/yes/Y79.jpg",
+      "class_name": "yes",
+      "label": 1
+    },
+    {
+      "path": "data/raw/brats-mri-detection/brain_tumor_dataset/yes/Y8.jpg",
+      "class_name": "yes",
+      "label": 1
+    },
+    {
+      "path": "data/raw/brats-mri-detection/brain_tumor_dataset/yes/Y81.jpg",
+      "class_name": "yes",
+      "label": 1
+    },
+    {
+      "path": "data/raw/brats-mri-detection/brain_tumor_dataset/yes/Y82.jpg",
+      "class_name": "yes",
+      "label": 1
+    },
+    {
+      "path": "data/raw/brats-mri-detection/brain_tumor_dataset/yes/Y85.JPG",
+      "class_name": "yes",
+      "label": 1
+    },
+    {
+      "path": "data/raw/brats-mri-detection/brain_tumor_dataset/yes/Y86.JPG",
+      "class_name": "yes",
+      "label": 1
+    },
+    {
+      "path": "data/raw/brats-mri-detection/brain_tumor_dataset/yes/Y89.JPG",
+      "class_name": "yes",
+      "label": 1
+    },
+    {
+      "path": "data/raw/brats-mri-detection/brain_tumor_dataset/yes/Y9.jpg",
+      "class_name": "yes",
+      "label": 1
+    },
+    {
+      "path": "data/raw/brats-mri-detection/brain_tumor_dataset/yes/Y90.jpg",
+      "class_name": "yes",
+      "label": 1
+    },
+    {
+      "path": "data/raw/brats-mri-detection/brain_tumor_dataset/yes/Y91.jpg",
+      "class_name": "yes",
+      "label": 1
+    },
+    {
+      "path": "data/raw/brats-mri-detection/brain_tumor_dataset/yes/Y92.jpg",
+      "class_name": "yes",
+      "label": 1
+    },
+    {
+      "path": "data/raw/brats-mri-detection/brain_tumor_dataset/yes/Y92.png",
+      "class_name": "yes",
+      "label": 1
+    },
+    {
+      "path": "data/raw/brats-mri-detection/brain_tumor_dataset/yes/Y95.jpg",
+      "class_name": "yes",
+      "label": 1
+    },
+    {
+      "path": "data/raw/brats-mri-detection/brain_tumor_dataset/yes/Y97.JPG",
+      "class_name": "yes",
+      "label": 1
+    },
+    {
+      "path": "data/raw/brats-mri-detection/brain_tumor_dataset/yes/Y98.JPG",
+      "class_name": "yes",
+      "label": 1
+    },
+    {
+      "path": "data/raw/brats-mri-detection/no/1 no.jpeg",
+      "class_name": "no",
+      "label": 0
+    },
+    {
+      "path": "data/raw/brats-mri-detection/no/10 no.jpg",
+      "class_name": "no",
+      "label": 0
+    },
+    {
+      "path": "data/raw/brats-mri-detection/no/12 no.jpg",
+      "class_name": "no",
+      "label": 0
+    },
+    {
+      "path": "data/raw/brats-mri-detection/no/13 no.jpg",
+      "class_name": "no",
+      "label": 0
+    },
+    {
+      "path": "data/raw/brats-mri-detection/no/15 no.jpg",
+      "class_name": "no",
+      "label": 0
+    },
+    {
+      "path": "data/raw/brats-mri-detection/no/17 no.jpg",
+      "class_name": "no",
+      "label": 0
+    },
+    {
+      "path": "data/raw/brats-mri-detection/no/18 no.jpg",
+      "class_name": "no",
+      "label": 0
+    },
+    {
+      "path": "data/raw/brats-mri-detection/no/19 no.jpg",
+      "class_name": "no",
+      "label": 0
+    },
+    {
+      "path": "data/raw/brats-mri-detection/no/2 no.jpeg",
+      "class_name": "no",
+      "label": 0
+    },
+    {
+      "path": "data/raw/brats-mri-detection/no/20 no.jpg",
+      "class_name": "no",
+      "label": 0
+    },
+    {
+      "path": "data/raw/brats-mri-detection/no/21 no.jpg",
+      "class_name": "no",
+      "label": 0
+    },
+    {
+      "path": "data/raw/brats-mri-detection/no/22 no.jpg",
+      "class_name": "no",
+      "label": 0
+    },
+    {
+      "path": "data/raw/brats-mri-detection/no/24 no.jpg",
+      "class_name": "no",
+      "label": 0
+    },
+    {
+      "path": "data/raw/brats-mri-detection/no/25 no.jpg",
+      "class_name": "no",
+      "label": 0
+    },
+    {
+      "path": "data/raw/brats-mri-detection/no/26 no.jpg",
+      "class_name": "no",
+      "label": 0
+    },
+    {
+      "path": "data/raw/brats-mri-detection/no/27 no.jpg",
+      "class_name": "no",
+      "label": 0
+    },
+    {
+      "path": "data/raw/brats-mri-detection/no/28 no.jpg",
+      "class_name": "no",
+      "label": 0
+    },
+    {
+      "path": "data/raw/brats-mri-detection/no/29 no.jpg",
+      "class_name": "no",
+      "label": 0
+    },
+    {
+      "path": "data/raw/brats-mri-detection/no/3 no.jpg",
+      "class_name": "no",
+      "label": 0
+    },
+    {
+      "path": "data/raw/brats-mri-detection/no/30 no.jpg",
+      "class_name": "no",
+      "label": 0
+    },
+    {
+      "path": "data/raw/brats-mri-detection/no/31 no.jpg",
+      "class_name": "no",
+      "label": 0
+    },
+    {
+      "path": "data/raw/brats-mri-detection/no/32 no.jpg",
+      "class_name": "no",
+      "label": 0
+    },
+    {
+      "path": "data/raw/brats-mri-detection/no/33 no.jpg",
+      "class_name": "no",
+      "label": 0
+    },
+    {
+      "path": "data/raw/brats-mri-detection/no/35 no.jpg",
+      "class_name": "no",
+      "label": 0
+    },
+    {
+      "path": "data/raw/brats-mri-detection/no/36 no.jpg",
+      "class_name": "no",
+      "label": 0
+    },
+    {
+      "path": "data/raw/brats-mri-detection/no/38 no.jpg",
+      "class_name": "no",
+      "label": 0
+    },
+    {
+      "path": "data/raw/brats-mri-detection/no/39 no.jpg",
+      "class_name": "no",
+      "label": 0
+    },
+    {
+      "path": "data/raw/brats-mri-detection/no/4 no.jpg",
+      "class_name": "no",
+      "label": 0
+    },
+    {
+      "path": "data/raw/brats-mri-detection/no/41 no.jpg",
+      "class_name": "no",
+      "label": 0
+    },
+    {
+      "path": "data/raw/brats-mri-detection/no/43 no.jpg",
+      "class_name": "no",
+      "label": 0
+    },
+    {
+      "path": "data/raw/brats-mri-detection/no/44no.jpg",
+      "class_name": "no",
+      "label": 0
+    },
+    {
+      "path": "data/raw/brats-mri-detection/no/45 no.jpg",
+      "class_name": "no",
+      "label": 0
+    },
+    {
+      "path": "data/raw/brats-mri-detection/no/46 no.jpg",
+      "class_name": "no",
+      "label": 0
+    },
+    {
+      "path": "data/raw/brats-mri-detection/no/47 no.jpg",
+      "class_name": "no",
+      "label": 0
+    },
+    {
+      "path": "data/raw/brats-mri-detection/no/48 no.jpeg",
+      "class_name": "no",
+      "label": 0
+    },
+    {
+      "path": "data/raw/brats-mri-detection/no/5 no.jpg",
+      "class_name": "no",
+      "label": 0
+    },
+    {
+      "path": "data/raw/brats-mri-detection/no/50 no.jpg",
+      "class_name": "no",
+      "label": 0
+    },
+    {
+      "path": "data/raw/brats-mri-detection/no/6 no.jpg",
+      "class_name": "no",
+      "label": 0
+    },
+    {
+      "path": "data/raw/brats-mri-detection/no/7 no.jpg",
+      "class_name": "no",
+      "label": 0
+    },
+    {
+      "path": "data/raw/brats-mri-detection/no/8 no.jpg",
+      "class_name": "no",
+      "label": 0
+    },
+    {
+      "path": "data/raw/brats-mri-detection/no/9 no.jpg",
+      "class_name": "no",
+      "label": 0
+    },
+    {
+      "path": "data/raw/brats-mri-detection/no/N11.jpg",
+      "class_name": "no",
+      "label": 0
+    },
+    {
+      "path": "data/raw/brats-mri-detection/no/N15.jpg",
+      "class_name": "no",
+      "label": 0
+    },
+    {
+      "path": "data/raw/brats-mri-detection/no/N16.jpg",
+      "class_name": "no",
+      "label": 0
+    },
+    {
+      "path": "data/raw/brats-mri-detection/no/N17.jpg",
+      "class_name": "no",
+      "label": 0
+    },
+    {
+      "path": "data/raw/brats-mri-detection/no/N19.JPG",
+      "class_name": "no",
+      "label": 0
+    },
+    {
+      "path": "data/raw/brats-mri-detection/no/N21.jpg",
+      "class_name": "no",
+      "label": 0
+    },
+    {
+      "path": "data/raw/brats-mri-detection/no/N26.JPG",
+      "class_name": "no",
+      "label": 0
+    },
+    {
+      "path": "data/raw/brats-mri-detection/no/N5.jpg",
+      "class_name": "no",
+      "label": 0
+    },
+    {
+      "path": "data/raw/brats-mri-detection/no/no 1.jpg",
+      "class_name": "no",
+      "label": 0
+    },
+    {
+      "path": "data/raw/brats-mri-detection/no/no 10.jpg",
+      "class_name": "no",
+      "label": 0
+    },
+    {
+      "path": "data/raw/brats-mri-detection/no/no 100.jpg",
+      "class_name": "no",
+      "label": 0
+    },
+    {
+      "path": "data/raw/brats-mri-detection/no/no 2.jpg",
+      "class_name": "no",
+      "label": 0
+    },
+    {
+      "path": "data/raw/brats-mri-detection/no/no 5.jpeg",
+      "class_name": "no",
+      "label": 0
+    },
+    {
+      "path": "data/raw/brats-mri-detection/no/no 6.jpg",
+      "class_name": "no",
+      "label": 0
+    },
+    {
+      "path": "data/raw/brats-mri-detection/no/no 7.jpeg",
+      "class_name": "no",
+      "label": 0
+    },
+    {
+      "path": "data/raw/brats-mri-detection/no/no 8.jpg",
+      "class_name": "no",
+      "label": 0
+    },
+    {
+      "path": "data/raw/brats-mri-detection/no/no 89.jpg",
+      "class_name": "no",
+      "label": 0
+    },
+    {
+      "path": "data/raw/brats-mri-detection/no/no 9.png",
+      "class_name": "no",
+      "label": 0
+    },
+    {
+      "path": "data/raw/brats-mri-detection/no/no 90.jpg",
+      "class_name": "no",
+      "label": 0
+    },
+    {
+      "path": "data/raw/brats-mri-detection/no/no 91.jpeg",
+      "class_name": "no",
+      "label": 0
+    },
+    {
+      "path": "data/raw/brats-mri-detection/no/no 92.jpg",
+      "class_name": "no",
+      "label": 0
+    },
+    {
+      "path": "data/raw/brats-mri-detection/no/no 923.jpg",
+      "class_name": "no",
+      "label": 0
+    },
+    {
+      "path": "data/raw/brats-mri-detection/no/no 96.jpg",
+      "class_name": "no",
+      "label": 0
+    },
+    {
+      "path": "data/raw/brats-mri-detection/no/No11.jpg",
+      "class_name": "no",
+      "label": 0
+    },
+    {
+      "path": "data/raw/brats-mri-detection/no/No12.jpg",
+      "class_name": "no",
+      "label": 0
+    },
+    {
+      "path": "data/raw/brats-mri-detection/no/No13.jpg",
+      "class_name": "no",
+      "label": 0
+    },
+    {
+      "path": "data/raw/brats-mri-detection/no/No14.jpg",
+      "class_name": "no",
+      "label": 0
+    },
+    {
+      "path": "data/raw/brats-mri-detection/no/No15.jpg",
+      "class_name": "no",
+      "label": 0
+    },
+    {
+      "path": "data/raw/brats-mri-detection/no/No17.jpg",
+      "class_name": "no",
+      "label": 0
+    },
+    {
+      "path": "data/raw/brats-mri-detection/no/No18.jpg",
+      "class_name": "no",
+      "label": 0
+    },
+    {
+      "path": "data/raw/brats-mri-detection/no/No19.jpg",
+      "class_name": "no",
+      "label": 0
+    },
+    {
+      "path": "data/raw/brats-mri-detection/no/No20.jpg",
+      "class_name": "no",
+      "label": 0
+    },
+    {
+      "path": "data/raw/brats-mri-detection/no/No21.jpg",
+      "class_name": "no",
+      "label": 0
+    },
+    {
+      "path": "data/raw/brats-mri-detection/yes/Y1.jpg",
+      "class_name": "yes",
+      "label": 1
+    },
+    {
+      "path": "data/raw/brats-mri-detection/yes/Y10.jpg",
+      "class_name": "yes",
+      "label": 1
+    },
+    {
+      "path": "data/raw/brats-mri-detection/yes/Y101.jpg",
+      "class_name": "yes",
+      "label": 1
+    },
+    {
+      "path": "data/raw/brats-mri-detection/yes/Y102.jpg",
+      "class_name": "yes",
+      "label": 1
+    },
+    {
+      "path": "data/raw/brats-mri-detection/yes/Y104.jpg",
+      "class_name": "yes",
+      "label": 1
+    },
+    {
+      "path": "data/raw/brats-mri-detection/yes/Y107.jpg",
+      "class_name": "yes",
+      "label": 1
+    },
+    {
+      "path": "data/raw/brats-mri-detection/yes/Y108.jpg",
+      "class_name": "yes",
+      "label": 1
+    },
+    {
+      "path": "data/raw/brats-mri-detection/yes/Y109.JPG",
+      "class_name": "yes",
+      "label": 1
+    },
+    {
+      "path": "data/raw/brats-mri-detection/yes/Y11.jpg",
+      "class_name": "yes",
+      "label": 1
+    },
+    {
+      "path": "data/raw/brats-mri-detection/yes/Y111.JPG",
+      "class_name": "yes",
+      "label": 1
+    },
+    {
+      "path": "data/raw/brats-mri-detection/yes/Y113.JPG",
+      "class_name": "yes",
+      "label": 1
+    },
+    {
+      "path": "data/raw/brats-mri-detection/yes/Y114.JPG",
+      "class_name": "yes",
+      "label": 1
+    },
+    {
+      "path": "data/raw/brats-mri-detection/yes/Y115.JPG",
+      "class_name": "yes",
+      "label": 1
+    },
+    {
+      "path": "data/raw/brats-mri-detection/yes/Y116.JPG",
+      "class_name": "yes",
+      "label": 1
+    },
+    {
+      "path": "data/raw/brats-mri-detection/yes/Y117.JPG",
+      "class_name": "yes",
+      "label": 1
+    },
+    {
+      "path": "data/raw/brats-mri-detection/yes/Y12.jpg",
+      "class_name": "yes",
+      "label": 1
+    },
+    {
+      "path": "data/raw/brats-mri-detection/yes/Y120.JPG",
+      "class_name": "yes",
+      "label": 1
+    },
+    {
+      "path": "data/raw/brats-mri-detection/yes/Y13.jpg",
+      "class_name": "yes",
+      "label": 1
+    },
+    {
+      "path": "data/raw/brats-mri-detection/yes/Y14.jpg",
+      "class_name": "yes",
+      "label": 1
+    },
+    {
+      "path": "data/raw/brats-mri-detection/yes/Y146.JPG",
+      "class_name": "yes",
+      "label": 1
+    },
+    {
+      "path": "data/raw/brats-mri-detection/yes/Y148.JPG",
+      "class_name": "yes",
+      "label": 1
+    },
+    {
+      "path": "data/raw/brats-mri-detection/yes/Y15.jpg",
+      "class_name": "yes",
+      "label": 1
+    },
+    {
+      "path": "data/raw/brats-mri-detection/yes/Y153.jpg",
+      "class_name": "yes",
+      "label": 1
+    },
+    {
+      "path": "data/raw/brats-mri-detection/yes/Y154.jpg",
+      "class_name": "yes",
+      "label": 1
+    },
+    {
+      "path": "data/raw/brats-mri-detection/yes/Y155.JPG",
+      "class_name": "yes",
+      "label": 1
+    },
+    {
+      "path": "data/raw/brats-mri-detection/yes/Y156.JPG",
+      "class_name": "yes",
+      "label": 1
+    },
+    {
+      "path": "data/raw/brats-mri-detection/yes/Y158.JPG",
+      "class_name": "yes",
+      "label": 1
+    },
+    {
+      "path": "data/raw/brats-mri-detection/yes/Y159.JPG",
+      "class_name": "yes",
+      "label": 1
+    },
+    {
+      "path": "data/raw/brats-mri-detection/yes/Y160.JPG",
+      "class_name": "yes",
+      "label": 1
+    },
+    {
+      "path": "data/raw/brats-mri-detection/yes/Y163.JPG",
+      "class_name": "yes",
+      "label": 1
+    },
+    {
+      "path": "data/raw/brats-mri-detection/yes/Y164.JPG",
+      "class_name": "yes",
+      "label": 1
+    },
+    {
+      "path": "data/raw/brats-mri-detection/yes/Y165.JPG",
+      "class_name": "yes",
+      "label": 1
+    },
+    {
+      "path": "data/raw/brats-mri-detection/yes/Y166.JPG",
+      "class_name": "yes",
+      "label": 1
+    },
+    {
+      "path": "data/raw/brats-mri-detection/yes/Y167.JPG",
+      "class_name": "yes",
+      "label": 1
+    },
+    {
+      "path": "data/raw/brats-mri-detection/yes/Y169.jpg",
+      "class_name": "yes",
+      "label": 1
+    },
+    {
+      "path": "data/raw/brats-mri-detection/yes/Y170.JPG",
+      "class_name": "yes",
+      "label": 1
+    },
+    {
+      "path": "data/raw/brats-mri-detection/yes/Y18.JPG",
+      "class_name": "yes",
+      "label": 1
+    },
+    {
+      "path": "data/raw/brats-mri-detection/yes/Y181.jpg",
+      "class_name": "yes",
+      "label": 1
+    },
+    {
+      "path": "data/raw/brats-mri-detection/yes/Y182.JPG",
+      "class_name": "yes",
+      "label": 1
+    },
+    {
+      "path": "data/raw/brats-mri-detection/yes/Y183.jpg",
+      "class_name": "yes",
+      "label": 1
+    },
+    {
+      "path": "data/raw/brats-mri-detection/yes/Y184.JPG",
+      "class_name": "yes",
+      "label": 1
+    },
+    {
+      "path": "data/raw/brats-mri-detection/yes/Y186.jpg",
+      "class_name": "yes",
+      "label": 1
+    },
+    {
+      "path": "data/raw/brats-mri-detection/yes/Y187.jpg",
+      "class_name": "yes",
+      "label": 1
+    },
+    {
+      "path": "data/raw/brats-mri-detection/yes/Y192.JPG",
+      "class_name": "yes",
+      "label": 1
+    },
+    {
+      "path": "data/raw/brats-mri-detection/yes/Y193.JPG",
+      "class_name": "yes",
+      "label": 1
+    },
+    {
+      "path": "data/raw/brats-mri-detection/yes/Y194.jpg",
+      "class_name": "yes",
+      "label": 1
+    },
+    {
+      "path": "data/raw/brats-mri-detection/yes/Y195.JPG",
+      "class_name": "yes",
+      "label": 1
+    },
+    {
+      "path": "data/raw/brats-mri-detection/yes/Y2.jpg",
+      "class_name": "yes",
+      "label": 1
+    },
+    {
+      "path": "data/raw/brats-mri-detection/yes/Y20.jpg",
+      "class_name": "yes",
+      "label": 1
+    },
+    {
+      "path": "data/raw/brats-mri-detection/yes/Y21.jpg",
+      "class_name": "yes",
+      "label": 1
+    },
+    {
+      "path": "data/raw/brats-mri-detection/yes/Y22.jpg",
+      "class_name": "yes",
+      "label": 1
+    },
+    {
+      "path": "data/raw/brats-mri-detection/yes/Y24.jpg",
+      "class_name": "yes",
+      "label": 1
+    },
+    {
+      "path": "data/raw/brats-mri-detection/yes/Y242.JPG",
+      "class_name": "yes",
+      "label": 1
+    },
+    {
+      "path": "data/raw/brats-mri-detection/yes/Y243.JPG",
+      "class_name": "yes",
+      "label": 1
+    },
+    {
+      "path": "data/raw/brats-mri-detection/yes/Y245.jpg",
+      "class_name": "yes",
+      "label": 1
+    },
+    {
+      "path": "data/raw/brats-mri-detection/yes/Y248.JPG",
+      "class_name": "yes",
+      "label": 1
+    },
+    {
+      "path": "data/raw/brats-mri-detection/yes/Y249.JPG",
+      "class_name": "yes",
+      "label": 1
+    },
+    {
+      "path": "data/raw/brats-mri-detection/yes/Y25.jpg",
+      "class_name": "yes",
+      "label": 1
+    },
+    {
+      "path": "data/raw/brats-mri-detection/yes/Y250.jpg",
+      "class_name": "yes",
+      "label": 1
+    },
+    {
+      "path": "data/raw/brats-mri-detection/yes/Y252.jpg",
+      "class_name": "yes",
+      "label": 1
+    },
+    {
+      "path": "data/raw/brats-mri-detection/yes/Y253.JPG",
+      "class_name": "yes",
+      "label": 1
+    },
+    {
+      "path": "data/raw/brats-mri-detection/yes/Y254.jpg",
+      "class_name": "yes",
+      "label": 1
+    },
+    {
+      "path": "data/raw/brats-mri-detection/yes/Y256.JPG",
+      "class_name": "yes",
+      "label": 1
+    },
+    {
+      "path": "data/raw/brats-mri-detection/yes/Y257.jpg",
+      "class_name": "yes",
+      "label": 1
+    },
+    {
+      "path": "data/raw/brats-mri-detection/yes/Y259.JPG",
+      "class_name": "yes",
+      "label": 1
+    },
+    {
+      "path": "data/raw/brats-mri-detection/yes/Y27.jpg",
+      "class_name": "yes",
+      "label": 1
+    },
+    {
+      "path": "data/raw/brats-mri-detection/yes/Y28.jpg",
+      "class_name": "yes",
+      "label": 1
+    },
+    {
+      "path": "data/raw/brats-mri-detection/yes/Y29.jpg",
+      "class_name": "yes",
+      "label": 1
+    },
+    {
+      "path": "data/raw/brats-mri-detection/yes/Y3.jpg",
+      "class_name": "yes",
+      "label": 1
+    },
+    {
+      "path": "data/raw/brats-mri-detection/yes/Y30.jpg",
+      "class_name": "yes",
+      "label": 1
+    },
+    {
+      "path": "data/raw/brats-mri-detection/yes/Y32.jpg",
+      "class_name": "yes",
+      "label": 1
+    },
+    {
+      "path": "data/raw/brats-mri-detection/yes/Y33.jpg",
+      "class_name": "yes",
+      "label": 1
+    },
+    {
+      "path": "data/raw/brats-mri-detection/yes/Y35.jpg",
+      "class_name": "yes",
+      "label": 1
+    },
+    {
+      "path": "data/raw/brats-mri-detection/yes/Y36.JPG",
+      "class_name": "yes",
+      "label": 1
+    },
+    {
+      "path": "data/raw/brats-mri-detection/yes/Y37.jpg",
+      "class_name": "yes",
+      "label": 1
+    },
+    {
+      "path": "data/raw/brats-mri-detection/yes/Y38.jpg",
+      "class_name": "yes",
+      "label": 1
+    },
+    {
+      "path": "data/raw/brats-mri-detection/yes/Y39.jpg",
+      "class_name": "yes",
+      "label": 1
+    },
+    {
+      "path": "data/raw/brats-mri-detection/yes/Y4.jpg",
+      "class_name": "yes",
+      "label": 1
+    },
+    {
+      "path": "data/raw/brats-mri-detection/yes/Y40.JPG",
+      "class_name": "yes",
+      "label": 1
+    },
+    {
+      "path": "data/raw/brats-mri-detection/yes/Y41.jpg",
+      "class_name": "yes",
+      "label": 1
+    },
+    {
+      "path": "data/raw/brats-mri-detection/yes/Y44.JPG",
+      "class_name": "yes",
+      "label": 1
+    },
+    {
+      "path": "data/raw/brats-mri-detection/yes/Y45.JPG",
+      "class_name": "yes",
+      "label": 1
+    },
+    {
+      "path": "data/raw/brats-mri-detection/yes/Y46.jpg",
+      "class_name": "yes",
+      "label": 1
+    },
+    {
+      "path": "data/raw/brats-mri-detection/yes/Y49.JPG",
+      "class_name": "yes",
+      "label": 1
+    },
+    {
+      "path": "data/raw/brats-mri-detection/yes/Y50.JPG",
+      "class_name": "yes",
+      "label": 1
+    },
+    {
+      "path": "data/raw/brats-mri-detection/yes/Y51.jpg",
+      "class_name": "yes",
+      "label": 1
+    },
+    {
+      "path": "data/raw/brats-mri-detection/yes/Y53.jpg",
+      "class_name": "yes",
+      "label": 1
+    },
+    {
+      "path": "data/raw/brats-mri-detection/yes/Y54.jpg",
+      "class_name": "yes",
+      "label": 1
+    },
+    {
+      "path": "data/raw/brats-mri-detection/yes/Y55.jpg",
+      "class_name": "yes",
+      "label": 1
+    },
+    {
+      "path": "data/raw/brats-mri-detection/yes/Y56.jpg",
+      "class_name": "yes",
+      "label": 1
+    },
+    {
+      "path": "data/raw/brats-mri-detection/yes/Y58.JPG",
+      "class_name": "yes",
+      "label": 1
+    },
+    {
+      "path": "data/raw/brats-mri-detection/yes/Y59.JPG",
+      "class_name": "yes",
+      "label": 1
+    },
+    {
+      "path": "data/raw/brats-mri-detection/yes/Y6.jpg",
+      "class_name": "yes",
+      "label": 1
+    },
+    {
+      "path": "data/raw/brats-mri-detection/yes/Y61.jpg",
+      "class_name": "yes",
+      "label": 1
+    },
+    {
+      "path": "data/raw/brats-mri-detection/yes/Y66.JPG",
+      "class_name": "yes",
+      "label": 1
+    },
+    {
+      "path": "data/raw/brats-mri-detection/yes/Y67.JPG",
+      "class_name": "yes",
+      "label": 1
+    },
+    {
+      "path": "data/raw/brats-mri-detection/yes/Y7.jpg",
+      "class_name": "yes",
+      "label": 1
+    },
+    {
+      "path": "data/raw/brats-mri-detection/yes/Y70.jpg",
+      "class_name": "yes",
+      "label": 1
+    },
+    {
+      "path": "data/raw/brats-mri-detection/yes/Y74.jpg",
+      "class_name": "yes",
+      "label": 1
+    },
+    {
+      "path": "data/raw/brats-mri-detection/yes/Y75.JPG",
+      "class_name": "yes",
+      "label": 1
+    },
+    {
+      "path": "data/raw/brats-mri-detection/yes/Y77.jpg",
+      "class_name": "yes",
+      "label": 1
+    },
+    {
+      "path": "data/raw/brats-mri-detection/yes/Y78.jpg",
+      "class_name": "yes",
+      "label": 1
+    },
+    {
+      "path": "data/raw/brats-mri-detection/yes/Y79.jpg",
+      "class_name": "yes",
+      "label": 1
+    },
+    {
+      "path": "data/raw/brats-mri-detection/yes/Y8.jpg",
+      "class_name": "yes",
+      "label": 1
+    },
+    {
+      "path": "data/raw/brats-mri-detection/yes/Y81.jpg",
+      "class_name": "yes",
+      "label": 1
+    },
+    {
+      "path": "data/raw/brats-mri-detection/yes/Y82.jpg",
+      "class_name": "yes",
+      "label": 1
+    },
+    {
+      "path": "data/raw/brats-mri-detection/yes/Y85.JPG",
+      "class_name": "yes",
+      "label": 1
+    },
+    {
+      "path": "data/raw/brats-mri-detection/yes/Y86.JPG",
+      "class_name": "yes",
+      "label": 1
+    },
+    {
+      "path": "data/raw/brats-mri-detection/yes/Y89.JPG",
+      "class_name": "yes",
+      "label": 1
+    },
+    {
+      "path": "data/raw/brats-mri-detection/yes/Y9.jpg",
+      "class_name": "yes",
+      "label": 1
+    },
+    {
+      "path": "data/raw/brats-mri-detection/yes/Y90.jpg",
+      "class_name": "yes",
+      "label": 1
+    },
+    {
+      "path": "data/raw/brats-mri-detection/yes/Y91.jpg",
+      "class_name": "yes",
+      "label": 1
+    },
+    {
+      "path": "data/raw/brats-mri-detection/yes/Y92.jpg",
+      "class_name": "yes",
+      "label": 1
+    },
+    {
+      "path": "data/raw/brats-mri-detection/yes/Y92.png",
+      "class_name": "yes",
+      "label": 1
+    },
+    {
+      "path": "data/raw/brats-mri-detection/yes/Y95.jpg",
+      "class_name": "yes",
+      "label": 1
+    },
+    {
+      "path": "data/raw/brats-mri-detection/yes/Y96.jpg",
+      "class_name": "yes",
+      "label": 1
+    },
+    {
+      "path": "data/raw/brats-mri-detection/yes/Y98.JPG",
+      "class_name": "yes",
+      "label": 1
+    },
+    {
+      "path": "data/raw/brats-mri-detection/yes/Y99.JPG",
+      "class_name": "yes",
+      "label": 1
+    }
+  ],
+  "val_samples": [
+    {
+      "path": "data/raw/brats-mri-detection/brain_tumor_dataset/no/1 no.jpeg",
+      "class_name": "no",
+      "label": 0
+    },
+    {
+      "path": "data/raw/brats-mri-detection/brain_tumor_dataset/no/13 no.jpg",
+      "class_name": "no",
+      "label": 0
+    },
+    {
+      "path": "data/raw/brats-mri-detection/brain_tumor_dataset/no/15 no.jpg",
+      "class_name": "no",
+      "label": 0
+    },
+    {
+      "path": "data/raw/brats-mri-detection/brain_tumor_dataset/no/28 no.jpg",
+      "class_name": "no",
+      "label": 0
+    },
+    {
+      "path": "data/raw/brats-mri-detection/brain_tumor_dataset/no/37 no.jpg",
+      "class_name": "no",
+      "label": 0
+    },
+    {
+      "path": "data/raw/brats-mri-detection/brain_tumor_dataset/no/38 no.jpg",
+      "class_name": "no",
+      "label": 0
+    },
+    {
+      "path": "data/raw/brats-mri-detection/brain_tumor_dataset/no/41 no.jpg",
+      "class_name": "no",
+      "label": 0
+    },
+    {
+      "path": "data/raw/brats-mri-detection/brain_tumor_dataset/no/44no.jpg",
+      "class_name": "no",
+      "label": 0
+    },
+    {
+      "path": "data/raw/brats-mri-detection/brain_tumor_dataset/no/48 no.jpeg",
+      "class_name": "no",
+      "label": 0
+    },
+    {
+      "path": "data/raw/brats-mri-detection/brain_tumor_dataset/no/50 no.jpg",
+      "class_name": "no",
+      "label": 0
+    },
+    {
+      "path": "data/raw/brats-mri-detection/brain_tumor_dataset/no/N19.JPG",
+      "class_name": "no",
+      "label": 0
+    },
+    {
+      "path": "data/raw/brats-mri-detection/brain_tumor_dataset/no/N20.JPG",
+      "class_name": "no",
+      "label": 0
+    },
+    {
+      "path": "data/raw/brats-mri-detection/brain_tumor_dataset/no/N21.jpg",
+      "class_name": "no",
+      "label": 0
+    },
+    {
+      "path": "data/raw/brats-mri-detection/brain_tumor_dataset/no/no 89.jpg",
+      "class_name": "no",
+      "label": 0
+    },
+    {
+      "path": "data/raw/brats-mri-detection/brain_tumor_dataset/no/no 91.jpeg",
+      "class_name": "no",
+      "label": 0
+    },
+    {
+      "path": "data/raw/brats-mri-detection/brain_tumor_dataset/no/no 92.jpg",
+      "class_name": "no",
+      "label": 0
+    },
+    {
+      "path": "data/raw/brats-mri-detection/brain_tumor_dataset/no/no 95.jpg",
+      "class_name": "no",
+      "label": 0
+    },
+    {
+      "path": "data/raw/brats-mri-detection/brain_tumor_dataset/yes/Y104.jpg",
+      "class_name": "yes",
+      "label": 1
+    },
+    {
+      "path": "data/raw/brats-mri-detection/brain_tumor_dataset/yes/Y107.jpg",
+      "class_name": "yes",
+      "label": 1
+    },
+    {
+      "path": "data/raw/brats-mri-detection/brain_tumor_dataset/yes/Y109.JPG",
+      "class_name": "yes",
+      "label": 1
+    },
+    {
+      "path": "data/raw/brats-mri-detection/brain_tumor_dataset/yes/Y113.JPG",
+      "class_name": "yes",
+      "label": 1
+    },
+    {
+      "path": "data/raw/brats-mri-detection/brain_tumor_dataset/yes/Y117.JPG",
+      "class_name": "yes",
+      "label": 1
+    },
+    {
+      "path": "data/raw/brats-mri-detection/brain_tumor_dataset/yes/Y120.JPG",
+      "class_name": "yes",
+      "label": 1
+    },
+    {
+      "path": "data/raw/brats-mri-detection/brain_tumor_dataset/yes/Y13.jpg",
+      "class_name": "yes",
+      "label": 1
+    },
+    {
+      "path": "data/raw/brats-mri-detection/brain_tumor_dataset/yes/Y148.JPG",
+      "class_name": "yes",
+      "label": 1
+    },
+    {
+      "path": "data/raw/brats-mri-detection/brain_tumor_dataset/yes/Y170.JPG",
+      "class_name": "yes",
+      "label": 1
+    },
+    {
+      "path": "data/raw/brats-mri-detection/brain_tumor_dataset/yes/Y18.JPG",
+      "class_name": "yes",
+      "label": 1
+    },
+    {
+      "path": "data/raw/brats-mri-detection/brain_tumor_dataset/yes/Y185.jpg",
+      "class_name": "yes",
+      "label": 1
+    },
+    {
+      "path": "data/raw/brats-mri-detection/brain_tumor_dataset/yes/Y188.jpg",
+      "class_name": "yes",
+      "label": 1
+    },
+    {
+      "path": "data/raw/brats-mri-detection/brain_tumor_dataset/yes/Y192.JPG",
+      "class_name": "yes",
+      "label": 1
+    },
+    {
+      "path": "data/raw/brats-mri-detection/brain_tumor_dataset/yes/Y194.jpg",
+      "class_name": "yes",
+      "label": 1
+    },
+    {
+      "path": "data/raw/brats-mri-detection/brain_tumor_dataset/yes/Y23.JPG",
+      "class_name": "yes",
+      "label": 1
+    },
+    {
+      "path": "data/raw/brats-mri-detection/brain_tumor_dataset/yes/Y246.JPG",
+      "class_name": "yes",
+      "label": 1
+    },
+    {
+      "path": "data/raw/brats-mri-detection/brain_tumor_dataset/yes/Y253.JPG",
+      "class_name": "yes",
+      "label": 1
+    },
+    {
+      "path": "data/raw/brats-mri-detection/brain_tumor_dataset/yes/Y258.JPG",
+      "class_name": "yes",
+      "label": 1
+    },
+    {
+      "path": "data/raw/brats-mri-detection/brain_tumor_dataset/yes/Y27.jpg",
+      "class_name": "yes",
+      "label": 1
+    },
+    {
+      "path": "data/raw/brats-mri-detection/brain_tumor_dataset/yes/Y29.jpg",
+      "class_name": "yes",
+      "label": 1
+    },
+    {
+      "path": "data/raw/brats-mri-detection/brain_tumor_dataset/yes/Y33.jpg",
+      "class_name": "yes",
+      "label": 1
+    },
+    {
+      "path": "data/raw/brats-mri-detection/brain_tumor_dataset/yes/Y41.jpg",
+      "class_name": "yes",
+      "label": 1
+    },
+    {
+      "path": "data/raw/brats-mri-detection/brain_tumor_dataset/yes/Y42.jpg",
+      "class_name": "yes",
+      "label": 1
+    },
+    {
+      "path": "data/raw/brats-mri-detection/brain_tumor_dataset/yes/Y45.JPG",
+      "class_name": "yes",
+      "label": 1
+    },
+    {
+      "path": "data/raw/brats-mri-detection/brain_tumor_dataset/yes/Y47.JPG",
+      "class_name": "yes",
+      "label": 1
+    },
+    {
+      "path": "data/raw/brats-mri-detection/brain_tumor_dataset/yes/Y6.jpg",
+      "class_name": "yes",
+      "label": 1
+    },
+    {
+      "path": "data/raw/brats-mri-detection/brain_tumor_dataset/yes/Y96.jpg",
+      "class_name": "yes",
+      "label": 1
+    },
+    {
+      "path": "data/raw/brats-mri-detection/brain_tumor_dataset/yes/Y99.JPG",
+      "class_name": "yes",
+      "label": 1
+    },
+    {
+      "path": "data/raw/brats-mri-detection/no/11 no.jpg",
+      "class_name": "no",
+      "label": 0
+    },
+    {
+      "path": "data/raw/brats-mri-detection/no/14 no.jpg",
+      "class_name": "no",
+      "label": 0
+    },
+    {
+      "path": "data/raw/brats-mri-detection/no/23 no.jpg",
+      "class_name": "no",
+      "label": 0
+    },
+    {
+      "path": "data/raw/brats-mri-detection/no/34 no.jpg",
+      "class_name": "no",
+      "label": 0
+    },
+    {
+      "path": "data/raw/brats-mri-detection/no/37 no.jpg",
+      "class_name": "no",
+      "label": 0
+    },
+    {
+      "path": "data/raw/brats-mri-detection/no/40 no.jpg",
+      "class_name": "no",
+      "label": 0
+    },
+    {
+      "path": "data/raw/brats-mri-detection/no/42 no.jpg",
+      "class_name": "no",
+      "label": 0
+    },
+    {
+      "path": "data/raw/brats-mri-detection/no/49 no.jpg",
+      "class_name": "no",
+      "label": 0
+    },
+    {
+      "path": "data/raw/brats-mri-detection/no/N1.JPG",
+      "class_name": "no",
+      "label": 0
+    },
+    {
+      "path": "data/raw/brats-mri-detection/no/N2.JPG",
+      "class_name": "no",
+      "label": 0
+    },
+    {
+      "path": "data/raw/brats-mri-detection/no/N20.JPG",
+      "class_name": "no",
+      "label": 0
+    },
+    {
+      "path": "data/raw/brats-mri-detection/no/N22.JPG",
+      "class_name": "no",
+      "label": 0
+    },
+    {
+      "path": "data/raw/brats-mri-detection/no/N3.jpg",
+      "class_name": "no",
+      "label": 0
+    },
+    {
+      "path": "data/raw/brats-mri-detection/no/N6.jpg",
+      "class_name": "no",
+      "label": 0
+    },
+    {
+      "path": "data/raw/brats-mri-detection/no/no 3.jpg",
+      "class_name": "no",
+      "label": 0
+    },
+    {
+      "path": "data/raw/brats-mri-detection/no/no 4.jpg",
+      "class_name": "no",
+      "label": 0
+    },
+    {
+      "path": "data/raw/brats-mri-detection/no/no 94.jpg",
+      "class_name": "no",
+      "label": 0
+    },
+    {
+      "path": "data/raw/brats-mri-detection/no/no 95.jpg",
+      "class_name": "no",
+      "label": 0
+    },
+    {
+      "path": "data/raw/brats-mri-detection/no/no 97.jpg",
+      "class_name": "no",
+      "label": 0
+    },
+    {
+      "path": "data/raw/brats-mri-detection/no/no 98.jpg",
+      "class_name": "no",
+      "label": 0
+    },
+    {
+      "path": "data/raw/brats-mri-detection/no/no 99.jpg",
+      "class_name": "no",
+      "label": 0
+    },
+    {
+      "path": "data/raw/brats-mri-detection/no/no.jpg",
+      "class_name": "no",
+      "label": 0
+    },
+    {
+      "path": "data/raw/brats-mri-detection/no/No16.jpg",
+      "class_name": "no",
+      "label": 0
+    },
+    {
+      "path": "data/raw/brats-mri-detection/no/No22.jpg",
+      "class_name": "no",
+      "label": 0
+    },
+    {
+      "path": "data/raw/brats-mri-detection/yes/Y100.JPG",
+      "class_name": "yes",
+      "label": 1
+    },
+    {
+      "path": "data/raw/brats-mri-detection/yes/Y103.jpg",
+      "class_name": "yes",
+      "label": 1
+    },
+    {
+      "path": "data/raw/brats-mri-detection/yes/Y105.jpg",
+      "class_name": "yes",
+      "label": 1
+    },
+    {
+      "path": "data/raw/brats-mri-detection/yes/Y106.jpg",
+      "class_name": "yes",
+      "label": 1
+    },
+    {
+      "path": "data/raw/brats-mri-detection/yes/Y112.JPG",
+      "class_name": "yes",
+      "label": 1
+    },
+    {
+      "path": "data/raw/brats-mri-detection/yes/Y147.JPG",
+      "class_name": "yes",
+      "label": 1
+    },
+    {
+      "path": "data/raw/brats-mri-detection/yes/Y157.JPG",
+      "class_name": "yes",
+      "label": 1
+    },
+    {
+      "path": "data/raw/brats-mri-detection/yes/Y16.JPG",
+      "class_name": "yes",
+      "label": 1
+    },
+    {
+      "path": "data/raw/brats-mri-detection/yes/Y161.JPG",
+      "class_name": "yes",
+      "label": 1
+    },
+    {
+      "path": "data/raw/brats-mri-detection/yes/Y162.jpg",
+      "class_name": "yes",
+      "label": 1
+    },
+    {
+      "path": "data/raw/brats-mri-detection/yes/Y168.jpg",
+      "class_name": "yes",
+      "label": 1
+    },
+    {
+      "path": "data/raw/brats-mri-detection/yes/Y17.jpg",
+      "class_name": "yes",
+      "label": 1
+    },
+    {
+      "path": "data/raw/brats-mri-detection/yes/Y180.jpg",
+      "class_name": "yes",
+      "label": 1
+    },
+    {
+      "path": "data/raw/brats-mri-detection/yes/Y185.jpg",
+      "class_name": "yes",
+      "label": 1
+    },
+    {
+      "path": "data/raw/brats-mri-detection/yes/Y188.jpg",
+      "class_name": "yes",
+      "label": 1
+    },
+    {
+      "path": "data/raw/brats-mri-detection/yes/Y19.JPG",
+      "class_name": "yes",
+      "label": 1
+    },
+    {
+      "path": "data/raw/brats-mri-detection/yes/Y23.JPG",
+      "class_name": "yes",
+      "label": 1
+    },
+    {
+      "path": "data/raw/brats-mri-detection/yes/Y244.JPG",
+      "class_name": "yes",
+      "label": 1
+    },
+    {
+      "path": "data/raw/brats-mri-detection/yes/Y246.JPG",
+      "class_name": "yes",
+      "label": 1
+    },
+    {
+      "path": "data/raw/brats-mri-detection/yes/Y247.JPG",
+      "class_name": "yes",
+      "label": 1
+    },
+    {
+      "path": "data/raw/brats-mri-detection/yes/Y251.JPG",
+      "class_name": "yes",
+      "label": 1
+    },
+    {
+      "path": "data/raw/brats-mri-detection/yes/Y255.JPG",
+      "class_name": "yes",
+      "label": 1
+    },
+    {
+      "path": "data/raw/brats-mri-detection/yes/Y258.JPG",
+      "class_name": "yes",
+      "label": 1
+    },
+    {
+      "path": "data/raw/brats-mri-detection/yes/Y26.jpg",
+      "class_name": "yes",
+      "label": 1
+    },
+    {
+      "path": "data/raw/brats-mri-detection/yes/Y31.jpg",
+      "class_name": "yes",
+      "label": 1
+    },
+    {
+      "path": "data/raw/brats-mri-detection/yes/Y34.jpg",
+      "class_name": "yes",
+      "label": 1
+    },
+    {
+      "path": "data/raw/brats-mri-detection/yes/Y42.jpg",
+      "class_name": "yes",
+      "label": 1
+    },
+    {
+      "path": "data/raw/brats-mri-detection/yes/Y47.JPG",
+      "class_name": "yes",
+      "label": 1
+    },
+    {
+      "path": "data/raw/brats-mri-detection/yes/Y52.jpg",
+      "class_name": "yes",
+      "label": 1
+    },
+    {
+      "path": "data/raw/brats-mri-detection/yes/Y60.jpg",
+      "class_name": "yes",
+      "label": 1
+    },
+    {
+      "path": "data/raw/brats-mri-detection/yes/Y62.jpg",
+      "class_name": "yes",
+      "label": 1
+    },
+    {
+      "path": "data/raw/brats-mri-detection/yes/Y65.JPG",
+      "class_name": "yes",
+      "label": 1
+    },
+    {
+      "path": "data/raw/brats-mri-detection/yes/Y69.jpg",
+      "class_name": "yes",
+      "label": 1
+    },
+    {
+      "path": "data/raw/brats-mri-detection/yes/Y71.JPG",
+      "class_name": "yes",
+      "label": 1
+    },
+    {
+      "path": "data/raw/brats-mri-detection/yes/Y73.jpg",
+      "class_name": "yes",
+      "label": 1
+    },
+    {
+      "path": "data/raw/brats-mri-detection/yes/Y76.jpg",
+      "class_name": "yes",
+      "label": 1
+    },
+    {
+      "path": "data/raw/brats-mri-detection/yes/Y97.JPG",
+      "class_name": "yes",
+      "label": 1
+    }
+  ]
+}

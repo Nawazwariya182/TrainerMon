@@ -1,0 +1,22 @@
+{
+  "project_id": "test_real_data_pipeline",
+  "project_name": "Machine Learning Project",
+  "generated_at": "2026-10-22T20:13:53.270Z",
+  "harmonization_standard": "Standardized Aspect-Ratio Letterboxed RGB (3, 512, 512)",
+  "datasets": [
+    {
+      "id": "brats-mri-detection",
+      "title": "Brain MRI Images for Brain Tumor Detection (Br35H / Navoneel Cohort)",
+      "source": "Hugging Face Open Benchmark / Navoneel Chakraborty",
+      "url": "https://huggingface.co/datasets/miladfa7/Brain-MRI-Images-for-Brain-Tumor-Detection",
+      "download_url": "https://huggingface.co/datasets/miladfa7/Brain-MRI-Images-for-Brain-Tumor-Detection/resolve/main/Brain%20MRI%20Images%20for%20Brain%20Tumor%20Detection.zip",
+      "download_type": "zip",
+      "format": "High-Resolution JPEG / PNG",
+      "modality": "Axial T1/T2 Brain MRI Slices (Binary: Yes/No Tumor)",
+      "license": "CC-BY 4.0 (Open Research & Commercial)",
+      "samples": "253 Patient Scans (155 Tumor Positive + 98 Normal Controls)",
+      "size": "15.8 MB",
+      "verified": true
+    }
+  ]
+}
