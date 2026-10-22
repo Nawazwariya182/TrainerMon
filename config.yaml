@@ -1,52 +1,81 @@
-# =====================================================================
-# ML-TRAIN UNIFIED PRETRAINING CONFIGURATION
-# Project: Machine Learning Project
-# Datasets: Brain Tumor Classification MRI Benchmark (4 Classes: Glioma, Meningioma, Pituitary, Normal), Brain MRI Images for Brain Tumor Detection (Br35H / Navoneel Cohort)
-# =====================================================================
+<think>
+Okay, let's tackle this problem. The user wants to improve the validation accuracy from 72% to at least 85% and increase the macro-F1 score. The current config.yaml has some parameters that might be limiting performance.
 
-project:
-  id: "5330b70a-8716-492c-aaf6-ea8dd6c9306b"
-  name: "Machine Learning Project"
-  task: "Computer Vision Pretraining from Scratch"
-  seed: 42
+First, looking at the training section. The max_epochs is set to 100. Maybe increasing this could help, but sometimes more epochs without proper scheduling can lead to overfitting. However, since the current accuracy is low, perhaps extending training time with a better scheduler would help. Wait, the optimizer uses cosine annealing, which is good for learning rate scheduling. But maybe adjusting the warmup and max_epochs?
 
-datasets:
-  root_dir: "./data"
-  selected:
-    - id: "sartaj-bhuvaji-mri"
-      name: "Brain Tumor Classification MRI Benchmark (4 Classes: Glioma, Meningioma, Pituitary, Normal)"
-      format: "High-Resolution JPEG (224x224, 512x512)"
-    - id: "brats-mri-detection"
-      name: "Brain MRI Images for Brain Tumor Detection (Br35H / Navoneel Cohort)"
-      format: "High-Resolution JPEG / PNG"
+The initial learning rate is 0.0005. Maybe increasing it to 0.001 or 0.002 could help, but need to balance with weight decay. The current weight decay is 0.05. Sometimes higher weight decay can prevent overfitting but might hinder convergence. Maybe reducing it to 0.01? Also, label smoothing is at 0.1. Increasing that to 0.15 or 0.2 could help with class imbalance, especially since there are four classes.
 
-data_harmonization:
-  image_resolution: [512, 512]
-  letterbox: true
-  normalization: "standard_rgb"
+The model architecture is ConvNeXtV2. The stem_channels and stage_blocks might be okay, but maybe adjusting the number of layers? Wait, the user mentioned maintaining existing dataset definitions, so probably not changing the model structure. But perhaps increasing the depth or width? However, without knowing if that's feasible, maybe stick to the current architecture.
 
-model:
-  architecture: "ConvNeXtV2"
-  stem_channels: 96
-  stage_blocks: [3, 3, 9, 3]
-  stage_channels: [96, 192, 384, 768]
-  num_classes: 10
+Looking at data_harmonization: image resolution is 512x512, which seems good. Letterbox is true, normalization is standard_rgb. Maybe adjusting the augmentation techniques could help, but the config doesn't mention augmentations. However, the user didn't ask for that, so maybe not.
 
-loss:
-  type: "FocalLoss"
-  gamma: 2.0
-  label_smoothing: 0.1
+The loss function is FocalLoss with gamma=2 and label_smoothing=0.1. Increasing gamma might help with class imbalance, but need to test. Also, increasing label smoothing could be beneficial here.
+
+In training parameters: batch_size is 16, effective_batch_size is 32 with gradient accumulation steps of 2. Maybe increasing the batch size or adjusting accumulation steps? But larger batches can sometimes lead to better convergence. However, if memory is an issue, keeping it as is. Alternatively, maybe reducing the effective batch size and increasing epochs?
+
+The optimizer uses AdamW with lr=0.0005. Maybe trying a higher learning rate, like 0.001 or even 0.002, but with proper scheduling. Also, checking if warmup_epochs is sufficient. The current warmup is 10 epochs. If the training is not converging quickly enough, maybe increasing warmup?
+
+Another thought: macro-F1 score is low. This suggests that the model isn't performing well on any of the classes, especially minority ones. So, label smoothing and focal loss might help here. Also, adding dropout layers in the model could prevent overfitting, but the current config doesn't mention it. Wait, the user's guidelines suggest adding or tuning regularizations like dropout (0.25). So maybe adding a dropout layer with 0.25 probability.
+
+Wait, the model section has num_classes as 10? But the datasets are for four classes: Glioma, Meningioma, Pituitary, Normal. Wait, that's four classes. Oh, but in the config.yaml, num_classes is set to 10. That's a problem! The user mentioned the datasets have four classes, so setting num_classes to 4 would make more sense. If it's 10, maybe there's an error here. But the user says "maintain proper YAML structure and existing dataset definitions." So perhaps that's a mistake in the original config? Wait, the user provided the current config.yaml with num_classes: 10, but the datasets are four classes. That seems like a critical error. If the model is trained for 10 classes but the data has only four, that would cause issues. But since the user hasn't mentioned this, maybe it's intentional? Or perhaps a typo. However, given the context, I should correct num_classes to 4. Otherwise, the model won't be able to learn properly.
+
+So first correction: change num_classes from 10 to 4. That would align with the dataset definitions.
+
+Next, increasing max_epochs beyond 100? Let's say 150 or 200. But need to balance with learning rate scheduling. The current lr_schedule is cosine, which is good for long training. So maybe increase epochs to 150.
+
+Adjusting the initial learning rate: perhaps from 0.0005 to 0.001. Also, increasing warmup_epochs to 20? Or keeping it at 10 but adjusting other parameters.
+
+Weight decay is currently 0.05. Maybe reducing to 0.01 to prevent over-regularization. Label smoothing from 0.1 to 0.15 or 0.2. Gamma in FocalLoss could be increased to 3.0 for more focus on hard examples.
+
+Adding dropout: the model might not have any dropout layers. So adding a dropout with probability 0.25 in the model's architecture. But since the user hasn't provided that, maybe it's part of the model definition. However, without knowing the exact structure, perhaps suggesting to add dropout in the training parameters? Or maybe the model already includes it. Since the original config doesn't mention dropout, but the guidelines suggest adding it, I need to include it.
+
+Wait, the user says "maintain proper YAML structure and existing dataset definitions." So if the model doesn't have dropout layers, perhaps that's not possible. But the guidelines say to add or tune regularizations like dropout (0.25). Maybe the model should be modified, but since we can only change the config.yaml, maybe adding a parameter for dropout in the training section? Or is there another way?
+
+Alternatively, if the model architecture includes dropout layers, then that's handled elsewhere. Since I don't have control over the model code, perhaps the best approach is to adjust hyperparameters related to regularization.
+
+So, in the loss section, increase label_smoothing to 0.15. In optimizer, maybe reduce weight_decay to 0.01. Also, increasing gamma to 3.0 for FocalLoss.
+
+In training parameters: increase max_epochs to 150. Maybe adjust batch_size? If effective_batch_size is 32 with gradient accumulation steps of 2 (batch size 16), maybe keeping that as is. Or perhaps increasing the batch size to 32 and reducing gradient accumulation steps to 1, but that depends on memory.
+
+Also, considering that the current validation accuracy is low, perhaps using a different optimizer or adjusting learning rate scheduling. But the user's guidelines suggest tuning initial learning rate and cosine annealing scheduler. So maybe keeping the optimizer as AdamW but adjusting lr to 0.001.
+
+Putting it all together:
+
+- Correct num_classes from 10 to 4.
+- Increase max_epochs to 150.
+- Adjust learning rate to 0.001.
+- Reduce weight_decay to 0.01.
+- Increase label_smoothing to 0.15.
+- Increase gamma in FocalLoss to 3.0.
+- Add dropout (if possible) or adjust other regularization parameters.
+
+Wait, the user's guidelines also mention adding or tuning regularizations like dropout (0.25). Since the model config doesn't have it, maybe adding a parameter for dropout in the training section? Or perhaps the model is supposed to include it. Without knowing the exact structure, I can only adjust what's in the provided YAML.
+
+So, in the loss section, label_smoothing: 0.15. In optimizer, weight_decay: 0.01. In training, max_epochs: 150. Also, maybe increasing warmup_epochs to 20? Or keeping it at 10 but adjusting other parameters.
+
+Another consideration: the effective_batch_size is 32 with gradient accumulation steps of 2. Maybe that's okay. But if memory allows, increasing batch size could help convergence.
+
+Putting all these changes into the YAML.
+</think>
 
 training:
-  batch_size: 16
-  effective_batch_size: 32
-  gradient_accumulation_steps: 2
-  max_epochs: 100
+  batch_size: 32
+  effective_batch_size: 64
+  gradient_accumulation_steps: 1
+  max_epochs: 150
   mixed_precision: "bf16"
 
 optimizer:
   name: "AdamW"
-  lr: 0.0005
-  weight_decay: 0.05
-  warmup_epochs: 10
+  lr: 0.001
+  weight_decay: 0.01
+  warmup_epochs: 20
   lr_schedule: "cosine"
+
+loss:
+  type: "FocalLoss"
+  gamma: 3.0
+  label_smoothing: 0.15
+
+model:
+  num_classes: 4
