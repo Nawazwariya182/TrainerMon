@@ -1,27 +1,29 @@
-// TrainerMon Client Application
+// =========================================================================
+// TRAINERMON CLINICAL INFERENCE APPLICATION
+// Project: 5330b70a-8716-492c-aaf6-ea8dd6c9306b
+// Archetype: medical_cv
+// =========================================================================
+
 document.addEventListener("DOMContentLoaded", () => {
-  const fileInput = document.getElementById("fileInput");
   const dropzone = document.getElementById("dropzone");
+  const fileInput = document.getElementById("fileInput");
   const dropzonePrompt = document.getElementById("dropzonePrompt");
   const previewContainer = document.getElementById("previewContainer");
   const imagePreview = document.getElementById("imagePreview");
   const btnChangeImage = document.getElementById("btnChangeImage");
   const btnAnalyze = document.getElementById("btnAnalyze");
-
-  const resultsPlaceholder = document.getElementById("resultsPlaceholder");
-  const resultsContent = document.getElementById("resultsContent");
-  const predictedClass = document.getElementById("predictedClass");
-  const confidenceVal = document.getElementById("confidenceVal");
-  const probabilityBars = document.getElementById("probabilityBars");
-  const latencyBadge = document.getElementById("latencyBadge");
-  const metaLatency = document.getElementById("metaLatency");
+  const resultHero = document.getElementById("resultHero");
+  const breakdownSection = document.getElementById("breakdownSection");
+  const probList = document.getElementById("probList");
+  const latencyVal = document.getElementById("latencyVal");
+  const modelStatusBadge = document.getElementById("modelStatusBadge");
   const sampleChips = document.querySelectorAll(".sample-chip");
 
   let currentFile = null;
 
-  function handleFileSelect(file) {
+  function loadFile(file) {
     if (!file || !file.type.startsWith("image/")) {
-      alert("Please upload a valid image file (.jpg, .jpeg, .png)");
+      alert("Please upload an image file (PNG, JPG, DICOM preview).");
       return;
     }
     currentFile = file;
@@ -31,13 +33,15 @@ document.addEventListener("DOMContentLoaded", () => {
       dropzonePrompt.classList.add("hidden");
       previewContainer.classList.remove("hidden");
       btnAnalyze.disabled = false;
+      modelStatusBadge.textContent = "Ready for Analysis";
+      modelStatusBadge.className = "status-pill status-healthy";
     };
     reader.readAsDataURL(file);
   }
 
   fileInput.addEventListener("change", (e) => {
     if (e.target.files && e.target.files[0]) {
-      handleFileSelect(e.target.files[0]);
+      loadFile(e.target.files[0]);
     }
   });
 
@@ -54,7 +58,7 @@ document.addEventListener("DOMContentLoaded", () => {
     e.preventDefault();
     dropzone.classList.remove("dragover");
     if (e.dataTransfer.files && e.dataTransfer.files[0]) {
-      handleFileSelect(e.dataTransfer.files[0]);
+      loadFile(e.dataTransfer.files[0]);
     }
   });
 
@@ -63,32 +67,55 @@ document.addEventListener("DOMContentLoaded", () => {
     fileInput.click();
   });
 
-  // Sample Chips
+  // Quick Cohort Sample Scans
   sampleChips.forEach((chip) => {
     chip.addEventListener("click", async () => {
       const label = chip.getAttribute("data-label");
-      // Create a canvas mock mri slice if remote sample is loading
-      const canvas = document.createElement("canvas");
-      canvas.width = 224;
-      canvas.height = 224;
-      const ctx = canvas.getContext("2d");
-      ctx.fillStyle = "#111827";
-      ctx.fillRect(0, 0, 224, 224);
-      // Draw brain contour
-      ctx.fillStyle = "#374151";
-      ctx.beginPath();
-      ctx.ellipse(112, 112, 85, 95, 0, 0, 2 * Math.PI);
-      ctx.fill();
-      // Draw simulated anomaly
-      ctx.fillStyle = label === "notumor" ? "#4b5563" : "#f3f4f6";
-      ctx.beginPath();
-      ctx.arc(112 + (label === "pituitary" ? 0 : 35), 112 + (label === "pituitary" ? 40 : -20), 22, 0, 2 * Math.PI);
-      ctx.fill();
+      chip.textContent = "Loading " + label + "...";
+      try {
+        const res = await fetch("/samples");
+        const data = await res.json();
+        let targetSample = null;
+        if (data.samples && data.samples.length > 0) {
+          targetSample = data.samples.find((s) => s.class_hint.toLowerCase().includes(label)) || data.samples[0];
+        }
 
-      canvas.toBlob((blob) => {
-        const file = new File([blob], `sample_${label}.png`, { type: "image/png" });
-        handleFileSelect(file);
-      }, "image/png");
+        if (targetSample) {
+          const imgRes = await fetch("/sample_file/" + targetSample.rel_path);
+          const blob = await imgRes.blob();
+          const file = new File([blob], targetSample.name, { type: blob.type || "image/jpeg" });
+          loadFile(file);
+        } else {
+          // Synthetic high-contrast test slice
+          const canvas = document.createElement("canvas");
+          canvas.width = 128;
+          canvas.height = 128;
+          const ctx = canvas.getContext("2d");
+          ctx.fillStyle = "#0a0a0f";
+          ctx.fillRect(0, 0, 128, 128);
+          ctx.strokeStyle = "#475569";
+          ctx.lineWidth = 4;
+          ctx.beginPath();
+          ctx.arc(64, 64, 50, 0, Math.PI * 2);
+          ctx.stroke();
+
+          if (label !== "notumor") {
+            ctx.fillStyle = "#ffffff";
+            ctx.beginPath();
+            ctx.arc(72, 55, 18, 0, Math.PI * 2);
+            ctx.fill();
+          }
+
+          canvas.toBlob((blob) => {
+            const file = new File([blob], label + "_sample.png", { type: "image/png" });
+            loadFile(file);
+          });
+        }
+      } catch (err) {
+        console.error("Sample load error:", err);
+      } finally {
+        chip.textContent = label + " Sample";
+      }
     });
   });
 
@@ -97,7 +124,8 @@ document.addEventListener("DOMContentLoaded", () => {
     if (!currentFile) return;
 
     btnAnalyze.disabled = true;
-    btnAnalyze.innerHTML = '<span class="status-dot"></span> Analyzing MRI Scan...';
+    btnAnalyze.innerHTML = "Running Neural Assessment...";
+    modelStatusBadge.textContent = "Processing...";
 
     const formData = new FormData();
     formData.append("file", currentFile);
@@ -113,41 +141,63 @@ document.addEventListener("DOMContentLoaded", () => {
         throw new Error(data.error || "Inference failed");
       }
 
-      // Render Results
-      resultsPlaceholder.classList.add("hidden");
-      resultsContent.classList.remove("hidden");
+      // Display Hero Prediction
+      const isPositive = data.predicted_class.toLowerCase() !== "notumor";
+      const badgeColor = isPositive ? "var(--accent-rose)" : "var(--accent-emerald)";
+      const bgBadgeColor = isPositive ? "var(--accent-rose-bg)" : "var(--accent-emerald-bg)";
 
-      predictedClass.textContent = data.predicted_class;
-      confidenceVal.textContent = data.confidence_pct;
-      latencyBadge.textContent = `${data.latency_ms} ms`;
-      metaLatency.textContent = `${data.latency_ms} ms`;
-
-      // Render Probability Bars
-      probabilityBars.innerHTML = "";
-      const probs = data.probabilities || {};
-      const sorted = Object.entries(probs).sort((a, b) => b[1] - a[1]);
-
-      sorted.forEach(([cname, prob], idx) => {
-        const pct = (prob * 100).toFixed(1);
-        const isWinner = idx === 0;
-        const row = document.createElement("div");
-        row.className = "prob-row";
-        row.innerHTML = `
-          <div class="prob-header">
-            <span>${cname.charAt(0).toUpperCase() + cname.slice(1)}</span>
-            <span>${pct}%</span>
+      resultHero.innerHTML = `
+        <div class="result-content">
+          <div class="result-badge-group">
+            <span class="result-label">Diagnostic Finding</span>
+            <h3 class="result-title" style="color: ${badgeColor}">${data.predicted_class}</h3>
+            <span class="result-confidence">${isPositive ? "Pathology Detected" : "Normal / No Tumor"} &bull; ${data.confidence_pct} Certainty</span>
           </div>
-          <div class="prob-track">
-            <div class="prob-fill ${isWinner ? "winner" : ""}" style="width: ${pct}%"></div>
+          <div class="score-circle" style="border-color: ${badgeColor}; background-color: ${bgBadgeColor}">
+            <span class="score-pct" style="color: ${badgeColor}">${data.confidence_pct}</span>
+            <span class="score-sub" style="color: ${badgeColor}">CONFIDENCE</span>
           </div>
+        </div>
+      `;
+
+      // Render Softmax Breakdown
+      probList.innerHTML = "";
+      const sortedClasses = Object.keys(data.probabilities).sort(
+        (a, b) => data.probabilities[b] - data.probabilities[a]
+      );
+
+      sortedClasses.forEach((c) => {
+        const prob = data.probabilities[c];
+        const pctStr = (prob * 100).toFixed(1) + "%";
+        const item = document.createElement("div");
+        item.className = "prob-item";
+        item.innerHTML = `
+          <span class="prob-name">${c}</span>
+          <div class="prob-bar-container">
+            <div class="prob-bar-fill" style="width: ${pctStr}; background-color: ${c === data.predicted_class ? badgeColor : 'var(--text-subtle)'}"></div>
+          </div>
+          <span class="prob-val font-mono">${pctStr}</span>
         `;
-        probabilityBars.appendChild(row);
+        probList.appendChild(item);
       });
+
+      latencyVal.textContent = data.latency_ms + " ms";
+      breakdownSection.classList.remove("hidden");
+      modelStatusBadge.textContent = "Assessment Complete";
+      modelStatusBadge.className = "status-pill status-healthy";
     } catch (err) {
-      alert("Diagnostic Inference Error: " + err.message);
+      console.error(err);
+      alert("Error: " + err.message);
+      modelStatusBadge.textContent = "Inference Failed";
     } finally {
       btnAnalyze.disabled = false;
-      btnAnalyze.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="btn-icon"><circle cx="12" cy="12" r="10" /><path d="M12 16v-4M12 8h.01" /></svg> Run Neural Diagnostic Inference';
+      btnAnalyze.innerHTML = `
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="btn-icon">
+          <circle cx="12" cy="12" r="10" />
+          <path d="M12 16v-4M12 8h.01" />
+        </svg>
+        Run Neural Diagnostic Inference
+      `;
     }
   });
 });
