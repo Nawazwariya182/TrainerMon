@@ -221,27 +221,90 @@ def pretrain_studio():
     mean = manifest.get("channel_mean", [0.485, 0.456, 0.406])
     std = manifest.get("channel_std", [0.229, 0.224, 0.225])
 
+    # Read hardware-optimized configuration from config.yaml
+    cfg_train = {}
+    config_path = Path(__file__).resolve().parent / "config.yaml"
+    if config_path.exists():
+        try:
+            import yaml
+            raw_cfg = config_path.read_text(encoding="utf-8")
+            # Strip think tags if any
+            clean_cfg = re.sub(r"<think>[\s\S]*?</think>", "", raw_cfg).strip()
+            parsed_cfg = yaml.safe_load(clean_cfg) or {}
+            cfg_train = parsed_cfg.get("training", {})
+            logger.info("Loaded AI Hardware Profile from config.yaml: Batch=%s, Precision=%s, Workers=%s",
+                        cfg_train.get("batch_size"), cfg_train.get("mixed_precision"), cfg_train.get("num_workers"))
+        except Exception as e:
+            logger.warning("Could not parse config.yaml: %s. Using high-performance defaults.", e)
+
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+    is_cuda = (device.type == "cuda")
+
+    if is_cuda and cfg_train.get("cudnn_benchmark", True):
+        torch.backends.cudnn.benchmark = True
+
     logger.info("Hardware Accelerator: %s | Real training samples: %d | Classes: %s", device, len(train_samples), classes)
 
     model = ProductionVisionNet(in_channels=3, num_classes=num_classes, base_ch=48).to(device)
+    if is_cuda and cfg_train.get("channels_last", True):
+        model = model.to(memory_format=torch.channels_last)
+
     param_count = sum(p.numel() for p in model.parameters() if p.requires_grad)
     logger.info("ConvNeXt-SE neural backbone initialized with %s trainable parameters.", f"{param_count:,}")
 
     train_ds = RealDatasetLoader(train_samples, target_size=target_size, mean=mean, std=std, is_train=True)
     val_ds = RealDatasetLoader(val_samples, target_size=target_size, mean=mean, std=std, is_train=False)
 
-    batch_size = 32 if torch.cuda.is_available() else 16
-    train_loader = DataLoader(train_ds, batch_size=batch_size, shuffle=True, drop_last=False)
-    val_loader = DataLoader(val_ds, batch_size=batch_size, shuffle=False)
+    batch_size = int(cfg_train.get("batch_size", 64 if is_cuda else 16))
+    num_workers = int(cfg_train.get("num_workers", 4 if is_cuda else 0))
+    # On Windows multiprocessing DataLoader with spawn works reliably with 2-4 workers
+    if sys.platform.startswith("win") and num_workers > 4:
+        num_workers = 4
+    pin_memory = bool(cfg_train.get("pin_memory", is_cuda))
+
+    train_loader = DataLoader(
+        train_ds,
+        batch_size=batch_size,
+        shuffle=True,
+        drop_last=False,
+        num_workers=num_workers,
+        pin_memory=pin_memory,
+        persistent_workers=(num_workers > 0),
+        prefetch_factor=2 if num_workers > 0 else None
+    )
+    val_loader = DataLoader(
+        val_ds,
+        batch_size=batch_size,
+        shuffle=False,
+        num_workers=num_workers,
+        pin_memory=pin_memory,
+        persistent_workers=(num_workers > 0),
+        prefetch_factor=2 if num_workers > 0 else None
+    )
 
     criterion = nn.CrossEntropyLoss(label_smoothing=0.05)
-    optimizer = torch.optim.AdamW(model.parameters(), lr=1.2e-3, weight_decay=1e-3)
-    epochs = 12
+    lr = float(cfg_train.get("lr", 1.8e-3 if is_cuda else 1.0e-3))
+    
+    # Fused AdamW on CUDA Tensor Cores
+    try:
+        if is_cuda and cfg_train.get("fused_optimizer", True):
+            optimizer = torch.optim.AdamW(model.parameters(), lr=lr, weight_decay=1e-3, fused=True)
+        else:
+            optimizer = torch.optim.AdamW(model.parameters(), lr=lr, weight_decay=1e-3)
+    except Exception:
+        optimizer = torch.optim.AdamW(model.parameters(), lr=lr, weight_decay=1e-3)
+
+    epochs = int(cfg_train.get("max_epochs", 12))
     scheduler = torch.optim.lr_scheduler.CosineAnnealingLR(optimizer, T_max=epochs, eta_min=1e-5)
 
+    mixed_precision = str(cfg_train.get("mixed_precision", "bf16" if (is_cuda and torch.cuda.is_bf16_supported()) else "fp16"))
+    use_bf16 = is_cuda and (mixed_precision == "bf16") and torch.cuda.is_bf16_supported()
+    use_fp16 = is_cuda and (mixed_precision == "fp16")
+    scaler = torch.cuda.amp.GradScaler(enabled=use_fp16)
+
     history = {"epochs": [], "losses": [], "val_accuracies": []}
-    logger.info("Starting pretraining loop for %d epochs to achieve benchmark >=95%% accuracy...", epochs)
+    logger.info("Starting high-throughput pretraining loop (%d epochs, Batch %d, Precision %s)...",
+                epochs, batch_size, "BF16" if use_bf16 else "FP16" if use_fp16 else "FP32")
 
     os.makedirs("./checkpoints", exist_ok=True)
     best_acc = 0.0
@@ -254,13 +317,35 @@ def pretrain_studio():
         total_batches = len(train_loader)
 
         for step, (x, y) in enumerate(train_loader):
-            x, y = x.to(device), y.to(device)
-            optimizer.zero_grad()
-            logits = model(x)
-            loss = criterion(logits, y)
-            loss.backward()
-            torch.nn.utils.clip_grad_norm_(model.parameters(), max_norm=1.0)
-            optimizer.step()
+            x, y = x.to(device, non_blocking=pin_memory), y.to(device, non_blocking=pin_memory)
+            if is_cuda and cfg_train.get("channels_last", True):
+                x = x.to(memory_format=torch.channels_last)
+
+            optimizer.zero_grad(set_to_none=True)
+
+            if use_bf16:
+                with torch.cuda.amp.autocast(dtype=torch.bfloat16):
+                    logits = model(x)
+                    loss = criterion(logits, y)
+                loss.backward()
+                torch.nn.utils.clip_grad_norm_(model.parameters(), max_norm=1.0)
+                optimizer.step()
+            elif use_fp16:
+                with torch.cuda.amp.autocast(dtype=torch.float16):
+                    logits = model(x)
+                    loss = criterion(logits, y)
+                scaler.scale(loss).backward()
+                scaler.unscale_(optimizer)
+                torch.nn.utils.clip_grad_norm_(model.parameters(), max_norm=1.0)
+                scaler.step(optimizer)
+                scaler.update()
+            else:
+                logits = model(x)
+                loss = criterion(logits, y)
+                loss.backward()
+                torch.nn.utils.clip_grad_norm_(model.parameters(), max_norm=1.0)
+                optimizer.step()
+
             running_loss += loss.item()
 
             if (step + 1) % max(1, total_batches // 5) == 0 or step == total_batches - 1:
