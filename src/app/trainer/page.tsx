@@ -247,6 +247,67 @@ function TrainerStudioContent() {
   const [jenkinsViewMode, setJenkinsViewMode] = useState<"visual" | "raw">("visual");
   const [expandedLogStages, setExpandedLogStages] = useState<Record<string, boolean>>({});
 
+  // Hardware Profile & AI Hardware Acceleration
+  const [hardwareProfile, setHardwareProfile] = useState<any>(null);
+  const [isOptimizingHardware, setIsOptimizingHardware] = useState<boolean>(false);
+  const [hardwareOptimizationNotice, setHardwareOptimizationNotice] = useState<string | null>(null);
+
+  const fetchHardwareProfile = async () => {
+    try {
+      const res = await fetch("/api/hardware");
+      const data = await res.json();
+      if (data.success && data.profile) {
+        setHardwareProfile(data.profile);
+      }
+    } catch (e) {
+      console.warn("Could not fetch hardware profile:", e);
+    }
+  };
+
+  useEffect(() => {
+    fetchHardwareProfile();
+  }, []);
+
+  const handleOptimizeForHardware = async () => {
+    if (!projectId) return;
+    setIsOptimizingHardware(true);
+    setHardwareOptimizationNotice(
+      `AI Analyzing hardware specs (${hardwareProfile?.gpuName || "GPU"}) & synthesizing accelerated config...`
+    );
+    try {
+      const res = await fetch("/api/hardware/optimize-config", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          projectId,
+          hardwareProfile,
+          applyToProject: true,
+        }),
+      });
+      const data = await res.json();
+      if (data.success) {
+        setHardwareOptimizationNotice(
+          `⚡ AI configured high-throughput pretraining for ${data.hardware.gpuName}: Batch ${data.optimizedConfig.batch_size}, ${data.optimizedConfig.mixed_precision.toUpperCase()} AMP, ${data.optimizedConfig.num_workers} I/O workers (${data.hardware.estimatedSpeedup}).`
+        );
+        try {
+          const filesRes = await fetch(`/api/workspace/status?projectId=${projectId}`);
+          const filesData = await filesRes.json();
+          if (filesData.success && filesData.codeFiles) {
+            setCodeFiles(filesData.codeFiles);
+          }
+        } catch {
+          // ignore
+        }
+      } else {
+        setHardwareOptimizationNotice(`Optimization notice: ${data.error || "Failed to auto-tune"}`);
+      }
+    } catch (err: any) {
+      setHardwareOptimizationNotice(`Error optimizing for hardware: ${err.message}`);
+    } finally {
+      setIsOptimizingHardware(false);
+    }
+  };
+
   // Chat interface state
   const [chatMessages, setChatMessages] = useState<ChatMessage[]>([]);
   const [chatInput, setChatInput] = useState<string>("");
@@ -3247,6 +3308,68 @@ You can inspect all scripts in the Code Studio, copy or download individual file
                       ))}
                     </div>
                   </div>
+
+                  {/* AI Hardware Acceleration & Auto-Tuned Profile Banner */}
+                  {hardwareProfile && (
+                    <div className="bg-linear-to-r from-emerald-50/90 via-teal-50/50 to-indigo-50/70 rounded-2xl border border-emerald-200/90 p-4 shadow-2xs">
+                      <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-3">
+                        <div className="flex items-center space-x-3.5">
+                          <div className="w-10 h-10 rounded-xl bg-emerald-600 text-white flex items-center justify-center shrink-0 shadow-xs">
+                            <Zap className="w-5 h-5 fill-white" />
+                          </div>
+                          <div>
+                            <div className="flex flex-wrap items-center gap-2">
+                              <h4 className="font-extrabold text-xs text-slate-900 flex items-center space-x-1.5">
+                                <span>{hardwareProfile.hasGpu ? hardwareProfile.gpuName : "CPU Architecture"}</span>
+                              </h4>
+                              <span className="text-[10px] px-2 py-0.5 rounded-full bg-emerald-100 border border-emerald-300 text-emerald-900 font-bold uppercase tracking-wider">
+                                {hardwareProfile.tier}
+                              </span>
+                              <span className="text-[10px] px-2 py-0.5 rounded-md bg-white border border-slate-200 text-slate-700 font-mono font-semibold">
+                                {hardwareProfile.vramGb} GB VRAM • {hardwareProfile.cpuCores} Cores • {hardwareProfile.totalRamGb} GB RAM
+                              </span>
+                              {hardwareProfile.bf16Supported && (
+                                <span className="text-[10px] px-2 py-0.5 rounded-md bg-indigo-50 border border-indigo-200 text-indigo-700 font-mono font-bold">
+                                  BF16 Tensor Cores
+                                </span>
+                              )}
+                            </div>
+                            <p className="text-[11px] text-slate-600 mt-1">
+                              <strong className="text-slate-800">AI Hardware Acceleration:</strong> Batch <strong>{hardwareProfile.recommendedBatchSize}</strong> • Precision <strong>{hardwareProfile.recommendedPrecision?.toUpperCase()}</strong> • <strong>{hardwareProfile.recommendedWorkers}</strong> Asynchronous DataLoader Workers (<span className="text-emerald-700 font-bold">{hardwareProfile.estimatedSpeedup}</span>)
+                            </p>
+                          </div>
+                        </div>
+
+                        <div className="flex items-center space-x-2 shrink-0">
+                          <button
+                            type="button"
+                            onClick={handleOptimizeForHardware}
+                            disabled={isOptimizingHardware}
+                            className="px-3.5 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-700 disabled:opacity-50 text-white text-xs font-bold flex items-center space-x-1.5 shadow-xs transition-all cursor-pointer"
+                          >
+                            <Sparkles className={`w-3.5 h-3.5 ${isOptimizingHardware ? "animate-spin" : ""}`} />
+                            <span>{isOptimizingHardware ? "AI Tuning for GPU..." : "⚡ AI Re-tune for Hardware"}</span>
+                          </button>
+                        </div>
+                      </div>
+
+                      {hardwareOptimizationNotice && (
+                        <div className="mt-3 pt-2.5 border-t border-emerald-200/80 text-[11px] font-medium text-emerald-900 flex items-center justify-between animate-in fade-in">
+                          <span className="flex items-center space-x-1.5">
+                            <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600 shrink-0" />
+                            <span>{hardwareOptimizationNotice}</span>
+                          </span>
+                          <button
+                            type="button"
+                            onClick={() => setHardwareOptimizationNotice(null)}
+                            className="text-emerald-700 hover:text-emerald-900 text-[10px] font-bold px-2 py-0.5 rounded bg-emerald-100 hover:bg-emerald-200 transition-colors"
+                          >
+                            Dismiss
+                          </button>
+                        </div>
+                      )}
+                    </div>
+                  )}
 
                   {/* Main IDE Workspace: File Explorer + Code Editor */}
                   <div className="bg-white rounded-3xl border border-slate-200 overflow-hidden shadow-xs flex flex-col lg:flex-row min-h-[620px]">

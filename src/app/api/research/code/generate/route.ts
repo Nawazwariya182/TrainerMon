@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import fs from "fs/promises";
 import path from "path";
+import { detectHardwareProfile, HardwareProfile } from "@/lib/hardware";
 
 const API_KEY = "sk-mltrain-live-engine-98f2b4c107e3a9d2";
 const BACKEND_RAG_INDEX_URL = "http://127.0.0.1:8000/v1/research/rag/index";
@@ -36,6 +37,9 @@ export async function POST(req: NextRequest) {
     const projectDir = path.join(WORKSPACES_ROOT, sanitizedProjectId);
     await fs.mkdir(projectDir, { recursive: true });
 
+    // Probe user hardware acceleration capabilities
+    const hardware = await detectHardwareProfile();
+
     // Generate domain-specific, multi-dataset harmonized code suite
     const generatedFiles = generateCodeSuite({
       projectId: sanitizedProjectId,
@@ -46,6 +50,7 @@ export async function POST(req: NextRequest) {
       selectedDatasets,
       answers,
       techResearch,
+      hardware,
     });
 
     // Write all files to disk in the project subfolder
@@ -114,6 +119,7 @@ function generateCodeSuite({
   selectedDatasets,
   answers,
   techResearch,
+  hardware,
 }: {
   projectId: string;
   projectName: string;
@@ -123,6 +129,7 @@ function generateCodeSuite({
   selectedDatasets: any[];
   answers: any;
   techResearch: any;
+  hardware?: HardwareProfile;
 }): Record<string, string> {
   const datasetNames = selectedDatasets.length > 0
     ? selectedDatasets.map((d: any) => d.title || d.id).join(", ")
@@ -842,12 +849,21 @@ loss:
   deep_supervision_scales: [1.0, 0.5, 0.25]
 
 training:
-  batch_size: 2
-  effective_batch_size: 8
-  gradient_accumulation_steps: 4
-  num_workers: 4
+  batch_size: ${hardware?.recommendedBatchSize || 64}
+  effective_batch_size: ${hardware?.recommendedBatchSize || 64}
+  gradient_accumulation_steps: 1
+  num_workers: ${hardware?.recommendedWorkers || 4}
+  pin_memory: ${hardware?.hasGpu ?? true}
+  persistent_workers: ${hardware?.hasGpu ?? true}
+  prefetch_factor: 2
+  mixed_precision: "${hardware?.recommendedPrecision || 'bf16'}"
+  channels_last: ${hardware?.channelsLastSupported ?? true}
+  cudnn_benchmark: ${hardware?.hasGpu ?? true}
+  fused_optimizer: ${hardware?.fusedOptimizerSupported ?? true}
+
+
   max_epochs: 150
-  mixed_precision: "bf16" # Automatic Mixed Precision (BF16 or FP16)
+
   gradient_clip_norm: 1.0
 
 optimizer:
