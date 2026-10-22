@@ -44,6 +44,7 @@ yarn-error.log*
 .vercel
 
 # workspaces
+workspace_projects/
 workspace_projects/*/.git/
 workspace_projects/*/data/raw/
 workspace_projects/*/checkpoints/

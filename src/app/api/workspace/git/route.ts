@@ -27,16 +27,26 @@ export async function POST(req: NextRequest) {
     }
 
     const sanitizedProjectId = projectId.replace(/[^a-zA-Z0-9_-]/g, "_");
-    const projectDir = path.join(WORKSPACES_ROOT, sanitizedProjectId);
+    let projectDir = path.join(WORKSPACES_ROOT, sanitizedProjectId);
 
-    // Verify workspace directory exists
+    // Verify workspace directory exists; if not found directly, scan directory for matching folder
     try {
       await fs.access(projectDir);
     } catch {
-      return NextResponse.json(
-        { success: false, error: `Workspace folder not found at: ${projectDir}` },
-        { status: 404 }
-      );
+      try {
+        const dirs = await fs.readdir(WORKSPACES_ROOT);
+        const matched = dirs.find((d) => d === projectId || d === sanitizedProjectId || d.includes(sanitizedProjectId) || sanitizedProjectId.includes(d));
+        if (matched) {
+          projectDir = path.join(WORKSPACES_ROOT, matched);
+        } else {
+          throw new Error(`Workspace folder not found for project: ${projectId}`);
+        }
+      } catch (findErr: any) {
+        return NextResponse.json(
+          { success: false, error: `Workspace folder not found for ${projectId} in ${WORKSPACES_ROOT}` },
+          { status: 404 }
+        );
+      }
     }
 
     // Format authenticated remote URL if token provided
@@ -76,12 +86,12 @@ export async function POST(req: NextRequest) {
     }
 
     if (!isInitialized) {
-      logs.push("Initializing new Git repository...");
+      logs.push("Initializing isolated workspace Git repository...");
       await runGit("git init");
     }
 
-    // Configure user identity if not already set locally
-    await runGit('git config user.name "ML-Train Studio"');
+    // Configure user identity
+    await runGit('git config user.name "Kingnawaz786"');
     await runGit('git config user.email "studio@mltrain.local"');
 
     // 2. Set default branch to main
