@@ -1,41 +1,11 @@
 <think>
 </think>
 
-# =====================================================================
-# AI HARDWARE-OPTIMIZED ACCELERATION PROFILE
-# Auto-tuned for: NVIDIA GeForce RTX 5070 (11.91 GB VRAM)
-# Strategy: Engineered specifically for NVIDIA GeForce RTX 5070 with native BF16 Tensor Cores, high-throughput batch size of 64, and 6 parallel asynchronous I/O workers.
-# =====================================================================
-hardware_profile:
-  gpu_name: "NVIDIA GeForce RTX 5070"
-  vram_gb: 11.91
-  compute_capability: "12.0"
-  bf16_supported: true
-  cpu_cores: 12
-  ram_gb: 15.1
-  tier: "HIGH_END"
-  estimated_speedup: "3.8x - 4.5x faster training"
-
-# =====================================================================
-# AI HARDWARE-OPTIMIZED ACCELERATION PROFILE
-# Auto-tuned for: NVIDIA GeForce RTX 5070 (11.91 GB VRAM)
-# Strategy: Engineered specifically for NVIDIA GeForce RTX 5070 with native BF16 Tensor Cores, high-throughput batch size of 64, and 6 parallel asynchronous I/O workers.
-# =====================================================================
-hardware_profile:
-  gpu_name: "NVIDIA GeForce RTX 5070"
-  vram_gb: 11.91
-  compute_capability: "12.0"
-  bf16_supported: true
-  cpu_cores: 12
-  ram_gb: 15.1
-  tier: "HIGH_END"
-  estimated_speedup: "3.8x - 4.5x faster training"
-
 training:
   batch_size: 64
   effective_batch_size: 64
   gradient_accumulation_steps: 1
-  num_workers: 6
+  num_workers: 8
   pin_memory: true
   persistent_workers: true
   prefetch_factor: 2
@@ -43,19 +13,20 @@ training:
   channels_last: true
   cudnn_benchmark: true
   fused_optimizer: true
-  lr: 0.0018
-  warmup_epochs: 2
-  max_epochs: 12
+  lr: 0.0035
+  warmup_epochs: 4
+  max_epochs: 18
+
 optimizer:
   name: "AdamW"
-  lr: 0.003
-  weight_decay: 0.02
+  lr: 0.0025
+  weight_decay: 0.01
   warmup_epochs: 20
   lr_schedule: "cosine"
 
 loss:
   type: "FocalLoss"
-  gamma: 2.5
+  gamma: 3.0
   label_smoothing: 0.1
 
 model:
