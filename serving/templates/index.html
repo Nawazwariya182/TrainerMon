@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>TrainerMon — Production Diagnostic Inference</title>
+  <title>Brain Tumor Detection — Production Neural Vision</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
@@ -11,83 +11,58 @@
 </head>
 <body>
   <div class="app-layout">
-    <!-- Top Header -->
+    
     <header class="app-header">
       <div class="header-left">
-        <div class="logo-badge badge-medical">
-          <svg class="logo-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" />
-          </svg>
+        <div class="logo-badge">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="logo-icon"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg>
         </div>
         <div>
-          <h1 class="app-title">An Brain Tumor Detection</h1>
-          <p class="app-subtitle">Clinical Deep Residual Neural Network (Trained from Scratch &bull; CI/CD Validated)</p>
+          <h1 class="app-title">Brain Tumor Detection</h1>
+          <p class="app-subtitle">Deep Vision Classifier (Trained from Scratch &bull; CI/CD Validated) &bull; Port 5000</p>
         </div>
       </div>
       <div class="header-right">
         <div class="status-pill status-healthy">
           <span class="status-dot"></span>
-          <span>Model Live: <strong>{{ device }}</strong></span>
+          <span>Engine: <strong>{{ device }}</strong></span>
         </div>
         <div class="status-pill">
-          <span>Target Accuracy: <strong>&ge; 85% PASSED</strong></span>
+          <span>Quality Gate: <strong>&ge; 85% PASSED</strong></span>
         </div>
       </div>
     </header>
-
-    <!-- Main Content Area -->
+  
     <main class="main-grid">
-      <!-- Left Panel: Input & Scan Loading -->
-      <section class="card upload-card">
+      <section class="card">
         <div class="card-header">
           <div class="card-title-group">
             <span class="step-badge">1</span>
             <div>
-              <h2 class="card-title">Upload MRI Scan Image</h2>
-              <p class="card-desc">Select an axial, sagittal, or coronal scan slice (.jpg, .png)</p>
+              <h2 class="card-title">Input Image / Sample Cohort</h2>
+              <p class="card-desc">Select sample class or upload image to classify</p>
             </div>
           </div>
         </div>
-
-        <div class="dropzone" id="dropzone">
-          <input type="file" id="fileInput" accept="image/*" class="file-input">
-          <div class="dropzone-content" id="dropzonePrompt">
-            <div class="upload-icon-circle">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="upload-icon">
-                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M17 8l-5-5-5 5M12 3v12" />
-              </svg>
-            </div>
-            <p class="dropzone-text"><strong>Click to upload</strong> or drag and drop scan</p>
-            <p class="dropzone-sub">High-resolution MRI images up to 16MB</p>
-          </div>
-          <div class="preview-container hidden" id="previewContainer">
-            <img id="imagePreview" class="scan-preview" alt="MRI Scan Preview">
-            <button type="button" class="btn-change-image" id="btnChangeImage">Change Scan</button>
-          </div>
+        <div class="cohort-grid" id="cohortGrid">
+          
+            <button type="button" class="cohort-btn" data-class="glioma">glioma</button>
+          
+            <button type="button" class="cohort-btn" data-class="meningioma">meningioma</button>
+          
+            <button type="button" class="cohort-btn" data-class="notumor">notumor</button>
+          
+            <button type="button" class="cohort-btn" data-class="pituitary">pituitary</button>
+          
         </div>
-
-        <!-- Quick Sample Scans -->
-        <div class="samples-section">
-          <div class="samples-title">Or test with real cohort scans:</div>
-          <div class="sample-chips" id="sampleChips">
-            <button class="sample-chip" data-label="glioma">Glioma Sample</button>
-            <button class="sample-chip" data-label="meningioma">Meningioma Sample</button>
-            <button class="sample-chip" data-label="notumor">Normal / No Tumor</button>
-            <button class="sample-chip" data-label="pituitary">Pituitary Sample</button>
-          </div>
+        <div class="dropzone-box" id="dropzoneBox">
+          <input type="file" id="visionFileInput" accept="image/*" class="file-input">
+          <p class="dropzone-text">Click or drag image file here to analyze</p>
         </div>
-
-        <button class="btn-primary" id="btnAnalyze" disabled>
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="btn-icon">
-            <circle cx="12" cy="12" r="10" />
-            <path d="M12 16v-4M12 8h.01" />
-          </svg>
-          Run Neural Diagnostic Inference
-        </button>
+        <button class="btn-primary" id="btnRunVision">Run Neural Diagnostic Inference</button>
       </section>
 
-      <!-- Right Panel: Quantitative Diagnostic Output -->
-      <section class="card results-card">
+      <section class="card">
         <div class="card-header">
           <div class="card-title-group">
             <span class="step-badge step-emerald">2</span>
@@ -96,67 +71,19 @@
               <p class="card-desc">Multi-class probability distribution & confidence metrics</p>
             </div>
           </div>
-          <span class="badge-ready" id="modelStatusBadge">Awaiting Scan</span>
         </div>
-
-        <!-- Hero Prediction Result -->
-        <div class="result-hero" id="resultHero">
-          <div class="hero-placeholder">
-            <div class="placeholder-icon">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-                <rect x="2" y="3" width="20" height="14" rx="2" ry="2" />
-                <line x1="8" y1="21" x2="16" y2="21" />
-                <line x1="12" y1="17" x2="12" y2="21" />
-              </svg>
-            </div>
-            <p class="placeholder-title">No Scan Evaluated</p>
-            <p class="placeholder-desc">Upload or select an MRI scan slice on the left to execute diagnostic prediction.</p>
-          </div>
+        <div class="hero-result-card" id="visionHero">
+          <div class="hero-label">Primary Classification</div>
+          <div class="hero-class-name" id="heroVisionName">Select a Class</div>
+          <div class="hero-confidence" id="heroVisionConf">Click a cohort button above to evaluate</div>
         </div>
-
-        <!-- Detailed Class Breakdown -->
-        <div class="breakdown-section hidden" id="breakdownSection">
+        <div class="probability-section">
           <h3 class="section-heading">Class Probability Distribution</h3>
-          <div class="prob-list" id="probList">
-            <!-- Dynamically populated -->
-          </div>
-
-          <div class="metrics-grid">
-            <div class="metric-box">
-              <span class="metric-label">Inference Latency</span>
-              <span class="metric-value font-mono" id="latencyVal">-- ms</span>
-            </div>
-            <div class="metric-box">
-              <span class="metric-label">Execution Device</span>
-              <span class="metric-value font-mono">{{ device }}</span>
-            </div>
-            <div class="metric-box">
-              <span class="metric-label">Target Architecture</span>
-              <span class="metric-value">ConvNeXt-SE Backbone</span>
-            </div>
-          </div>
-
-          <div class="clinical-note">
-            <div class="note-icon">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <circle cx="12" cy="12" r="10"/>
-                <line x1="12" y1="16" x2="12" y2="12"/>
-                <line x1="12" y1="8" x2="12.01" y2="8"/>
-              </svg>
-            </div>
-            <p class="note-text">
-              <strong>Clinical Note:</strong> This deep neural network was trained from scratch and verified by automated CI/CD pipeline quality gates (Acc &ge; 85%). Automated predictions provide quantitative assistive scoring for radiological workflows.
-            </p>
-          </div>
+          <div class="histogram-list" id="visionHistogram"></div>
         </div>
       </section>
     </main>
-
-    <footer class="app-footer">
-      <p>TrainerMon Autonomous Machine Learning Platform &bull; Production Inference Engine &bull; Port 5000</p>
-    </footer>
   </div>
-
   <script src="/static/app.js"></script>
 </body>
 </html>

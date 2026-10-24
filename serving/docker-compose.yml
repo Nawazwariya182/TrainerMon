@@ -4,17 +4,8 @@ services:
   serving:
     build: .
     container_name: trainermon-inference-service
-    restart: unless-stopped
     ports:
       - "5000:5000"
     environment:
       - PORT=5000
-      - PYTHONUNBUFFERED=1
-    volumes:
-      - ../checkpoints:/app/checkpoints:ro
-      - ../data:/app/data:ro
-    healthcheck:
-      test: ["CMD", "curl", "-f", "http://127.0.0.1:5000/health"]
-      interval: 10s
-      timeout: 5s
-      retries: 3
+    restart: unless-stopped
