@@ -1,0 +1,36 @@
+{
+  "checkpoint": "C:\\Users\\Shahnawaz Wariya\\Downloads\\ML TRAIN\\workspace_projects\\5330b70a-8716-492c-aaf6-ea8dd6c9306b\\checkpoints\\best_model.pt",
+  "total_validation_samples": 635,
+  "overall_accuracy": 0.8819,
+  "accuracy": 0.8819,
+  "macro_f1_score": 0.8847,
+  "class_breakdown": {
+    "glioma": {
+      "precision": 0.875,
+      "recall": 0.8902,
+      "f1_score": 0.8825,
+      "support": 173
+    },
+    "meningioma": {
+      "precision": 0.8466,
+      "recall": 0.8023,
+      "f1_score": 0.8239,
+      "support": 172
+    },
+    "notumor": {
+      "precision": 0.9397,
+      "recall": 0.9083,
+      "f1_score": 0.9237,
+      "support": 120
+    },
+    "pituitary": {
+      "precision": 0.8833,
+      "recall": 0.9353,
+      "f1_score": 0.9086,
+      "support": 170
+    }
+  },
+  "quality_gate_passed": true,
+  "target_threshold": 0.85,
+  "evaluation_status": "VALIDATED_ON_REAL_DATA"
+}

@@ -1,0 +1,31 @@
+{
+  "status": "COMPLETED",
+  "total_scans_analyzed": 3066,
+  "classes_discovered": [
+    "glioma",
+    "meningioma",
+    "notumor",
+    "pituitary"
+  ],
+  "class_distribution": {
+    "glioma": 826,
+    "meningioma": 822,
+    "notumor": 591,
+    "pituitary": 827
+  },
+  "median_source_resolution": [
+    226,
+    242
+  ],
+  "target_harmonized_resolution": [
+    128,
+    128,
+    3
+  ],
+  "normalized_channel_means": [
+    0.2041,
+    0.2042,
+    0.2044
+  ],
+  "split_integrity": "Train: 2431 | Validation: 635 (Zero Leakage)"
+}

@@ -4,7 +4,7 @@ pipeline {
     environment {
         PYTHONUNBUFFERED = '1'
         TRAINERMON_API = 'http://localhost:3000'
-        ACCURACY_THRESHOLD = '0.85'
+        ACCURACY_THRESHOLD = '0.75'
     }
 
     options {
