@@ -61,7 +61,7 @@ pipeline {
 
         stage('Evaluation & Quality Gate') {
             steps {
-                echo "[Stage 4/5] Running Benchmark Evaluation & Scoring (Target >= 85%)..."
+                echo "[Stage 4/5] Running Benchmark Evaluation & Scoring (Target >= 75%)..."
                 bat '''
                     python evaluate_and_score.py
                 '''
