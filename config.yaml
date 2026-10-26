@@ -1,0 +1,24 @@
+project:
+  id: "c3a24f9f-1ca2-4259-8ba5-5ce5216a0292"
+  name: "Iris Flower Classifier"
+  domain: "nlp_text"
+  task: "Movie Review Sentiment Classification"
+  classes: ["negative","positive"]
+  seed: 42
+
+hardware:
+  tier: "HIGH_END"
+  gpu_name: "NVIDIA GeForce RTX 5070"
+  vram_gb: 11.91
+  batch_size: 64
+  epochs: 5
+  learning_rate: 0.001
+
+model:
+  architecture: "ProductionTextNet"
+  embed_dim: 128
+  hidden_dim: 128
+  num_layers: 2
+  bidirectional: true
+  num_classes: 2
+  max_seq_len: 128

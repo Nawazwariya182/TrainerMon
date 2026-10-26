@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Iris Flower Classifier — Movie Review Sentiment Classifier</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-slate-50 text-slate-900 min-h-screen p-6 font-sans">
+  <div class="max-w-4xl mx-auto space-y-6">
+    <header class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm flex items-center justify-between">
+      <div>
+        <h1 class="text-xl font-bold text-slate-900">Iris Flower Classifier</h1>
+        <p class="text-xs text-slate-500 font-mono">BiLSTM + Word Embeddings &bull; Binary Sentiment Analysis &bull; Port 5000</p>
+      </div>
+      <span class="px-3 py-1 rounded-full text-xs font-semibold bg-emerald-100 text-emerald-800 border border-emerald-300">Live NLP Service</span>
+    </header>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm space-y-4">
+        <h2 class="text-sm font-bold text-slate-800 uppercase tracking-wider">Enter Movie Review Text</h2>
+        <textarea id="reviewText" rows="5" class="w-full p-3 text-xs border border-slate-200 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:outline-none" placeholder="Type or paste any movie review text here...">This movie was an absolute masterpiece with wonderful performances and a brilliant soundtrack!</textarea>
+        <div class="flex space-x-2">
+          <button onclick="classifyReview()" class="flex-1 py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl text-xs font-bold transition shadow-xs">Analyze Sentiment</button>
+          <button onclick="setSample(false)" class="px-3 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-xl text-xs font-medium transition">Sample Neg</button>
+          <button onclick="setSample(true)" class="px-3 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-xl text-xs font-medium transition">Sample Pos</button>
+        </div>
+      </div>
+
+      <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm space-y-4">
+        <h2 class="text-sm font-bold text-slate-800 uppercase tracking-wider">Sentiment Analysis Output</h2>
+        <div id="output" class="p-4 bg-slate-50 rounded-xl border border-slate-100 min-h-[160px] text-xs font-mono text-slate-600 flex items-center justify-center">
+          Click Analyze Sentiment on the left to run live neural inference.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    function setSample(pos) {
+      document.getElementById('reviewText').value = pos
+        ? "An exhilarating cinematic triumph! The pacing was relentless, the direction was flawless, and the acting moved me to tears."
+        : "A completely tedious and incoherent disaster. The characters were irritating, the dialogue was flat, and I regretted watching it.";
+      classifyReview();
+    }
+
+    async function classifyReview() {
+      const text = document.getElementById('reviewText').value;
+      const out = document.getElementById('output');
+      out.innerHTML = '<span class="text-indigo-600 animate-pulse">Running BiLSTM forward pass...</span>';
+      try {
+        const res = await fetch('/predict', {
+          method: 'POST',
+          headers: {'Content-Type': 'application/json'},
+          body: JSON.stringify({text: text})
+        });
+        const data = await res.json();
+        const isPos = data.predicted_class === 'positive';
+        let bars = '';
+        for (const [cls, prob] of Object.entries(data.probabilities)) {
+          const pct = (prob * 100).toFixed(1);
+          const top = cls === data.predicted_class;
+          bars += `<div class="space-y-1">
+            <div class="flex justify-between text-[11px] ${top ? 'font-bold text-slate-900' : 'text-slate-500'}">
+              <span class="capitalize">${cls}</span>
+              <span>${pct}%</span>
+            </div>
+            <div class="w-full bg-slate-200 rounded-full h-1.5 overflow-hidden">
+              <div class="${cls === 'positive' ? 'bg-emerald-500' : 'bg-rose-500'} h-1.5 rounded-full" style="width: ${pct}%"></div>
+            </div>
+          </div>`;
+        }
+        out.innerHTML = `<div class="space-y-3 w-full">
+          <div class="p-4 rounded-xl border flex justify-between items-center ${isPos ? 'bg-emerald-50 border-emerald-200' : 'bg-rose-50 border-rose-200'}">
+            <div>
+              <div class="text-[10px] font-bold uppercase ${isPos ? 'text-emerald-700' : 'text-rose-700'}">Detected Sentiment</div>
+              <div class="text-xl font-bold capitalize ${isPos ? 'text-emerald-900' : 'text-rose-900'}">${data.predicted_class} Sentiment</div>
+            </div>
+            <div class="text-right">
+              <div class="text-[10px] font-bold uppercase ${isPos ? 'text-emerald-700' : 'text-rose-700'}">Confidence</div>
+              <div class="text-xl font-bold ${isPos ? 'text-emerald-900' : 'text-rose-900'}">${data.confidence_pct}</div>
+            </div>
+          </div>
+          <div class="space-y-2 pt-2 border-t border-slate-200">${bars}</div>
+        </div>`;
+      } catch (err) {
+        out.innerHTML = `<span class="text-rose-600 font-bold">Error: ${err.message}</span>`;
+      }
+    }
+  </script>
+</body>
+</html>

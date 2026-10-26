@@ -1,0 +1,72 @@
+{
+  "project_id": "c3a24f9f-1ca2-4259-8ba5-5ce5216a0292",
+  "project_name": "Iris Flower Classifier",
+  "status": "NEW_READY_TO_EXECUTE",
+  "is_new": true,
+  "created_at": "2026-10-26T08:51:23.119Z",
+  "last_updated": "2026-10-26T08:51:23.119Z",
+  "total_steps": 5,
+  "current_step_index": 0,
+  "current_step_name": null,
+  "overall_progress_pct": 0,
+  "steps": [
+    {
+      "id": 1,
+      "name": "download_datasets",
+      "script": "download_datasets.py",
+      "label": "Download & Extract Datasets",
+      "status": "PENDING",
+      "progress_pct": 0,
+      "details": "Awaiting initial dataset download execution"
+    },
+    {
+      "id": 2,
+      "name": "eda_and_harmonization",
+      "script": "eda_and_harmonization.py",
+      "label": "Ingestion & Multi-Dataset Harmonization",
+      "status": "PENDING",
+      "progress_pct": 0,
+      "details": "Awaiting execution"
+    },
+    {
+      "id": 3,
+      "name": "train",
+      "script": "train.py",
+      "label": "Pretraining From Scratch",
+      "status": "PENDING",
+      "progress_pct": 0,
+      "details": "Awaiting execution"
+    },
+    {
+      "id": 4,
+      "name": "evaluate_and_score",
+      "script": "evaluate_and_score.py",
+      "label": "Quantitative Validation & Metrics",
+      "status": "PENDING",
+      "progress_pct": 0,
+      "details": "Awaiting execution"
+    },
+    {
+      "id": 5,
+      "name": "visualize",
+      "script": "visualize.py",
+      "label": "Visual Predictions & Overlays",
+      "status": "PENDING",
+      "progress_pct": 0,
+      "details": "Awaiting execution"
+    }
+  ],
+  "ai_synthesis": {
+    "model": "qwen3.5-9b",
+    "duration_seconds": 61.7,
+    "thinking_trace": "Synthesized bespoke PyTorch pretraining code directly from implementation blueprint and dataset columns.",
+    "grounded_features": [
+      "sepal length (cm)",
+      "sepal width (cm)",
+      "petal length (cm)",
+      "petal width (cm)"
+    ],
+    "architecture": "Deep Tabular Multi-Layer Perceptron (MLP-ResNet with LayerNorm & Highway Skip Connections)",
+    "status": "COMPLETED"
+  }
+}

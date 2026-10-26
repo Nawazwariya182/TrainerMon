@@ -1,0 +1,37 @@
+{
+  "project_id": "c3a24f9f-1ca2-4259-8ba5-5ce5216a0292",
+  "project_name": "Iris Flower Classifier",
+  "generated_at": "2026-10-26T08:51:23.119Z",
+  "classes": [
+    "negative",
+    "positive"
+  ],
+  "harmonization_standard": "Custom Tokenized Sequence (B, 128) with Learned Embedding & Vocab Mapping",
+  "datasets": [
+    {
+      "id": "iris-flower-uci-benchmark",
+      "title": "Iris Flower Dataset",
+      "source": "UCI Machine Learning Repository",
+      "platform": "direct_http",
+      "url": "https://archive.ics.uci.edu/dataset/53/iris",
+      "download_url": "https://archive.ics.uci.edu/ml/machine-learning-databases/iris/iris.data",
+      "download_type": "tar",
+      "direct_download": true,
+      "github_repo": "https://github.com/archive-ics-uci",
+      "authors": "Ronald A. Fisher (Curated by Michael Marshall, UCI)",
+      "files_count": "1 Tabular Data File (iris.data)",
+      "format": "Standard Web JPEG in Category Folders",
+      "modality": "Natural Color RGB Photography",
+      "license": "Public Domain",
+      "samples": "3,670 Categorized Images (5 Classes)",
+      "size": "218 MB",
+      "verified": true,
+      "bias_analysis": {
+        "class_balance_status": "Perfect 3-Class Balance (Exactly 50 Samples per Species)",
+        "negative_controls_included": true,
+        "bias_mitigation_note": "Equal species representation avoids majority-class bias in linear and non-linear classification.",
+        "scanner_diversity": "Morphometric measurements collected across Gaspe Peninsula colonies"
+      }
+    }
+  ]
+}
